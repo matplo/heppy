@@ -71,6 +71,8 @@ def main():
       print('{} event limit reached'.format(args.nev))
       break
 
+  pbar.close()
+  
   # Plot and save histogram
   print('Creating ROOT file...')
   c = ROOT.TCanvas('c', 'c', 600, 450)
