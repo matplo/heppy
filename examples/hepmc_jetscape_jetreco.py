@@ -42,7 +42,7 @@ def main():
 
   # Create a histogram with ROOT
   lbins = logbins(1., 500, 20)
-  hJetPt04 = ROOT.TH1D("hJetPt04", "hJetPt04", lbins)
+  hJetPt04 = ROOT.TH1D("hJetPt04", "hJetPt04", 20, lbins)
 
   # jet finder
   fj.ClusterSequence.print_banner()
