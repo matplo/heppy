@@ -10,8 +10,16 @@ import tqdm
 import argparse
 import os
 import numpy as np
+import array 
 
 import pyhepmc_ng
+import ROOT
+import math
+
+def logbins(xmin, xmax, nbins):
+        lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)
+        arr = array.array('f', lspace)
+        return arr
 
 
 def find_jets_hepmc(jet_def, jet_selector, hepmc_event):
@@ -49,7 +57,7 @@ def main():
 	print()
 	jet_R0 = 0.4
 	jet_def = fj.JetDefinition(fj.antikt_algorithm, jet_R0)
-	jet_selector = fj.SelectorPtMin(100.0) & fj.SelectorPtMax(200.0) & fj.SelectorAbsEtaMax(3)
+	jet_selector = fj.SelectorPtMin(10.0) & fj.SelectorPtMax(500.0) & fj.SelectorAbsEtaMax(3)
 
 	all_jets = []
 	event_hepmc = pyhepmc_ng.GenEvent()
@@ -72,15 +80,18 @@ def main():
 
 	print('[i] listing lund plane points... Delta, kt - for {} selected jets'.format(len(all_jets)))
 	for l in lunds:
+		if len(l) < 1:
+			continue
 		print ('- jet pT={0:5.2f} eta={1:5.2f}'.format(l[0].pair().perp(), l[0].pair().eta()))
 		print ('  Deltas={}'.format([s.Delta() for s in l]))
-		print ('  kts={}'.format([s.Delta() for s in l]))
+		print ('  kts={}'.format([s.kt() for s in l]))
 		print ( )
 
 	print('[i] reclustering and using soft drop...')
 	jet_def_rc = fj.JetDefinition(fj.cambridge_algorithm, 0.1)
 	print('[i] Reclustering:', jet_def_rc)
 
+	all_jets_sd = []
 	rc = fjcontrib.Recluster(jet_def_rc, True)
 	sd = fjcontrib.SoftDrop(0, 0.1, 1.0)
 	for i,j in enumerate(all_jets):
@@ -89,8 +100,24 @@ def main():
 		print('- [{0:3d}] orig pT={1:10.3f} reclustered pT={2:10.3f}'.format(i, j.perp(), j_rc.perp()))
 		j_sd = sd.result(j)
 		print('  |-> after soft drop pT={0:10.3f} delta={1:10.3f}'.format(j_sd.perp(), j_sd.perp() - j.perp()))
+		all_jets_sd.append(j_sd)
 		sd_info = fjcontrib.get_SD_jet_info(j_sd)
 		print("  |-> SD jet params z={0:10.3f} dR={1:10.3f} mu={2:10.3f}".format(sd_info.z, sd_info.dR, sd_info.mu))
+
+	fout = ROOT.TFile('hepmc_jetreco.root', 'recreate')
+	lbins = logbins(1., 500, 50)
+	hJetPt04 = ROOT.TH1D("hJetPt04", "hJetPt04", 50, lbins)
+	hJetPt04sd = ROOT.TH1D("hJetPt04sd", "hJetPt04sd", 50, lbins)
+	[hJetPt04.Fill(j.perp()) for j in all_jets]
+	[hJetPt04sd.Fill(j.perp()) for j in all_jets_sd]
+	hLund = ROOT.TH2D("hLund", "hLund", 60, 0, 6, 100, -4, 5)
+	lunds = [lund_gen.result(j) for j in all_jets if j.perp() > 100]
+	j100 = [j for j in all_jets if j.perp() > 100]
+	print('{} jets above 100 GeV/c'.format(len(j100)))
+	for l in lunds:
+		for s in l:
+			hLund.Fill(math.log(1./s.Delta()), math.log(s.kt()))
+	fout.Write()
 
 if __name__ == '__main__':
 	main()
