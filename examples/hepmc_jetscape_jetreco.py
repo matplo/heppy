@@ -58,7 +58,9 @@ def main():
   while not input_hepmc.failed():
     ev = input_hepmc.read_event(event_hepmc)
     if input_hepmc.failed():
-      print('End of HepMC file.')
+      nstop = pbar.n
+      pbar.close()
+      print('End of HepMC file at event {} '.format(nstop))
       break
     jets_hepmc = find_jets_hepmc(jet_def, jet_selector, event_hepmc)
     all_jets.extend(jets_hepmc)
@@ -68,11 +70,10 @@ def main():
     [fill_jet_histogram(hJetPt04, jet) for jet in all_jets]
     
     if pbar.n >= args.nev:
+      pbar.close()
       print('{} event limit reached'.format(args.nev))
       break
 
-  pbar.close()
-  
   # Plot and save histogram
   print('Creating ROOT file...')
   c = ROOT.TCanvas('c', 'c', 600, 450)
