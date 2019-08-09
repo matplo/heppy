@@ -1,5 +1,3 @@
-add_compile_options(${FASTJET_CXXFLAGS})
-
 set(MODULE_NAME hepmc3ext)
 set(MODULE ${PROJECT_NAME}_${MODULE_NAME})
 set(NAME_LIB ${MODULE})
@@ -15,7 +13,5 @@ target_include_directories(${NAME_LIB} PUBLIC ${HEPMC3_INCLUDE_DIR})
 target_link_libraries(${NAME_LIB} PUBLIC ${HEPMC3_LIBRARY})
 
 set(SWIG_TARGET_LINK_LIBRARIES ${HEPMC3_LIBRARY})
-
 swigify()
-
 install_targets_custom()

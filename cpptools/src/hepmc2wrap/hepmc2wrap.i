@@ -1,4 +1,4 @@
-%module hepmcwrap
+%module hepmc2wrap
 
 %{
   #include "HepMC/GenEvent.h"

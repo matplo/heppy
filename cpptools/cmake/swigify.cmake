@@ -34,7 +34,7 @@ include(${SWIG_USE_FILE})
 
 		include_directories(${Python_INCLUDE_DIRS})
 		include_directories(${Python_NumPy_INCLUDE_DIRS})
-
+		include_directories(${SWIG_TARGET_INCLUDE_DIRECTORIES})
 		if (SWIG_INTERFACE_FILE)
 				message(STATUS "Using swig file ${SWIG_INTERFACE_FILE}")
 			else(SWIG_INTERFACE_FILE)
