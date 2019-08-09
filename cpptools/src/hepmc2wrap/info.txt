@@ -1,0 +1,2 @@
+obtained from bitbucket.org/andybuckley/pyhepmc:
+wget https://bitbucket.org/andybuckley/pyhepmc/raw/2e83ce07579057bf552464076839e7ac0507b6bf/hepmc/hepmcwrap.i
