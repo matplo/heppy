@@ -10,12 +10,19 @@ import tqdm
 import argparse
 import os
 import numpy as np
+import array 
 
 import pyhepmc_ng
 import ROOT
 
 # Prevent ROOT from stealing focus when plotting
 ROOT.gROOT.SetBatch(True)
+
+#--------------------------------------------------------------
+def logbins(xmin, xmax, nbins):
+        lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)
+        arr = array.array('f', lspace)
+        return arr
 
 #--------------------------------------------------------------
 def main():
@@ -34,7 +41,8 @@ def main():
     sys.exit(1)
 
   # Create a histogram with ROOT
-  hJetPt04 = ROOT.TH1D("hJetPt04", "hJetPt04", 500, 0, 500)
+  lbins = logbins(1., 500, 20)
+  hJetPt04 = ROOT.TH1D("hJetPt04", "hJetPt04", lbins)
 
   # jet finder
   fj.ClusterSequence.print_banner()
