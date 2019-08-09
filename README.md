@@ -2,40 +2,47 @@
 
 - some work on HEP things in python (with quite a bit of help on c++ side)
 - this uses CMake, SWIG
-- Python3 required
-- recommendation: work within pipenv (or virtual env)
 - usage of ROOT (Pythia8 bindings; also HEPMC3) is up to the user
 
 # example python script
 
- - `cpptools/tests/pythia_gen_fj_lund_test.py`
+ - [examples/pythia_gen_fastjet_lund_test.py](https://github.com/matplo/heppy/blob/master/examples/pythia_gen_fastjet_lund_test.py)
 
 # recommended build/setup
 
 ```
+git clone ... <heppy>
+cd <heppy>
 pipenv shell
-./scripts/setup.sh --buildext
+./scripts/setup.sh --buildext [--root]
 module use $PWD/modules
 module load heppy/main_python
-./cpptools/tests/pythia_gen_fj_lund_test.py
+examples/pythia_gen_fastjet_lund_test.py
 ```
 
 - to wipe out and rebuild everything
 ```
 ./scripts/cleanup.sh
-./scripts/setup.sh --buildext
+./scripts/setup.sh --buildext --rebuild
 ```
 
-- you can use individually one of the scripts
+- to rebuild the swigified fjcontrib and the few tools only
 ```
-external/setup_pythia8.sh
-external/setup_fastjet.sh          
+./scripts/setup.sh --rebuild
+```
+
+- to change the external builds you can use scripts...
+```
+external/setup_pythia8.sh --version=8.XYZ
+external/setup_fastjet.sh
 external/setup_hepmc3.sh           
 external/setup_hepmc2_cmake.sh     
+external/setup_root.sh
 external/setup_lhapdf6.sh
 ```
+... but the best is to edit the `external/setup.sh`
 
-- useful debuging option `--configure-only`
+- useful debuging option `--configure-only` (no build just configure and exit)
 
 - to rebuild cpptools only
 ```
@@ -51,8 +58,8 @@ external/setup_lhapdf6.sh
 
 
 ## Notes: 
-- this will download and install PYTHIA, HepMC2, HepMC3, LHAPDF6, FASTJET into the `external` subdirectory. This behavior can be controlled by `.heppy_config_external` file (sourced as a shell script) - you can control what version packages to use by building those libs yourself... (no or empty `.heppy_config_external` is fine)
-- the `.heppy_config_external` in a local directory takes precedence (default is to take one from the downloaded/git directory)
+
+- this will download and install PYTHIA, HepMC2, HepMC3, LHAPDF6, FASTJET, ROOT into the `external` subdirectory. User can control what version packages to use by building those libs yourself...
 - for some options `./scripts/build_cpptools.sh --help`
 
 # running
@@ -61,7 +68,8 @@ external/setup_lhapdf6.sh
 
 ```
 pipenv shell
-source setup.sh
+module use heppy/modules
+module load heppy/main_python
 ./cpptools/tests/pythia_gen_fj_lund_test.py
 ...
 ```
@@ -74,6 +82,6 @@ source setup.sh
 
 # add/extend c++ (swig) to python
 
-- in the `cpptools/src` directory create your code/directory
-- edit `cpptools/src/heppy.i`, `cpptools/src/CMakeLists.txt` as needed
-- run `./cpptools/scripts/build_cpptools.sh`
+- in the `cpptools/src` directory create your code/directory - should be easy to follow from one of the other
+- edit `cpptools/src/CMakeLists.txt` as needed
+- run `./scripts/setup.sh --rebuild` or `./cpptools/scripts/build_cpptools.sh`
