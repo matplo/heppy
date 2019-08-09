@@ -80,6 +80,7 @@ def main():
   c.cd()
   c.SetLogy()
   hJetPt04.SetMarkerStyle(21)
+  hJetPt04.Sumw2()
   hJetPt04.Draw('E P')
   output_filename = './AnalysisResult.root'
   c.SaveAs(output_filename)
