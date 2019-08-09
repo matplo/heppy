@@ -10,9 +10,14 @@
 
 # recommended build/setup
 
+- simply type and get a short (long if building with root) coffee
 ```
-git clone ... <heppy>
-cd <heppy>
+./scripts/setup.sh --buildext [--root]
+```
+
+- ... load module to use ...
+
+```
 pipenv shell
 ./scripts/setup.sh --buildext [--root]
 module use $PWD/modules
