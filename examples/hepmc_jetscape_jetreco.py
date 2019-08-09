@@ -72,7 +72,12 @@ def main():
   hJetPt04.Draw('E P')
   output_filename = './AnalysisResult.root'
   c.SaveAs(output_filename)
-    
+
+  fout = ROOT.TFile(output_filename, "update")
+  fout.cd()
+  hJetPt04.Write()
+  fout.Close()
+  
 #--------------------------------------------------------------
 def find_jets_hepmc(jet_def, jet_selector, hepmc_event):
 
