@@ -9,6 +9,7 @@ import fjext
 import tqdm
 import argparse
 import os
+import sys
 import numpy as np
 import array 
 
@@ -40,10 +41,10 @@ def main():
 
 	if args.nev <= 0:
 		args.nev = hepmc2wrap.statfile(args.input)
-
+                print("[i] found {} events in {}".format(args.nev, args.input))
 	###
 	# now lets read the HEPMC file and do some jet finding
-	input_hepmc = hepmc2wrap.ReadHepMCFile("qpythia_qhat2_1.hepmc")
+	input_hepmc = hepmc2wrap.ReadHepMCFile(args.input)
 
 	if input_hepmc.failed():
 		print ("[error] unable to read from {}".format(args.input))
