@@ -5,3 +5,4 @@
 %}
 %include lundplane.i
 %include recursivetools.i
+%include constituentsubtractor.i
