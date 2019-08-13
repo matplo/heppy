@@ -18,6 +18,9 @@ namespace GenUtil
 		bool 								NextEvent();
 
 		HepMC::GenCrossSection* 			GetCrossSecion();
+		double 								GetCrossSecionValue();
+		double 								GetCrossSecionValueError();
+
 		HepMC::PdfInfo* 					GetPDFinfo();
 		HepMC::WeightContainer*  			GetWeightContainer();
 		std::list<HepMC::GenVertex*> 		Vertices();

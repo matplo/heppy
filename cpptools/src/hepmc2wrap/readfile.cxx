@@ -61,6 +61,20 @@ namespace GenUtil
 		return 0x0;
 	}
 
+	double ReadHepMCFile::GetCrossSecionValue()
+	{
+		if (fEvent) return fEvent->cross_section()->cross_section();
+		cerr << "No event - unable to read cross section" << endl;
+		return -1.0;
+	}
+
+	double ReadHepMCFile::GetCrossSecionValueError()
+	{
+		if (fEvent) return fEvent->cross_section()->cross_section_error();
+		cerr << "No event - unable to read cross section" << endl;
+		return -1.0;
+	}
+
 	HepMC::PdfInfo* ReadHepMCFile::GetPDFinfo()
 	{
 		if (fEvent) return fEvent->pdf_info();
