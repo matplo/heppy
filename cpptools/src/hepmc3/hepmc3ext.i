@@ -11,7 +11,7 @@ namespace std {
 	#include "test_loop.hh"
 	#include "HepMC3/GenParticle.h"
 	#include "HepMC3/FourVector.h"
-    using namespace HepMC3;
+        using namespace HepMC3;
 	#include "hybridreader.hh"
 %}
 
@@ -58,7 +58,24 @@ namespace HepMC3 {
 %template(VectorGenParticle) std::vector<HepMC3::GenParticle>;
 
 %include "test_loop.hh"
-%include "hybridreader.hh"
+ // %include "hybridreader.hh"
+class HybridRead
+{
+public:
+	HybridRead();
+	HybridRead(const char *fname);
+	bool nextEvent();
+	bool openFile(const char *fname);
+	bool failed();
+	int  getNevent();
+	// std::vector<std::vector<double>> getParticles();
+	std::vector<double> getEventInfo();
+	std::vector<double> getParticle(int i);
+	unsigned int getNparticles();
+	std::vector<double> getVertex(int i);
+	unsigned int getNvertices();
+	std::vector<HepMC3::GenParticle> HepMCParticles();
+};
 
 %extend HepMC3::GenParticle {
   std::string __str__() const {
