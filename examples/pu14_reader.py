@@ -25,7 +25,7 @@ def pu14_reader():
 def read_file(file, n_particles, n_events=10000):
 
   # Read all lines from the text file into a dataframe (taking only relevant columns)
-  df = pandas.read_table(file, delim_whitespace=True, names=('px', 'py', 'pz', 'e', 'pid', 'label'), usecols=[0,1,2,3], comment="#", header=0)
+  df = pandas.read_table(file, delim_whitespace=True, names=('px', 'py', 'pz', 'm', 'pid', 'label'), usecols=[0,1,2,3], comment="#", header=0)
 
   # Split dataframe into an array of dataframes, one per event
   df_array = np.array_split(df, n_events)
