@@ -22,7 +22,7 @@ def pu14_reader():
   file = '/lustre/emmi/emmi05/thermal/Mult1700/ThermalEventsMult1700PtAv0.90_0.pu14'
   read_file(file, 1700)
   
-def read_file(file, n_particles, n_events=10000):
+def read_file(file, n_particles, n_events=10000, n_events_max=10000):
 
   # Read all lines from the text file into a dataframe (taking only relevant columns)
   #col_types = {'px': np.float64, 'py': np.float64, 'pz':np.float64, 'm': np.float64}
@@ -31,10 +31,17 @@ def read_file(file, n_particles, n_events=10000):
   #dtype=col_types
   
   # Split dataframe into an array of dataframes, one per event
-  df_array = np.array_split(df, n_events)
+  df_array = None
+  if n_events_max < n_events:
+    df_array = np.array_split(df, n_events)[:n_events_max]
+  else:
+    df_array = np.array_split(df, n_events)
+
+  print('Taking {} of {} events from PU14'.format(n_events_max, n_events))
   
   # Iterate through each dataframe and drop the commented lines
   for i, df in enumerate(df_array):
+    df.reset_index(inplace=True, drop=True)
     if i == (n_events-1):
       df.drop(df.tail(1).index,inplace=True)
     else:
@@ -49,18 +56,22 @@ def read_file(file, n_particles, n_events=10000):
 
   # All these other methods are not working on pandas 14...
   # So just manually convert the types
-  for df in df_array:
-    print('Converting dataframe...')
+  array = []
+  for i, df in enumerate(df_array):
+
+    if i > n_events_max-1:
+      break
+    
     px_arr = np.empty(n_particles, dtype=float)
-    for i, row in df.iterrows():
-      px_arr[i % n_particles] = float(row['px'])
+    for j, row in df.iterrows():
+      px_arr[j] = float(row['px'])
 
     df_px = pandas.DataFrame({'px': px_arr})
     df_temp = df[['py','pz','m']]
-    df_temp.reset_index(inplace=True, drop=True)
-    df = df_px.join(df_temp)
-
-  return df_array
+    df_new = df_px.join(df_temp)
+    array.append(df_new)
+    
+  return array
       
 #---------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
