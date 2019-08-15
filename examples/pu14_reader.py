@@ -25,17 +25,40 @@ def pu14_reader():
 def read_file(file, n_particles, n_events=10000):
 
   # Read all lines from the text file into a dataframe (taking only relevant columns)
-  df = pandas.read_table(file, delim_whitespace=True, names=('px', 'py', 'pz', 'm', 'pid', 'label'), usecols=[0,1,2,3], comment="#", header=0)
-
+  #col_types = {'px': np.float64, 'py': np.float64, 'pz':np.float64, 'm': np.float64}
+  col_names = ['px', 'py', 'pz', 'm', 'pid', 'label']
+  df = pandas.read_table(file, delim_whitespace=True, names=col_names, usecols=[0,1,2,3], comment="#", header=0)
+  #dtype=col_types
+  
   # Split dataframe into an array of dataframes, one per event
   df_array = np.array_split(df, n_events)
-
+  
   # Iterate through each dataframe and drop the commented lines
   for i, df in enumerate(df_array):
-    if i == n_events-1:
+    if i == (n_events-1):
       df.drop(df.tail(1).index,inplace=True)
     else:
       df.drop(df.tail(2).index,inplace=True)
+
+  # The px column is wrong type, so cast it (could do this cleaner way...)
+  # (Note: to_numeric doesn't exist until pandas 17,
+  #  and astype() doesn't work to convert object type to float)
+  #df.astype(np.float64)
+  #df = df.apply(pandas.to_numeric) # convert all columns of DataFrame
+  #df.convert_objects(convert_numeric=True)
+
+  # All these other methods are not working on pandas 14...
+  # So just manually convert the types
+  for df in df_array:
+    print('Converting dataframe...')
+    px_arr = np.empty(n_particles, dtype=float)
+    for i, row in df.iterrows():
+      px_arr[i % n_particles] = float(row['px'])
+
+    df_px = pandas.DataFrame({'px': px_arr})
+    df_temp = df[['py','pz','m']]
+    df_temp.reset_index(inplace=True, drop=True)
+    df = df_px.join(df_temp)
 
   return df_array
       
