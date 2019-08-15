@@ -64,6 +64,7 @@ class HybridRead
 public:
 	HybridRead();
 	HybridRead(const char *fname);
+  ~HybridRead();
 	bool nextEvent();
 	bool openFile(const char *fname);
 	bool failed();
@@ -75,6 +76,15 @@ public:
 	std::vector<double> getVertex(int i);
 	unsigned int getNvertices();
 	std::vector<HepMC3::GenParticle> HepMCParticles();
+};
+
+class YuukaRead : public HybridRead
+{
+public:
+  YuukaRead();
+  YuukaRead(const char *fname);
+  ~YuukaRead();
+  std::vector<HepMC3::GenParticle> HepMCParticles();
 };
 
 %extend HepMC3::GenParticle {

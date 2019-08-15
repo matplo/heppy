@@ -12,7 +12,8 @@ class HybridRead
 public:
 	HybridRead();
 	HybridRead(const char *fname);
-	bool nextEvent();
+	virtual ~HybridRead();
+	virtual bool nextEvent();
 	bool openFile(const char *fname);
 	bool failed();
 	int  getNevent();
@@ -22,8 +23,8 @@ public:
 	unsigned int getNparticles();
 	std::vector<double> getVertex(int i);
 	unsigned int getNvertices();
-	std::vector<HepMC3::GenParticle> HepMCParticles();
-private:
+	virtual std::vector<HepMC3::GenParticle> HepMCParticles();
+protected:
 	std::string 		fFileName;
 	std::ifstream 		fStream;
 	int 				fNevent;
@@ -31,6 +32,16 @@ private:
 	std::vector<std::vector<double>> fVertices;
 	std::vector<double> fEventInfo;
 	std::streampos      fCurrentPositionInFile;
+};
+
+class YuukaRead : public HybridRead
+{
+public:
+	YuukaRead();
+	YuukaRead(const char *fname);
+	virtual ~YuukaRead();
+	virtual bool nextEvent();
+	virtual std::vector<HepMC3::GenParticle> HepMCParticles();
 };
 
 #endif

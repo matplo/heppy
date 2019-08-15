@@ -8,6 +8,112 @@
 
 #include <HepMC3/GenParticle.h>
 
+std::vector<std::string> tokenize(std::string s)
+{
+  std::istringstream iss(s);
+  std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+  return tokens;
+}
+
+YuukaRead::YuukaRead() 
+  : HybridRead()
+{
+  ;
+}
+
+YuukaRead::YuukaRead(const char *fname)
+  : HybridRead(fname)
+{
+  ;
+}
+
+YuukaRead::~YuukaRead()
+{
+  ;
+}
+
+std::vector<HepMC3::GenParticle> YuukaRead::HepMCParticles()
+{
+  std::vector<HepMC3::GenParticle> retv;
+  for (unsigned int i = 0; i < fParticles.size(); i++)
+  {
+    // note two types of files...
+    // #1
+    // #jet   id   mass   px   py    pz    x    y    z    t 
+    // 477    1    0.330    125.43940614 -137.04609703 52.67357315 -0.31132570 -0.70388618 0.00000000 0.00000000 193.110 0
+
+    // #2
+    // #  0   1       2    3   4   5    6    7
+    // #  i   status  id   m   e   px   py   pz   x   y   z   t
+    // #   R    2
+    // 477    62   1   0.33   194.562    126.383   -138.077   53.0698   -0.716433   -0.261295   0   0   
+
+    // currently working for #2
+    // std::cout << fParticles[i][5] << " " << fParticles[i][6] << " " << fParticles[i][7] << " " << fParticles[i][4] << " " << fParticles[i][2] << " " << fParticles[i][1] << std::endl;
+    HepMC3::GenParticle p({fParticles[i][5], fParticles[i][6], fParticles[i][7], fParticles[i][4]}, fParticles[i][2], fParticles[i][1]);
+    retv.push_back(p);
+  }
+  return retv;  
+}
+
+bool YuukaRead::nextEvent()
+{
+    if (!fStream.good())
+    {
+      std::cerr << "stream no good..." << std::endl;
+      return false;
+    }
+
+    fParticles.clear();
+    fVertices.clear();
+    fEventInfo.clear();
+
+    std::string line;
+    while (fStream.good())
+    {
+        line = "";
+        std::getline(fStream, line);
+        if (line.find("%", 0) != std::string::npos)
+        {
+            return true;
+        }
+        if (line.find("# ", 0) != std::string::npos)
+        {
+          continue;
+        }
+        auto tokens = tokenize(line);
+        if (tokens.size() < 2)
+        {
+          //std::cerr << "strange line with less than 1 token " << line << std::endl;
+          continue;
+        }
+        std::vector<double> part;
+        std::vector<double> vert;
+        // std::cout << "line " << line << std::endl;
+        for (unsigned int i = 0; i < tokens.size(); i++)
+        {
+          double v = 0;
+          try
+          {
+            v = std::stod(tokens[i]);
+          }
+          catch (const std::exception& e)
+          {
+            v = 0;
+          }
+          part.push_back(v);
+        }
+        // std::cout << line << std::endl;
+        if (failed())
+        {
+          return false;
+        }
+        fParticles.push_back(part);
+        // std::streampos fCurrentPositionInFile = fStream.tellg();        
+    } // while line
+  return false;
+}
+
 std::vector<HepMC3::GenParticle> HybridRead::HepMCParticles()
 {
   std::vector<HepMC3::GenParticle> retv;
@@ -62,6 +168,11 @@ bool HybridRead::openFile(const char *fname)
   return (fStream.rdstate() != std::ios::failbit);
 }
 
+HybridRead::~HybridRead()
+{
+  ;
+}
+
 bool HybridRead::failed()
 {
   return (!fStream.good());
@@ -71,13 +182,6 @@ bool HybridRead::failed()
 int HybridRead::getNevent()
 {
   return fNevent;
-}
-
-std::vector<std::string> tokenize(std::string s)
-{
-  std::istringstream iss(s);
-  std::vector<std::string> tokens{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
-  return tokens;
 }
 
 bool HybridRead::nextEvent()
