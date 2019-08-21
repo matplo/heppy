@@ -69,7 +69,7 @@ external/setup_lhapdf6.sh
 
 # running
 
-- example 'workflow' (note no `--install`)
+- example 'workflow'
 
 ```
 pipenv shell
@@ -77,6 +77,8 @@ module use heppy/modules
 module load heppy/main_python
 ./cpptools/tests/pythia_gen_fj_lund_test.py
 ...
+# or for eIC
+$HEPPYDIR/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignore-mycfg
 ```
 
 ## alternative
