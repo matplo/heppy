@@ -19,7 +19,9 @@ import pythiaext
 def main():
 	parser = argparse.ArgumentParser(description='pythia8 fastjet on the fly', prog=os.path.basename(__file__))
 	pyconf.add_standard_pythia_args(parser)
-	args = parser.parse_args()	
+	parser.add_argument('--ignore-mycfg', help="ignore some settings hardcoded here", default=False, action='store_true')
+
+	args = parser.parse_args()
 
 	# print the banner first
 	fj.ClusterSequence.print_banner()
@@ -33,7 +35,12 @@ def main():
 	all_jets = []
 
 	mycfg = ['PhaseSpace:pThatMin = 100']
+	if args.ignore_mycfg:
+		mycfg = []
 	pythia = pyconf.create_and_init_pythia_from_args(args, mycfg)
+	if not pythia:
+		print("[e] pythia initialization failed.")
+		return
 	if args.nev < 100:
 		args.nev = 100
 	for i in tqdm.tqdm(range(args.nev)):
