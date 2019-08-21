@@ -22,10 +22,14 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--noue', help="no underlying event - equivalend to no ISR and MPIs set to off", default=False, action='store_true')
 	parser.add_argument('--noISR', help="ISR set to off", default=False, action='store_true')
 	parser.add_argument('--noMPI', help="MPIs set to off", default=False, action='store_true')
-	parser.add_argument('--hard', help="enable hardQCD (ON if no other process selected)", default=False, action='store_true')
-	parser.add_argument('--charm', help="enable hardccbar", default=False, action='store_true')
-	parser.add_argument('--beauty', help="enable hardbbbar", default=False, action='store_true')
-	parser.add_argument('--photon', help="enable prompt photon production",  default=False, action='store_true')
+	parser.add_argument('--hardQCD', help="enable hardQCD (ON if no other process selected)", default=False, action='store_true')
+	parser.add_argument('--hardQCDcharm', help="enable hardccbar", default=False, action='store_true')
+	parser.add_argument('--hardQCDbeauty', help="enable hardbbbar", default=False, action='store_true')
+	parser.add_argument('--promptPhoton', help="enable prompt photon production",  default=False, action='store_true')
+	parser.add_argument('--hardQCDlf', help="enable hardQCD light flavor = uds + glue", default=False, action='store_true')
+	parser.add_argument('--hardQCDgluons', help="enable hardQCD only glue outgoing", default=False, action='store_true')
+	parser.add_argument('--hardQCDquarks', help="enable hardQCD only quarks outgoing", default=False, action='store_true')
+	parser.add_argument('--hardQCDuds', help="enable hardQCD only uds outgoing", default=False, action='store_true')
 	parser.add_argument('--nev', help='number of events', default=1, type=int)
 	parser.add_argument('-n', '--nevents', help='number of events', default=1000, type=int)
 
@@ -33,16 +37,51 @@ def add_standard_pythia_args(parser):
 def pythia_config_from_args(args):
 	sconfig_pythia = []
 	procsel = 0
-	if args.photon:
+	if args.hardQCDlf:
+		_extra = [ 	"HardQCD:all=off",
+					"HardQCD:gg2gg=on",
+					"HardQCD:qg2qg=on",
+					"HardQCD:qqbar2gg=on",
+					"HardQCD:gg2qqbar=on",
+					"HardQCD:qq2qq=on",
+					"HardQCD:qqbar2qqbarNew=on",
+					"HardQCD:hardccbar=off",
+					"HardQCD:hardbbbar=off"]
+		sconfig_pythia.extend(_extra)
+		procsel += 1
+	if args.hardQCDgluons:
+		_extra = [	"HardQCD:all=off",
+					"HardQCD:gg2gg=on",
+					# "HardQCD:qg2qg=on",
+					"HardQCD:qqbar2gg=on"]
+		sconfig_pythia.extend(_extra)
+		procsel += 1
+	if args.hardQCDquarks:
+		_extra = [	"HardQCD:all=off",
+					"HardQCD:gg2qqbar=on",
+					"HardQCD:qq2qq=on",
+					"HardQCD:qqbar2qqbarNew=on",
+					"HardQCD:hardccbar=on",
+					"HardQCD:hardbbbar=on"]
+		sconfig_pythia.extend(_extra)
+		procsel += 1
+	if args.hardQCDuds:
+		_extra = [	"HardQCD:all=off",
+					"HardQCD:gg2qqbar=on",
+					"HardQCD:qq2qq=on",
+					"HardQCD:qqbar2qqbarNew=on"]
+		sconfig_pythia.extend(_extra)
+		procsel += 1
+	if args.promptPhoton:
 		sconfig_pythia.append("PromptPhoton:all = on")
 		procsel += 1
-	if args.charm:
+	if args.hardQCDcharm:
 		sconfig_pythia.append("HardQCD:hardccbar = on")
 		procsel += 1
-	if args.beauty:
+	if args.hardQCDbeauty:
 		sconfig_pythia.append("HardQCD:hardbbbar = on")
 		procsel += 1
-	if args.hard:
+	if args.hardQCD:
 		sconfig_pythia.append("HardQCD:all = on")
 		procsel += 1
 	if procsel == 0:
