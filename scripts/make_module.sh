@@ -105,6 +105,7 @@ function make_module_package()
 		setenv_module ${modulefile} ${package_name}DIR ${dirinst}
 		setenv_module ${modulefile} ${package_name}_DIR ${dirinst}
 		setenv_module ${modulefile} ${package_name}_ROOT ${dirinst}
+		setalias_module ${modulefile} heppipenv "${THISD}/pipenv_heppy.sh"
 
 		setenv_module ${modulefile} ${package_name}_INCLUDE_DIR ${dirinst}/include
 
