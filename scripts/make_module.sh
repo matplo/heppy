@@ -53,6 +53,7 @@ function make_python_module()
 		setenv_module ${modulefile} HEPPY_PYTHON_EXECUTABLE "${HEPPY_PYTHON_EXECUTABLE}"
 		setalias_module ${modulefile} heppy_show_python "echo ${HEPPY_USER_PYTHON_VERSION} at ${HEPPY_PYTHON_EXECUTABLE}"
 		setalias_module ${modulefile} heppython "${HEPPY_PYTHON_EXECUTABLE}"
+		add_path_module ${modulefile} PATH $(dirname ${HEPPY_PYTHON_EXECUTABLE})
 		setenv_module ${modulefile} HEPPY_USER_PYTHON_VERSION "${HEPPY_USER_PYTHON_VERSION}"
 
 		setenv_module ${modulefile} HEPPY_PYTHON_VERSION ${HEPPY_PYTHON_VERSION}
