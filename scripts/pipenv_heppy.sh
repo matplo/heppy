@@ -17,9 +17,10 @@ THISD=$(thisdir)
 source ${THISD}/util.sh
 separator "${BASH_SOURCE}"
 
-cd ${THISD}/..
-
-export WORKON_HOME=$PWD/venv
+# cd ${THISD}/..
+export PIPENV_PIPFILE=$(abspath ${THISD}/../Pipfile)
+export WORKON_HOME=$(abspath ${THISD}/../venv)
+unset PIPENV_VENV_IN_PROJECT
 pipenv $@
 
 cd ${savedir}
