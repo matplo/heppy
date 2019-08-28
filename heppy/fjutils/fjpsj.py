@@ -31,7 +31,7 @@ class PSJVector(object):
 		jet_selector = fj.SelectorPtMin(0.0)
 		self.constituents_psj = []
 		for c in self.constituents:
-			self.constituents_psj.append()
+			self.constituents_psj.append(c)
 		pyfj_from_psj(constituents)
 		jets = jet_selector(jet_def(self.constituents_psj))
 		if len(jets) < 1 or len(jets) > 1:
