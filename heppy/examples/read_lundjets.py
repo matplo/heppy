@@ -7,7 +7,7 @@ import argparse
 import os
 
 import joblib
-from fjutils import lundjet as lundjet
+from heppy.fjutils import lundjet as lundjet
 
 
 def main():

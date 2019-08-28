@@ -20,7 +20,7 @@ import math
 
 import joblib
 
-from fjutils import lundjet
+from heppy.fjutils import lundjet
 
 def logbins(xmin, xmax, nbins):
 		lspace = np.logspace(np.log10(xmin), np.log10(xmax), nbins+1)

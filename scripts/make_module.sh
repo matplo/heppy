@@ -44,7 +44,7 @@ function make_python_module()
 		HEPPY_PYTHON_SETUP=TRUE
 
 		mkdir -p ${THISD}/../modules/heppy
-		modulefiledir=$(abspath ${THISD}/../modules/heppy)
+		modulefiledir=$(abspath_python_expand ${THISD}/../modules/heppy)
 		modulefile="${modulefiledir}/heppy_${HEPPY_USER_PYTHON_VERSION}"
 		separator "making python module ${modulefile}"
 		[ -f ${modulefile} ] && warning "removing ${modulefile}" && rm -f ${modulefile}
@@ -88,7 +88,7 @@ function make_module_package()
 
 	if [ -d ${dirinst} ]; then
 		mkdir -p ${THISD}/../modules/heppy
-		modulefiledir=$(abspath ${THISD}/../modules/heppy)
+		modulefiledir=$(abspath_python_expand ${THISD}/../modules/heppy)
 		[ ! -z ${HEPPY_USER_PYTHON_VERSION} ] && modulefiledir=${modulefiledir}/${HEPPY_USER_PYTHON_VERSION}
 		[ ! -z ${package_name} ] && modulefiledir=${modulefiledir}/${package_name}
 		modulefile="${modulefiledir}/${module_name}"
