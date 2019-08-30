@@ -6,8 +6,8 @@
 
 # example python script
 
- - [examples/pythia_gen_fastjet_lund_test.py](https://github.com/matplo/heppy/blob/master/examples/pythia_gen_fastjet_lund_test.py)
-
+ - heppy/examples/pythia_gen_fastjet_lund_test.py
+ 
 # recommended build/setup
 
 - simply type and get a short (long if building with root) coffee
