@@ -78,7 +78,7 @@ module load heppy/main_python
 ./cpptools/tests/pythia_gen_fj_lund_test.py
 ...
 # or for eIC
-$HEPPYDIR/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignore-mycfg
+$HEPPYDIR/heppy/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignore-mycfg
 ```
 
 ## alternative
