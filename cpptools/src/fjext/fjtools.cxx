@@ -17,7 +17,7 @@ namespace PyJetty
 		return _ang;
 	}
 
-	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi)
+	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
 		if (npt != neta || npt != nphi) 
@@ -32,13 +32,13 @@ namespace PyJetty
 		    double pz = pt[i] * sinh(eta[i]);
 		    double e  = sqrt(px*px + py*py + pz*pz);
 			fastjet::PseudoJet psj(px, py, pz, e);
-			psj.set_user_index(i);
+			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
 		}
 		return v;
 	}
 
-	std::vector<fastjet::PseudoJet> vectorize_px_py_pz(double *px, int npx, double *py, int npy, double *pz, int npz)
+	std::vector<fastjet::PseudoJet> vectorize_px_py_pz(double *px, int npx, double *py, int npy, double *pz, int npz, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
 		if (npx != npy || npx != npz) 
@@ -50,13 +50,13 @@ namespace PyJetty
 		{
 		    double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i]);
 			fastjet::PseudoJet psj(px[i], py[i], pz[i], e);
-			psj.set_user_index(i);
+			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
 		}
 		return v;
 	}
 
-	std::vector<fastjet::PseudoJet> vectorize_px_py_pz_e(double *px, int npx, double *py, int npy, double *pz, int npz, double *e, int ne)
+	std::vector<fastjet::PseudoJet> vectorize_px_py_pz_e(double *px, int npx, double *py, int npy, double *pz, int npz, double *e, int ne, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
 		if (npx != npy || npx != npz || npx != ne) 
@@ -67,13 +67,13 @@ namespace PyJetty
 		for (unsigned int i = 0; i < npx; i++)
 		{
 			fastjet::PseudoJet psj(px[i], py[i], pz[i], e[i]);
-			psj.set_user_index(i);
+			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
 		}
 		return v;
 	}
 
-	std::vector<fastjet::PseudoJet> vectorize_px_py_pz_m(double *px, int npx, double *py, int npy, double *pz, int npz, double *m, int nm)
+	std::vector<fastjet::PseudoJet> vectorize_px_py_pz_m(double *px, int npx, double *py, int npy, double *pz, int npz, double *m, int nm, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
 		if (npx != npy || npx != npz || npx != nm) 
@@ -85,7 +85,7 @@ namespace PyJetty
 		{
 		    double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i] * m[i]*m[i]);
 			fastjet::PseudoJet psj(px[i], py[i], pz[i], e);
-			psj.set_user_index(i);
+			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
 		}
 		return v;
