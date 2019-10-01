@@ -12,7 +12,8 @@ namespace pythiafjtools{
 
 	enum Py8Part
 	{
-		kFinal   = 0,
+		kAny     = 0,
+		kFinal  ,
 		kCharged,
 		kNeutral,
 		kVisible,

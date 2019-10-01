@@ -38,11 +38,12 @@ namespace pythiafjtools{
 		std::vector<fastjet::PseudoJet> v;
 		for (int ip = 0; ip < pythia.event.size(); ip++)
 		{
-			bool accept = true;
+			bool accept = false;
 			for (unsigned int i = 0; i < nsel; i++)
 			{
 				switch(sel[i])
 				{
+					case kAny 			accept = true; 								break;
 					case kFinal: 		accept = pythia.event[ip].isFinal(); 		break;
 					case kCharged: 		accept = pythia.event[ip].isCharged(); 		break;
 					case kNeutral: 		accept = pythia.event[ip].isNeutral(); 		break;
@@ -54,11 +55,7 @@ namespace pythiafjtools{
 					case kPhoton:       accept = pythia.event[ip].id() == 22; 		break;
 					case kHadron: 		accept = pythia.event[ip].isHadron(); 		break;
 					case kResonance: 	accept = pythia.event[ip].isResonance(); 	break;
-					default:
-						accept = true;
 				}
-				if (accept == false) 
-					break;
 			}
 			if (accept == false) 
 				continue;
