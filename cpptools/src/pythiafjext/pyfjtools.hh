@@ -8,7 +8,7 @@ namespace pythiafjtools{
 	std::vector<fastjet::PseudoJet> vectorize(const Pythia8::Pythia &p,
 	                                          bool only_final,
 	                                          double eta_min, double eta_max,
-	                                          bool add_particle_info);
+	                                          bool add_particle_info = false);
 
 	enum Py8Part
 	{
@@ -25,7 +25,10 @@ namespace pythiafjtools{
 		kResonance
 	};
 
-	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &p, int *sel, int nsel, bool add_particle_info);
+	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p, 
+														int *sel, int nsel, 
+														int user_index_offset = 0,
+														bool add_particle_info = false);
 
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);

@@ -31,7 +31,8 @@ namespace pythiafjtools{
 
 	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &pythia, 
 													 int *sel, 
-													 int nsel, 
+													 int nsel,
+													 int user_index_offset,
 													 bool add_particle_info)
 	{
 		std::vector<fastjet::PseudoJet> v;
@@ -62,7 +63,7 @@ namespace pythiafjtools{
 			if (accept == false) 
 				continue;
 			fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
-			psj.set_user_index(ip);
+			psj.set_user_index(ip + user_index_offset);
 			if (add_particle_info)
 			{
 				PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
