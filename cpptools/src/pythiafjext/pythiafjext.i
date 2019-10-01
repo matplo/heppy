@@ -8,5 +8,15 @@
 	#include "pyfjtools.hh"
 %}
 
-%include "pyfjtools.hh"
+%include "std_string.i"
+%include "std_vector.i"
+%include "typemaps.i"
+%include "../numpy.i"
+%init %{
+	import_array();
+%}
+%fragment("NumPy_Fragments");
 
+%apply (int* IN_ARRAY1, int DIM1) {(int* sel, int nsel)};
+%include "pyfjtools.hh"
+%clear (int* sel, int nsel);

@@ -10,7 +10,24 @@ namespace pythiafjtools{
 	                                          double eta_min, double eta_max,
 	                                          bool add_particle_info);
 
-	double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);
+	enum Py8Part
+	{
+		kFinal   = 0,
+		kCharged,
+		kNeutral,
+		kVisible,
+		kParton ,
+		kGluon  ,
+		kLepton ,
+		kPhoton ,
+		kHadron ,
+		kResonance
+	};
+
+	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &p, int *sel, int nsel, bool add_particle_info);
+
+	// implemented in fjtools
+	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);
 
 	Pythia8::Particle *getPythia8Particle(const fastjet::PseudoJet *psj);
 
