@@ -48,6 +48,7 @@ namespace pythiafjtools{
 					case kVisible: 		accept = pythia.event[ip].isVisible(); 		break;
 					case kParton: 		accept = pythia.event[ip].isParton(); 		break;
 					case kGluon: 		accept = pythia.event[ip].isGluon(); 		break;
+					case kQuark: 		accept = pythia.event[ip].isQuark(); 		break;
 					case kLepton: 		accept = pythia.event[ip].isLepton(); 		break;
 					case kPhoton:       accept = pythia.event[ip].id() == 22; 		break;
 					case kHadron: 		accept = pythia.event[ip].isHadron(); 		break;

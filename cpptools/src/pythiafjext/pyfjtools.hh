@@ -18,6 +18,7 @@ namespace pythiafjtools{
 		kVisible,
 		kParton ,
 		kGluon  ,
+		kQuark  ,
 		kLepton ,
 		kPhoton ,
 		kHadron ,
