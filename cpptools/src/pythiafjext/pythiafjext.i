@@ -17,6 +17,6 @@
 %}
 %fragment("NumPy_Fragments");
 
-%apply (int* IN_ARRAY1, int DIM1) {(int* sel, int nsel)};
+%apply (int* IN_ARRAY1, int DIM1) {(int* selection, int nsel)};
 %include "pyfjtools.hh"
-%clear (int* sel, int nsel);
+%clear (int* selection, int nsel);
