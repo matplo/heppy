@@ -12,19 +12,19 @@ namespace pythiafjtools{
 
 	enum Py8Part
 	{
-		kAny     = 1 << 0
-		kFinal   = 1 << 1,
-		kCharged = 1 << 2,
-		kNeutral = 1 << 3,
-		kVisible = 1 << 4,
-		kParton  = 1 << 5,
-		kGluon   = 1 << 6,
-		kQuark   = 1 << 7,
-		kDiquark = 1 << 8,
-		kLepton  = 1 << 9,
-		kPhoton  = 1 << 10,
-		kHadron  = 1 << 11,
-		kResonance = 1 << 12
+		kAny     = 0,
+		kFinal   = 1,
+		kCharged = 2,
+		kNeutral = 3,
+		kVisible = 4,
+		kParton  = 5,
+		kGluon   = 6,
+		kQuark   = 7,
+		kDiquark = 8,
+		kLepton  = 9,
+		kPhoton  = 10,
+		kHadron  = 11,
+		kResonance = 12
 	};
 
 	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p, 

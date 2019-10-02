@@ -36,46 +36,59 @@ namespace pythiafjtools{
 													 bool add_particle_info)
 	{
 		std::vector<fastjet::PseudoJet> v;
+		std::bitset<16> mask(0); // no particle accepted
+		for (unsigned int i = 0; i < nsel; i++)
+		{
+			if (selection[i] > 0)
+				mask[selection[i]] = 1;
+			else
+				mask[abs(selection[i])] = 0;
+		}
 		for (int ip = 0; ip < pythia.event.size(); ip++)
 		{
-			bool accept = false;
+			std::bitset<16> pmask(0);
 			for (unsigned int i = 0; i < nsel; i++)
 			{
-				switch(selection[i])
+				if (selection[i] > 0)
 				{
-					case kAny: 			accept = accept || true; 							break;
-					case kFinal: 		accept = accept || pythia.event[ip].isFinal(); 		break;
-					case kCharged: 		accept = accept || pythia.event[ip].isCharged(); 	break;
-					case kNeutral: 		accept = accept || pythia.event[ip].isNeutral(); 	break;
-					case kVisible: 		accept = accept || pythia.event[ip].isVisible(); 	break;
-					case kParton: 		accept = accept || pythia.event[ip].isParton(); 	break;
-					case kGluon: 		accept = accept || pythia.event[ip].isGluon(); 		break;
-					case kQuark: 		accept = accept || pythia.event[ip].isQuark(); 		break;
-					case kDiquark: 		accept = accept || pythia.event[ip].isDiquark(); 	break;
-					case kLepton: 		accept = accept || pythia.event[ip].isLepton(); 	break;
-					case kPhoton:       accept = accept || pythia.event[ip].id() == 22; 	break;
-					case kHadron: 		accept = accept || pythia.event[ip].isHadron(); 	break;
-					case kResonance: 	accept = accept || pythia.event[ip].isResonance(); 	break;
+					switch(selection[i])
+					{
+						case kAny: 			pmask[selection[i]] = true; 							break;
+						case kFinal: 		pmask[selection[i]] = pythia.event[ip].isFinal(); 		break;
+						case kCharged: 		pmask[selection[i]] = pythia.event[ip].isCharged(); 	break;
+						case kNeutral: 		pmask[selection[i]] = pythia.event[ip].isNeutral(); 	break;
+						case kVisible: 		pmask[selection[i]] = pythia.event[ip].isVisible(); 	break;
+						case kParton: 		pmask[selection[i]] = pythia.event[ip].isParton(); 		break;
+						case kGluon: 		pmask[selection[i]] = pythia.event[ip].isGluon(); 		break;
+						case kQuark: 		pmask[selection[i]] = pythia.event[ip].isQuark(); 		break;
+						case kDiquark: 		pmask[selection[i]] = pythia.event[ip].isDiquark(); 	break;
+						case kLepton: 		pmask[selection[i]] = pythia.event[ip].isLepton(); 		break;
+						case kPhoton:       pmask[selection[i]] = (pythia.event[ip].id() == 22); 	break;
+						case kHadron: 		pmask[selection[i]] = pythia.event[ip].isHadron(); 		break;
+						case kResonance: 	pmask[selection[i]] = pythia.event[ip].isResonance(); 	break;
+					}
 				}
-			}
-			for (unsigned int i = 0; i < nsel; i++)
-			{
-				switch(selection[i])
+				else
 				{
-					case -kFinal: 		accept = accept && !pythia.event[ip].isFinal(); 	break;
-					case -kCharged: 	accept = accept && !pythia.event[ip].isCharged(); 	break;
-					case -kNeutral: 	accept = accept && !pythia.event[ip].isNeutral(); 	break;
-					case -kVisible: 	accept = accept && !pythia.event[ip].isVisible(); 	break;
-					case -kParton: 		accept = accept && !pythia.event[ip].isParton(); 	break;
-					case -kGluon: 		accept = accept && !pythia.event[ip].isGluon(); 	break;
-					case -kQuark: 		accept = accept && !pythia.event[ip].isQuark(); 	break;
-					case -kDiquark: 	accept = accept && !pythia.event[ip].isDiquark(); 	break;
-					case -kLepton: 		accept = accept && !pythia.event[ip].isLepton(); 	break;
-					case -kPhoton:      accept = accept && !(pythia.event[ip].id() == 22); 	break;
-					case -kHadron: 		accept = accept && !pythia.event[ip].isHadron(); 	break;
-					case -kResonance: 	accept = accept && !pythia.event[ip].isResonance(); break;
-				}
+					switch(abs(selection[i]))
+					{
+						case kAny: 			pmask[abs(selection[i])] = false; 							break;
+						case kFinal: 		pmask[abs(selection[i])] = !pythia.event[ip].isFinal(); 		break;
+						case kCharged: 		pmask[abs(selection[i])] = !pythia.event[ip].isCharged(); 	break;
+						case kNeutral: 		pmask[abs(selection[i])] = !pythia.event[ip].isNeutral(); 	break;
+						case kVisible: 		pmask[abs(selection[i])] = !pythia.event[ip].isVisible(); 	break;
+						case kParton: 		pmask[abs(selection[i])] = !pythia.event[ip].isParton(); 	break;
+						case kGluon: 		pmask[abs(selection[i])] = !pythia.event[ip].isGluon(); 		break;
+						case kQuark: 		pmask[abs(selection[i])] = !pythia.event[ip].isQuark(); 		break;
+						case kDiquark: 		pmask[abs(selection[i])] = !pythia.event[ip].isDiquark(); 	break;
+						case kLepton: 		pmask[abs(selection[i])] = !pythia.event[ip].isLepton(); 	break;
+						case kPhoton:       pmask[abs(selection[i])] = !(pythia.event[ip].id() == 22); 	break;
+						case kHadron: 		pmask[abs(selection[i])] = !pythia.event[ip].isHadron(); 		break;
+						case kResonance: 	pmask[abs(selection[i])] = !pythia.event[ip].isResonance(); 	break;
+					}
+				}				
 			}
+			bool accept = (mask == pmask);
 			if (accept == false) 
 				continue;
 			fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
