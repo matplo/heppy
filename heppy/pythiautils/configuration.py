@@ -41,6 +41,7 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--eic-bgamma', help="beauty-gamma at eIC", default=False, action='store_true')
 	parser.add_argument('--eic-qgamma', help="quark-gamma at eIC", default=False, action='store_true')
 	parser.add_argument('--eic-test', help="a test at eIC", default=False, action='store_true')
+	parser.add_argument('--hadronization-off', help="turn off all hadronization steps", default=False, action='store_true')
 
 def pythia_config_from_args(args):
 	sconfig_pythia = []
@@ -172,6 +173,8 @@ def pythia_config_from_args(args):
 		sconfig_pythia.append("PartonLevel:ISR = off")
 	if args.noMPI:
 		sconfig_pythia.append("PartonLevel:MPI = off")
+	if args.hadronization_off:
+		sconfig_pythia.append("HadronLevel:all=off")
 	if args.ecm:
 		sconfig_pythia.append("Beams:eCM = {}".format(args.ecm))
 	if args.pythiaopts:
