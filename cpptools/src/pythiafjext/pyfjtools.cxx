@@ -1,6 +1,7 @@
 #include "pyfjtools.hh"
 #include <cmath>
 #include <iostream>
+#include <bitset>
 
 namespace pythiafjtools{
 
