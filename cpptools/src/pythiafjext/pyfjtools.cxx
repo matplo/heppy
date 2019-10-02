@@ -1,5 +1,6 @@
 #include "pyfjtools.hh"
 #include <cmath>
+#include <iostream>
 
 namespace pythiafjtools{
 
@@ -36,17 +37,21 @@ namespace pythiafjtools{
 													 bool add_particle_info)
 	{
 		std::vector<fastjet::PseudoJet> v;
-		std::bitset<16> mask(0); // no particle accepted
+		std::bitset<kMaxSetting> mask(0); // no particle accepted
 		for (unsigned int i = 0; i < nsel; i++)
 		{
 			if (selection[i] > 0)
-				mask[selection[i]] = 1;
+			{
+				mask[selection[i]] = true;
+			}
 			else
-				mask[abs(selection[i])] = 0;
+			{
+				mask[abs(selection[i])] = false;
+			}
 		}
 		for (int ip = 0; ip < pythia.event.size(); ip++)
 		{
-			std::bitset<16> pmask(0);
+			std::bitset<kMaxSetting> pmask(0);
 			for (unsigned int i = 0; i < nsel; i++)
 			{
 				if (selection[i] > 0)
@@ -73,32 +78,37 @@ namespace pythiafjtools{
 					switch(abs(selection[i]))
 					{
 						case kAny: 			pmask[abs(selection[i])] = false; 							break;
-						case kFinal: 		pmask[abs(selection[i])] = !pythia.event[ip].isFinal(); 		break;
+						case kFinal: 		pmask[abs(selection[i])] = !pythia.event[ip].isFinal(); 	break;
 						case kCharged: 		pmask[abs(selection[i])] = !pythia.event[ip].isCharged(); 	break;
 						case kNeutral: 		pmask[abs(selection[i])] = !pythia.event[ip].isNeutral(); 	break;
 						case kVisible: 		pmask[abs(selection[i])] = !pythia.event[ip].isVisible(); 	break;
 						case kParton: 		pmask[abs(selection[i])] = !pythia.event[ip].isParton(); 	break;
-						case kGluon: 		pmask[abs(selection[i])] = !pythia.event[ip].isGluon(); 		break;
-						case kQuark: 		pmask[abs(selection[i])] = !pythia.event[ip].isQuark(); 		break;
+						case kGluon: 		pmask[abs(selection[i])] = !pythia.event[ip].isGluon(); 	break;
+						case kQuark: 		pmask[abs(selection[i])] = !pythia.event[ip].isQuark(); 	break;
 						case kDiquark: 		pmask[abs(selection[i])] = !pythia.event[ip].isDiquark(); 	break;
 						case kLepton: 		pmask[abs(selection[i])] = !pythia.event[ip].isLepton(); 	break;
 						case kPhoton:       pmask[abs(selection[i])] = !(pythia.event[ip].id() == 22); 	break;
-						case kHadron: 		pmask[abs(selection[i])] = !pythia.event[ip].isHadron(); 		break;
-						case kResonance: 	pmask[abs(selection[i])] = !pythia.event[ip].isResonance(); 	break;
+						case kHadron: 		pmask[abs(selection[i])] = !pythia.event[ip].isHadron(); 	break;
+						case kResonance: 	pmask[abs(selection[i])] = !pythia.event[ip].isResonance(); break;
 					}
 				}				
 			}
-			bool accept = (mask == pmask);
-			if (accept == false) 
-				continue;
-			fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
-			psj.set_user_index(ip + user_index_offset);
-			if (add_particle_info)
+			std::cout 
+					<< mask << " " << pmask << " " << " accept = " << ((mask & pmask) == mask) << " " << "(mask & pmask) " << (mask & pmask) << " "
+					<< "isFinal = " << pythia.event[ip].isFinal() << " "
+					<< pythia.event[ip].name() 
+					<< std::endl;
+			if ((mask & pmask) == mask)
 			{
-				PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
-				psj.set_user_info(_pinfo);
+				fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
+				psj.set_user_index(ip + user_index_offset);
+				if (add_particle_info)
+				{
+					PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
+					psj.set_user_info(_pinfo);
+				}
+				v.push_back(psj);
 			}
-			v.push_back(psj);
 		}		
 		return v;
 	}
