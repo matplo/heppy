@@ -93,17 +93,17 @@ namespace pythiafjtools{
 					case kResonance: 	pmask[i] = pythia.event[ip].isResonance(); 	break;
 				}
 			}
-			bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask);
-			if (accept)
-				std::cout << "+ ";
-			else
-				std::cout << "- ";				
-			std::cout 
-					<< ip << " "
-					<< mask << " !-" << negmask << " " << pmask << " " << " accept = " << accept << " " << "(mask & pmask) " << (mask & pmask) << " "
-					<< "isFinal = " << pythia.event[ip].isFinal() << " "
-					<< pythia.event[ip].name() 
-					<< std::endl;
+			// bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask);
+			// if (accept)
+			// 	std::cout << "[+] ";
+			// else
+			// 	std::cout << "[-] ";
+			// std::cout 
+			// 		<< ip << " "
+			// 		<< mask << " !-" << negmask << " " << pmask << " " << " " << "(mask & pmask) " << (mask & pmask) << " "
+			// 		<< "isFinal = " << pythia.event[ip].isFinal() << " "
+			// 		<< pythia.event[ip].name() 
+			// 		<< std::endl;
 			if (accept)
 			{
 				fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
