@@ -93,7 +93,7 @@ namespace pythiafjtools{
 					case kResonance: 	pmask[i] = pythia.event[ip].isResonance(); 	break;
 				}
 			}
-			// bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask);
+			bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask);
 			// if (accept)
 			// 	std::cout << "[+] ";
 			// else
