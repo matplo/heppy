@@ -32,6 +32,7 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--py-hardQCDuds', help="enable hardQCD only uds outgoing", default=False, action='store_true')
 	parser.add_argument('--py-n', '--py-nevents', '--py-nev', help='number of events', default=1, type=int)
 	parser.add_argument('--py-time-seed', help = 'time based seed for pythia', default=False, action='store_true')
+	parser.add_argument('--py-seed', help='pythia seed', default=-1, type=int)
 	parser.add_argument('--py-eic', help="generic eIC setup - needs one of the --eic-XXX", default=False, action='store_true')
 	parser.add_argument('--py-eic-dis', help="DIS at eIC", default=False, action='store_true')
 	parser.add_argument('--py-eic-lowQ2', help="lowQ2 at eIC", default=False, action='store_true')
@@ -58,6 +59,16 @@ def pythia_config_from_args(args):
 	sconfig_pythia = []
 	soft_phys = False
 	procsel = 0
+
+	if args.py_time_seed:
+		_extra = [ 	"Random:setSeed=on",
+					"Random:seed=0"]
+		sconfig_pythia.extend(_extra)
+	else:
+		if args.py_seed >= 0:
+			sconfig_pythia.append('Random:setSeed=on')
+			sconfig_pythia.append('Random:seed={}'.format(args.py_seed))
+
 	if args.py_eic:
 		_extra = [ 	"Beams:idA=11",
 					"Beams:idB=2212",
@@ -117,11 +128,6 @@ def pythia_config_from_args(args):
 							"Photon:ProcessType=0"]
 			sconfig_pythia.extend(_extra_eic)
 			procsel += 1
-
-	if args.py_time_seed:
-		_extra = [ 	"Random:setSeed=on",
-					"Random:seed=0"]
-		sconfig_pythia.extend(_extra)
 
 	if args.py_minbias:
 		sconfig_pythia.append("HardQCD:all=off")
