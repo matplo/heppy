@@ -17,8 +17,9 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--py-ecms', help='low or high sqrt(s) GeV', default='low', type=str)
 	parser.add_argument('--py-ecm', help='sqrt(s) GeV', default=13000, type=float)
 	parser.add_argument('--py-pthatmin', help='minimum hat{pT}', default=-1, type=float)
+	parser.add_argument('--py-bias', help='make sure the bias is on', default=False, action='store_true')
 	parser.add_argument('--py-biaspow', help='power of the bias (hard)', default=4, type=float)
-	parser.add_argument('--py-biasref', help='reference pT for the bias', default='50', type=float)
+	parser.add_argument('--py-biasref', help='reference pT for the bias', default=10, type=float)
 	parser.add_argument('--py-noue', help="no underlying event - equivalend to no ISR and MPIs set to off", default=False, action='store_true')
 	parser.add_argument('--py-noISR', help="ISR set to off", default=False, action='store_true')
 	parser.add_argument('--py-noMPI', help="MPIs set to off", default=False, action='store_true')
@@ -264,12 +265,15 @@ def pythia_config_from_args(args):
 		sconfig_pythia.append("HardQCD:all=on")
 
 	if args.py_pthatmin < 0 and soft_phys == False:
+		args.py_bias = True;
+	else:
+		sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
+
+	if args.py_bias:
 		_extra = [	"PhaseSpace:bias2Selection=on",
 					"PhaseSpace:bias2SelectionPow={}".format(args.py_biaspow),
 					"PhaseSpace:bias2SelectionRef={}".format(args.py_biasref)]
 		sconfig_pythia.extend(_extra)
-	else:
-		sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
 
 	if args.py_noue:
 		sconfig_pythia.append("PartonLevel:ISR = off")
