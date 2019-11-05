@@ -4,7 +4,7 @@
 #include <fastjet/PseudoJet.hh>
 #include <vector>
 
-namespace PyJetty
+namespace FJTools
 {
 	double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0);
 
