@@ -49,5 +49,5 @@ if [ "$(get_opt "install" $@)" == "xyes" ]; then
 	. ${THISD}/setup_hepmc3.sh 		--version=3.1.1 --re $@
 fi
 separator "FASTJET"
-${THISD}/setup_fastjet.sh 		--version=3.3.2 	 $@
+${THISD}/setup_fastjet.sh 		--version=3.3.3 	 $@
 cd ${cdir}
