@@ -18,7 +18,8 @@ source ${THISD}/util.sh
 separator "${BASH_SOURCE}"
 
 # cd ${THISD}/..
-export PIPENV_PIPFILE=$(abspath ${THISD}/../Pipfile)
+pipfilepath=$(abspath ${THISD}/../Pipfile)
+[ -f ${pipfilepath} ] && export PIPENV_PIPFILE=${pipfilepath}
 export WORKON_HOME=$(abspath ${THISD}/../venv)
 unset PIPENV_VENV_IN_PROJECT
 pipenv $@
