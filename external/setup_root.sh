@@ -20,7 +20,7 @@ if [ -z "${HEPPY_USER_PYTHON_VERSION}" ]; then
 	warning "trying to load heppy_python"
 	heppy_python_module_name=$(module avail -t | grep heppy_python | head -n 1 | grep heppy_python)
 	if [ ! -z ${heppy_python_module_name} ]; then
-		warning "... found ${heppy_python_module_name}"	
+		warning "... found ${heppy_python_module_name}"
 		module load ${heppy_python_module_name}
 	else
 		warning "... no suitable module found"
@@ -68,14 +68,29 @@ fi
 [ ! -d ${THISD}/build ] && mkdir -v ${THISD}/build
 [ ! -d ${THISD}/packages ] && mkdir -v ${THISD}/packages
 
-if [ ! -e ${THISD}/build/${fname}.tar.gz ]; then
-	cd ${THISD}/build
-	wget https://root.cern/download/${fname}.tar.gz
-fi
+source_build=$(get_opt "source" $@)
+if [ "x${source_build}" == "xyes" ]; then
+	if [ ! -e ${THISD}/build/${fname}.tar.gz ]; then
+		cd ${THISD}/build
+		wget https://root.cern/download/${fname}.tar.gz
+	fi
 
-if [ ! -d ${dirsrc} ]; then
-	cd ${THISD}/build
-	tar zxvf ${fname}.tar.gz
+	if [ ! -d ${dirsrc} ]; then
+		cd ${THISD}/build
+		tar zxvf ${fname}.tar.gz
+	fi
+else
+	git clone http://github.com/root-project/root.git ${dirsrc}
+	cd ${dirsrc}
+	#git tag -l
+	rv="${version//./-}"
+	if [ "x$rv" == "xhead" ]; then
+		echo_info "git checkout of ${rv}..."
+		git checkout -b ${rv}
+	else
+		echo_info "git checkout of v${rv}..."
+		git checkout -b v${rv}
+	fi
 fi
 
 redo=$(get_opt "rebuild" $@)
@@ -88,10 +103,31 @@ if [ ! -d ${dirinst} ] || [ "x${redo}" == "xyes" ]; then
 		_gcc=$(which gcc)
 		_gpp=$(which g++)
 		config_opts="-DPYTHON_EXECUTABLE=${HEPPY_PYTHON_EXECUTABLE} -DPYTHON_INCLUDE_DIR=${HEPPY_PYTHON_INCLUDE_DIR} -DPYTHON_LIBRARY=${HEPPY_PYTHON_LIBDIR}"
-		config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON"
-		compiler_opts="-DCMAKE_C_COMPILER=${_gcc} -DCMAKE_CXX_COMPILER=${_gpp} -DCMAKE_Fortran_COMPILER=${_gff}"
+		config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON"
+		# compiler_opts="-DCMAKE_C_COMPILER=${_gcc} -DCMAKE_CXX_COMPILER=${_gpp} -DCMAKE_Fortran_COMPILER=${_gff}"
+		# if Catalina:
+		_is_mac=$(uname -s)
+		if [ "x${_is_mac}" == "xDarwin" ]; then
+			# this from root 6.19
+			compiler_opts="${compiler_opts} -Dmacos_native=ON"
+			# this for 6.18 - workaround
+			_sysversion_major=$(sw_vers -productVersion | cut -d. -f 1)
+			_sysversion_minor=$(sw_vers -productVersion | cut -d. -f 2)
+			_sysversion="${_sysversion_major}.${_sysversion_minor}"
+			_catalina="10.15"
+			if [ "x${_sysversion}" == "x${_catalina}" ]; then
+				_sdk_path=$(xcrun --show-sdk-path)
+				compiler_opts="${compiler_opts} -DCMAKE_OSX_SYSROOT=${_sdk_path}"
+			fi
+		fi
 		echo_info "extra options: ${config_opts} ${compiler_opts}"
 
+		# if [ "x$version" == "xhead" ]; then
+		# 	cmake -DCMAKE_BUILD_TYPE\=Release ${dirsrc}
+		# else
+		# 	cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${dirsrc}
+		# fi
+		# cmake -DCMAKE_BUILD_TYPE\=Release ${config_opts} ${dirsrc}
 		cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${dirsrc}
 
 		configure_only=$(get_opt "configure-only" $@)
