@@ -88,7 +88,7 @@ if [ ! -d ${dirinst} ] || [ "x${redo}" == "xyes" ]; then
 		_gcc=$(which gcc)
 		_gpp=$(which g++)
 		config_opts="-DPYTHON_EXECUTABLE=${HEPPY_PYTHON_EXECUTABLE} -DPYTHON_INCLUDE_DIR=${HEPPY_PYTHON_INCLUDE_DIR} -DPYTHON_LIBRARY=${HEPPY_PYTHON_LIBDIR}"
-		config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON"
+		config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON"
 		compiler_opts="-DCMAKE_C_COMPILER=${_gcc} -DCMAKE_CXX_COMPILER=${_gpp} -DCMAKE_Fortran_COMPILER=${_gff}"
 		echo_info "extra options: ${config_opts} ${compiler_opts}"
 

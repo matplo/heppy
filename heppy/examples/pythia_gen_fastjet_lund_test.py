@@ -55,16 +55,32 @@ def main():
 	jet_def_lund = fj.JetDefinition(fj.cambridge_algorithm, 1.0)
 	lund_gen = fjcontrib.LundGenerator(jet_def_lund)
 
-	print('making lund diagram for all jets...')
+	print('making lund diagram for all jets...', lund_gen.description())
 	lunds = [lund_gen.result(j) for j in all_jets]
 
 	print('listing lund plane points... Delta, kt - for {} selected jets'.format(len(all_jets)))
 	for l in lunds:
 		print ('- jet pT={0:5.2f} eta={1:5.2f}'.format(l[0].pair().perp(), l[0].pair().eta()))
 		print ('  Deltas={}'.format([s.Delta() for s in l]))
-		print ('  kts={}'.format([s.Delta() for s in l]))
+		print ('  kts={}'.format([s.kt() for s in l]))
 		print ( )
 
+	dy_groomer = fjcontrib.DynamicalGroomer(jet_def_lund)
+	print (dy_groomer.description())
+	dy_groomed = [dy_groomer.result(j, 2) for j in all_jets]
+	print('listing results from dynamical grooming...')
+	for l in dy_groomed:
+		print (l, '  kt={}'.format(l.kt()))
+
+	for j in all_jets:
+		rdyng2 = dy_groomer.result(j, 2)
+		rdyng1 = dy_groomer.result(j, 1)
+		print('jet', j)
+		print('- all splits kts:', sorted([s.kt() for s in dy_groomer.lund_splits()], reverse=True))
+		print('- dynG kt a=1:', rdyng1.kt(), 'a=2:', rdyng2.kt())
+		print()
+
+	return
 	print('[i] reclustering and using soft drop...')
 	jet_def_rc = fj.JetDefinition(fj.cambridge_algorithm, 0.1)
 	print('Reclustering:', jet_def_rc)
