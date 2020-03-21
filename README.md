@@ -12,14 +12,14 @@
 
 - simply type and get a short (long if building with root) coffee
 ```
-./scripts/setup.sh --buildext [--root]
+./scripts/setup.sh --buildext --root --all
 ```
 
 - ... load module to use ...
 
 ```
 pipenv shell
-./scripts/setup.sh --buildext [--root]
+./scripts/setup.sh --buildext --root --all
 module use $PWD/modules
 module load heppy/main_python
 examples/pythia_gen_fastjet_lund_test.py

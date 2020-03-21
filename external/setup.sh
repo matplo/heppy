@@ -31,14 +31,14 @@ ${THISD}/setup_hepmc2_cmake.sh 	--version=2.06.09 	 $@
 build_root=$(get_opt "root" $@)
 if [ "x${build_root}" == "xyes" ]; then
 	separator "ROOT"
-	${THISD}/setup_root.sh 	--version=6.18.00 	 $@
+	${THISD}/setup_root.sh 	--version=6.18.04 	 $@
 	module load heppy/${build_with_python}/ROOT
 fi
 separator "HEPMC3"
 ${THISD}/setup_hepmc3.sh 		--version=3.1.1  	 $@
 separator "PYTHIA8"
 module use ${THISD}/../modules
-module load heppy/${build_with_python}/HEPMC2/2.06.09 
+module load heppy/${build_with_python}/HEPMC2/2.06.09
 module load heppy/${build_with_python}/HEPMC3/3.1.1
 module load heppy/${build_with_python}/LHAPDF6/6.2.3
 #module load heppy/${build_with_python}/fastjet/3.3.2
@@ -49,5 +49,5 @@ if [ "$(get_opt "install" $@)" == "xyes" ]; then
 	. ${THISD}/setup_hepmc3.sh 		--version=3.1.1 --re $@
 fi
 separator "FASTJET"
-${THISD}/setup_fastjet.sh 		--version=3.3.2 	 $@
+${THISD}/setup_fastjet.sh 		--version=3.3.3 	 $@
 cd ${cdir}
