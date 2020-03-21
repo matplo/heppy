@@ -3,6 +3,7 @@
   #include <fastjet/PseudoJet.hh>
   #include <fastjet/FunctionOfPseudoJet.hh>
   #include <LundPlane/LundGenerator.hh>
+  #include <LundPlane/DynamicalGroomer.hh>
   #include <LundPlane/LundJSON.hh>
   #include <LundPlane/LundWithSecondary.hh>
   #include <LundPlane/SecondaryLund.hh>
@@ -22,7 +23,6 @@ namespace fastjet{
 // class LundGenerator;
 
 //----------------------------------------------------------------------
-// %nodefaultctor LundDeclustering;
 // %nodefaultdtor LundDeclustering;
 class LundDeclustering {
 public:
@@ -50,6 +50,21 @@ public:
   virtual ~LundGenerator();
   std::vector<fastjet::contrib::LundDeclustering> result(const fastjet::PseudoJet& jet) const;
   virtual std::string description() const;
+};
+
+// %include "LundPlane/DynamicalGroomer.hh"
+class DynamicalGroomer
+{
+public:
+  DynamicalGroomer(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+  DynamicalGroomer(const fastjet::JetDefinition & jet_def);
+  virtual ~DynamicalGroomer();
+  int result_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& alpha);
+  virtual LundDeclustering result(const fastjet::PseudoJet& jet, const double& alpha);
+  virtual std::vector<fastjet::contrib::LundDeclustering> lund_splits() const;
+  virtual std::string description() const;
+
+  static fastjet::contrib::LundDeclustering& result_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& alpha);
 };
 
 // %include "LundPlane/LundJSON.hh"

@@ -20,7 +20,9 @@ if [ -d ${srcdir} ]; then
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/RecursiveTools
 				rm fjcontrib-${fjcontrib_version}/RecursiveTools/example_*.cc
 				patch fjcontrib-${fjcontrib_version}/RecursiveTools/RecursiveSymmetryCutBase.hh -i ${srcdir}/patches/RecursiveSymmetryCutBase.patch
-				cp -v ${srcdir}/custom/* fjcontrib-${fjcontrib_version}/RecursiveTools/
+			fi
+			if [ -d ${srcdir}/fjcontrib-${fjcontrib_version}/RecursiveTools ]; then
+				cp -v ${srcdir}/custom/Util.* ${srcdir}/fjcontrib-${fjcontrib_version}/RecursiveTools
 			fi
 
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane ]; then
@@ -29,6 +31,9 @@ if [ -d ${srcdir} ]; then
 				rm fjcontrib-${fjcontrib_version}/LundPlane/example_*.cc
 				patch fjcontrib-${fjcontrib_version}/LundPlane/SecondaryLund.hh -i ${srcdir}/patches/SecondaryLund.patch
 				patch fjcontrib-${fjcontrib_version}/LundPlane/LundGenerator.hh -i ${srcdir}/patches/LundGenerator.patch
+			fi
+			if [ -d ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane ]; then
+				cp -v ${srcdir}/custom/DynamicalGroomer.* ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane
 			fi
 
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/ConstituentSubtractor ]; then
