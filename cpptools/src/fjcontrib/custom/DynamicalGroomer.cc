@@ -16,7 +16,7 @@ namespace contrib
   	for (unsigned int i = 0; i < lunds.size(); i++) 
   	{
   		// double kappa = 1/(z * (1-z) * pt * pow(theta,a_));
-  		double kappa = 1 / ( lunds[i].z() * (1-lunds[i].z()) * lunds[i].pair().pt() * pow(lunds[i].Delta(), alpha));
+  		double kappa = 1. / ( lunds[i].z() * (1. - lunds[i].z()) * lunds[i].pair().pt() * pow(lunds[i].Delta(), alpha));
   		if (min_kappa > kappa)
   		{
   			min_kappa = kappa;
@@ -43,7 +43,7 @@ namespace contrib
   	for (auto const &l : lunds)
   	{
   		// double kappa = 1/(z * (1-z) * pt * pow(theta,a_));
-  		double kappa = 1 / ( l.z() * (1-l.z()) * l.pair().pt() * pow(l.Delta(), alpha));
+  		double kappa = 1. / ( l.z() * (1. - l.z()) * l.pair().pt() * pow(l.Delta(), alpha));
   		if (min_kappa > kappa)
   		{
   			min_kappa = kappa;
