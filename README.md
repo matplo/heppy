@@ -92,3 +92,8 @@ $HEPPYDIR/heppy/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignor
 - in the `cpptools/src` directory create your code/directory - should be easy to follow from one of the other
 - edit `cpptools/src/CMakeLists.txt` as needed
 - run `./scripts/setup.sh --rebuild` or `./cpptools/scripts/build_cpptools.sh`
+
+# contributing
+
+Please fork and make a pull request.
+Please let us know if you are using this code - we are very much open for collaboration - email us at heppy@lbl.gov
