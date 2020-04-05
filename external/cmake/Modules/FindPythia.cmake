@@ -49,7 +49,7 @@ endif(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
 
 if(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
   set(PYTHIA8_FOUND TRUE)
-  message(STATUS "${Green}Pythia8 found.${ColourReset}")
+  message(STATUS "${Green}Pythia8 at ${PYTHIA8_INCLUDE_DIR} ${ColourReset}")
 else(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
   set(PYTHIA8_FOUND FALSE)
   message(STATUS "${Yellow}Pythia8 not found - some of the functionality will be missing.${ColourReset}")

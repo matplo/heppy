@@ -30,7 +30,7 @@ mark_as_advanced(LHAPDF6_FOUND)
 
 if (LHAPDF6_FOUND)
     execute_process ( COMMAND lhapdf-config --version WORKING_DIRECTORY /tmp OUTPUT_VARIABLE LHAPDF6_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE )
-	message(STATUS "${Green}LHAPDF ver. ${LHAPDF6_VERSION} found.${ColourReset}")
+	message(STATUS "${Green}LHAPDF ver. ${LHAPDF6_VERSION}${ColourReset}")
 else(LHAPDF6_FOUND)
   message(STATUS "${Yellow}LHAPDF6 not found - some of the functionality will be missing.${ColourReset}")	
 endif (LHAPDF6_FOUND)
