@@ -119,7 +119,7 @@ if (ROOT_FOUND)
       message(SEND_ERROR " ${Red}ROOT python module missing or not functional. This will create trouble.${ColourReset}")
     endif(ROOT_PYTHON)  
   else(ROOT_FOUND)
-    message(STATUS "${Yellow}ROOT not found - some of the tools in pyjetty will require ROOT.${ColourReset}")
+    message(STATUS "${Yellow}ROOT not found - root-config not in the path? - some of the tools in pyjetty will require ROOT.${ColourReset}")
 endif(ROOT_FOUND)
 
 find_package(PYTHIA)
