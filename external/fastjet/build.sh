@@ -44,7 +44,8 @@ then
 	separator summary
 	${fastjet_heppy_prefix}/bin/fastjet-config --config
 else
-	echo_error "sorry... it looks like the build failed? no fastjet-config in ${fastjet_heppy_prefix}/bin/"
+	echo_error "[e] sorry... the build failed: no fastjet-config in ${fastjet_heppy_prefix}/bin/"
+	separator "fastjet build script done"
 	exit 1
 fi
-separator fastjet build script done
+separator "fastjet build script done"
