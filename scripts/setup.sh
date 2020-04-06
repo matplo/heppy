@@ -34,14 +34,15 @@ fi
 buildext=$(get_opt "buildext" $@)
 [ "x${buildext}" == "xyes" ] && ${THISD}/../external/setup.sh $@
 
-module load heppy/${build_with_python}/HEPMC2
-module load heppy/${build_with_python}/HEPMC3
-module load heppy/${build_with_python}/LHAPDF6
-module load heppy/${build_with_python}/PYTHIA8
-module load heppy/${build_with_python}/FASTJET
+[ -d heppy/${build_with_python}/HEPMC2 ] && module load heppy/${build_with_python}/HEPMC2
+[ -d heppy/${build_with_python}/HEPMC3 ] && module load heppy/${build_with_python}/HEPMC3
+[ -d heppy/${build_with_python}/LHAPDF6 ] && module load heppy/${build_with_python}/LHAPDF6
+[ -d heppy/${build_with_python}/PYTHIA8 ] && module load heppy/${build_with_python}/PYTHIA8
+[ -d heppy/${build_with_python}/FASTJET ] && module load heppy/${build_with_python}/FASTJET
 
 build_root=$(get_opt "root" $@)
-[ "x${build_root}" == "xyes" ] && module load heppy/${build_with_python}/ROOT
+# [ "x${build_root}" == "xyes" ] && module load heppy/${build_with_python}/ROOT
+[ -d heppy/${build_with_python}/ROOT ] && module load heppy/${build_with_python}/ROOT
 
 # ( [ ! -d ${THISD}/../cpptools/lib ] || [ "x${redo}" == "xyes" ] ) && ${THISD}/../cpptools/scripts/build_cpptools.sh $@
 ${THISD}/../cpptools/scripts/build_cpptools.sh $@

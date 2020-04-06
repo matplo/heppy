@@ -27,8 +27,6 @@ find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PA
 
 set (CMAKE_CXX_STANDARD 11)
 set(cmake_external_install_prefix ${CMAKE_CURRENT_SOURCE_DIR}/packages)
-#/usr/local/include
-#/usr/local/lib
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
@@ -48,55 +46,14 @@ endif(SWIG_FOUND)
 
 include(ProcessorCount)
 ProcessorCount(NCPU)
-
 include(ExternalProject)
 
-if (BUILD_FASTJET)
-  message(STATUS "${Magenta}We will try to build FastJet...${ColourReset}")
-  #set(FASTJET_HEPPY_BUILD $ENV{HOME}/devel/heppy/external/packages/fastjet-3.3.3-python)
-  set(FASTJET_VERSION 3.3.3)
-  set(FASTJET_HEPPY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/packages/fastjet-${FASTJET_VERSION}")
-  find_package(CGAL)
-  message(STATUS ${CGAL_DIR})
-  set(FASTJET_CONFIGURE_COMMAND ./configure)
-  if (CGAL_FOUND)
-    list(APPEND FASTJET_CONFIGURE_COMMAND "--prefix=/Users/ploskon/tmp/fj" "--enable-allcxxplugins" "--enable-pyext" "--with-cgaldir=${CGAL_DIR}")
-  else(CGAL_FOUND)
-    list(APPEND FASTJET_CONFIGURE_COMMAND "--prefix=/Users/ploskon/tmp/fj" "--enable-allcxxplugins" "--enable-pyext")
-  endif(CGAL_FOUND)    
-  set(FASTJET fastjet-heppy-build)
-  ExternalProject_Add(FASTJET
-    PREFIX            ${CMAKE_CURRENT_SOURCE_DIR}/build/fastjet
-    URL               http://fastjet.fr/repo/fastjet-${FASTJET_VERSION}.tar.gz
-    DOWNLOAD_DIR      ${CMAKE_CURRENT_SOURCE_DIR}/build/downloads
-    # DOWNLOAD_NAME     fastjet-${FASTJET_VERSION}.tar.gz
-    # SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/build/fastjet-${FASTJET_VERSION}
-    BUILD_IN_SOURCE 1
-    INSTALL_DIR       ${FASTJET_HEPPY_BUILD}
-    # CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ${FASTJET_CONFIGURE_COMMAND}
-    # BUILD_COMMAND     ${CMAKE_COMMAND} -E env ${MAKE_EXE} -j
-    # INSTALL_COMMAND   ${CMAKE_COMMAND} -E env ${MAKE_EXE} install
-    CONFIGURE_COMMAND ${FASTJET_CONFIGURE_COMMAND}
-    BUILD_COMMAND     ${MAKE_EXE} -j ${NCPU}
-    INSTALL_COMMAND   ${MAKE_EXE} install
-    #TEST_COMMAND      ${FASTJET_CONFIGURE_COMMAND}/fastjet-config
-    #TEST_BEFORE_INSTALL 1
-    LOG_DOWNLOAD 1
-    LOG_UPDATE 1
-    LOG_CONFIGURE 1
-    LOG_BUILD 1
-    LOG_TEST 1
-    LOG_INSTALL 1)
-  message(STATUS "${Magenta}Build done...${ColourReset}")
-else(BUILD_FASTJET)
-  find_package(FASTJET 3.0 REQUIRED)
-  if (NOT FASTJET_FOUND)
-    message(STATUS "${Red}FASTJET not found.${ColourReset}")
-    if (NOT BUILD_FASTJET)
-      message(STATUS "${Yellow}Hint: Set -DBUILD_FASTJET=1 to try to setup fastjet...${ColourReset}")
-    endif(NOT BUILD_FASTJET)
-  endif(NOT FASTJET_FOUND)
-endif(BUILD_FASTJET)
+set(FASTJET_HEPPY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/fastjet/fastjet-current")
+find_package(FASTJET 3.0 REQUIRED)
+if (NOT FASTJET_FOUND)
+  message(STATUS "${Yellow}Hint: build FJ with ${CMAKE_CURRENT_SOURCE_DIR}/fastjet/build.sh ${ColourReset}")
+  message(SEND_ERROR "${Red}FASTJET not found.${ColourReset}")
+endif(NOT FASTJET_FOUND)
 
 # if (NOT FASTJET_FOUND)
 #   message(SEND_ERROR " ${Red}This will not work without fastjet...${ColourReset}")
