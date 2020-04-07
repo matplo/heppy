@@ -87,6 +87,67 @@ namespace contrib
 	return oss.str();
   }
 
+  /// max pT split grooming ----
+  /// obtain the splitting of max{pT's of softer prongs}
+  LundDeclustering DynamicalGroomer::max_pt_softer(const PseudoJet& jet)
+  {
+    if (_cached_jet != &jet)
+    {
+      _lund_splits.clear();
+      _lund_splits = _lund_gen.result(jet);
+      _cached_jet = const_cast<PseudoJet*>(&jet);
+    }
+    _result = max_pt_softer_split(_lund_splits);
+    return _result;    
+  }
+
+  /// obtain the index of the max{pT's of softer prongs} the primary plane of the jet
+  int DynamicalGroomer::max_pt_softer_split_index(const std::vector<LundDeclustering>& lunds)
+  {
+    double max_pt_softer = std::numeric_limits<double>::min();
+    unsigned int max_pt_softer_split = 0;
+    for (unsigned int i = 0; i < lunds.size(); i++) 
+    {
+      if (lunds[i].softer().pt() > max_pt_softer)
+      {
+        max_pt_softer = lunds[i].softer().pt();
+        max_pt_softer_split = i;
+      }
+    }
+    if (max_pt_softer == std::numeric_limits<double>::min())
+    {
+      // throw Error("max pt softer not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max pt softer not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+      return -1;
+    }
+    if (max_pt_softer_split > std::numeric_limits<int>::max())
+    {
+      DynamicalGroomer::_warnings.warn("strange: max pt softer split index larger than max int?");
+    }
+    return int(max_pt_softer_split);    
+  }
+
+  LundDeclustering& DynamicalGroomer::max_pt_softer_split(const std::vector<LundDeclustering>& lunds)
+  {
+    LundDeclustering &result = DynamicalGroomer::_zero_split;
+    double max_pt_softer = std::numeric_limits<double>::min();
+    for (auto const &l : lunds)
+    {
+      if (l.softer().pt() > max_pt_softer)
+      {
+        max_pt_softer = l.softer().pt();
+        result = l;
+      }
+    }
+    if (max_pt_softer == std::numeric_limits<double>::min())
+    {
+      // throw Error("max pt softer not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max pt softer not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+    }
+    return result;
+  }
+
+
 };
 
 FASTJET_END_NAMESPACE

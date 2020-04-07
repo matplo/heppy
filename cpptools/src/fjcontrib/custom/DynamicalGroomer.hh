@@ -44,6 +44,12 @@ namespace contrib
     /// description of the class
     virtual std::string description() const;
 
+    /// obtain the splitting of max{pT's of softer prongs}
+    virtual LundDeclustering max_pt_softer(const PseudoJet& jet);
+    /// obtain the index of the max{pT's of softer prongs} the primary plane of the jet
+    int max_pt_softer_split_index(const std::vector<LundDeclustering>& lunds);
+    static LundDeclustering& max_pt_softer_split(const std::vector<LundDeclustering>& lunds);
+
   private:
     PseudoJet *_cached_jet;
   	LundGenerator _lund_gen;
