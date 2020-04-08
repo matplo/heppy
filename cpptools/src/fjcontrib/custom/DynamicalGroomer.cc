@@ -168,9 +168,9 @@ namespace contrib
     unsigned int max_z_split = 0;
     for (unsigned int i = 0; i < lunds.size(); i++) 
     {
-      if (lunds[i].softer().pt() > max_z)
+      if (lunds[i].z() > max_z)
       {
-        max_z = lunds[i].softer().pt();
+        max_z = lunds[i].z();
         max_z_split = i;
       }
     }
@@ -193,9 +193,9 @@ namespace contrib
     double max_z = std::numeric_limits<double>::min();
     for (auto const &l : lunds)
     {
-      if (l.softer().pt() > max_z)
+      if (l.z() > max_z)
       {
-        max_z = l.softer().pt();
+        max_z = l.z();
         result = l;
       }
     }
