@@ -40,7 +40,7 @@ cd ${cdir}
 
 if [ -e ${fastjet_heppy_prefix}/bin/fastjet-config ]; 
 then
-	ln -sf ${fastjet_heppy_prefix} ${THISD}/current
+	ln -sf ${fastjet_heppy_prefix} ${THISD}/fastjet-current
 	separator summary
 	${fastjet_heppy_prefix}/bin/fastjet-config --config
 else
