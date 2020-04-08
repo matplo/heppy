@@ -18,34 +18,34 @@ cd ${THISD}
 
 . ${THISD}/../../scripts/util.sh
 
-separator "building fastjet ${PWD}"
+separator "building pythia8 ${PWD}"
 
 clean=$(get_opt "clean" $@)
 if [ ! -z ${clean} ]; then
 	separator "clean"
-	rm -rf ./build_fastjet
+	rm -rf ./build_pythia8
 fi
 
-mkdir -p ./build_fastjet
-cd ./build_fastjet
+mkdir -p ./build_pythia8
+cd ./build_pythia8
 
-fastjet_version=3.3.3
-fastjet_heppy_prefix="${THISD}/fastjet-${fastjet_version}"
+pythia8_version=8244
+pythia8_heppy_prefix="${THISD}/pythia8-${pythia8_version}"
 separator configuration
-cmake -DCMAKE_BUILD_TYPE=Release -DFASTJET_VERSION="${fastjet_version}" -DFASTJET_HEPPY_PREFIX=${fastjet_heppy_prefix} ..
+cmake -DCMAKE_BUILD_TYPE=Release -DPYTHIA8_VERSION="${pythia8_version}" -DPYTHIA8_HEPPY_PREFIX=${pythia8_heppy_prefix} ..
 separator build
 cmake --build . --target all  
 
 cd ${cdir}
 
-if [ -e ${fastjet_heppy_prefix}/bin/fastjet-config ]; 
+if [ -e ${pythia8_heppy_prefix}/bin/pythia8-config ]; 
 then
-	ln -sf ${fastjet_heppy_prefix} ${THISD}/current
+	ln -sf ${pythia8_heppy_prefix} ${THISD}/pythia8-current
 	separator summary
-	${fastjet_heppy_prefix}/bin/fastjet-config --config
+	${pythia8_heppy_prefix}/bin/pythia8-config --config
 else
-	echo_error "[e] sorry... the build failed: no fastjet-config in ${fastjet_heppy_prefix}/bin/"
-	separator "fastjet build script done"
+	echo_error "[e] sorry... the build failed: no pythia8-config in ${pythia8_heppy_prefix}/bin/"
+	separator "pythia8 build script done"
 	exit 1
 fi
-separator "fastjet build script done"
+separator "pythia8 build script done"
