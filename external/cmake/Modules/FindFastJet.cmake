@@ -27,7 +27,7 @@ else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
       get_filename_component(FASTJET_PYTHON_SO_SUBDIR ${FASTJET_PYTHON_SO} DIRECTORY)
       message(STATUS "${Green}FastJet python so subdir: ${FASTJET_PYTHON_SO_SUBDIR}${ColourReset}")
 
-      execute_process( COMMAND python -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
+      execute_process( COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_FASTJET_PYTHON_RESULT 
                         OUTPUT_VARIABLE LOAD_FASTJET_PYTHON 
                         ERROR_VARIABLE LOAD_FASTJET_PYTHON_ERROR 

@@ -53,18 +53,19 @@ endif(NOT FASTJET_HEPPY_PREFIX)
 
 message(STATUS "FASTJET_HEPPY_PREFIX ${FASTJET_HEPPY_PREFIX}")
 
+# set(FASTJET_CONFIGURE_COMMAND "PYTHON=${Python3_EXECUTABLE};PYTHON_INCLUDE=${Python3_INCLUDE_DIRS};./configure")
 set(FASTJET_CONFIGURE_COMMAND ./configure)
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)
     include(${CGAL_USE_FILE}) 
-    message(STATUS "${Green} CGAL found.${ColourReset})
-    # get_filename_component(CGAL_GUESS_DIR ${CGAL_LIBRARY} DIRECTORY)
-    # "--with-cgaldir=${CGAL_GUESS_DIR}"
+    message(STATUS "${Green}CGAL found.") 
+    #" ${CGAL_USE_FILE} ${CGAL_INCLUDE_DIRS} ${CGAL_LIBRARY} ${ColourReset}")
+    get_filename_component(CGAL_GUESS_DIR ${CGAL_INCLUDE_DIRS} DIRECTORY)
 	message(STATUS "${Yellow}Workaround: Guessing CGAL dir for FJ ${CGAL_GUESS_DIR}${ColourReset}")
-	list(APPEND FASTJET_CONFIGURE_COMMAND "--prefix=${FASTJET_HEPPY_PREFIX}" "--enable-allcxxplugins" "--enable-pyext" "--enable-cgal")
+	list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext --enable-cgal --with-cgaldir=${CGAL_GUESS_DIR})
 else(CGAL_FOUND)
-    message(STATUS "No CGAL found.)
-	list(APPEND FASTJET_CONFIGURE_COMMAND "--prefix=${FASTJET_HEPPY_PREFIX}" "--enable-allcxxplugins" "--enable-pyext")
+    message(STATUS "No CGAL found.")
+	list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext)
 endif(CGAL_FOUND)    
 
 ExternalProject_Add(FASTJET

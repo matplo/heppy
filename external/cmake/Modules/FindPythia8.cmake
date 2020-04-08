@@ -23,7 +23,7 @@ else(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
       string(REPLACE "${PYTHIA8_DIR}/" "" FJPYSUBDIR_TMP "${PYTHIA8_PYTHON}")
       string(REPLACE "/pythia8.py" "" PYTHIA8_PYTHON_SUBDIR ${PYTHIA8_PYTHON})
       message(STATUS "${Green}Pythia8 python module subdir: ${PYTHIA8_PYTHON_SUBDIR}${ColourReset}")
-      execute_process( COMMAND python -c "import sys; sys.path.append('${PYTHIA8_PYTHON_SUBDIR}'); import pythia8; pythia = pythia8.Pythia();" WORKING_DIRECTORY /tmp 
+      execute_process( COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${PYTHIA8_PYTHON_SUBDIR}'); import pythia8; pythia = pythia8.Pythia();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_PYTHIA8_PYTHON_RESULT 
                         OUTPUT_VARIABLE LOAD_PYTHIA8_PYTHON 
                         ERROR_VARIABLE LOAD_PYTHIA8_PYTHON_ERROR 
