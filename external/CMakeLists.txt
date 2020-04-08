@@ -134,4 +134,5 @@ if (ROOT_FOUND)
     message(STATUS "${Yellow}ROOT not found - root-config not in the path? - some of the tools in pyjetty will require ROOT.${ColourReset}")
 endif(ROOT_FOUND)
 
-find_package(Pythia)
+set(PYTHIA8_HEPPY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/pythia8/pythia8-current")
+find_package(Pythia8)
