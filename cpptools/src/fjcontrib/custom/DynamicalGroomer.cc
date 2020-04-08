@@ -147,6 +147,7 @@ namespace contrib
     return result;
   }
 
+  ///
   /// max z split grooming ----
   /// obtain the splitting of max{z_i}
   LundDeclustering DynamicalGroomer::max_z(const PseudoJet& jet)
@@ -207,6 +208,127 @@ namespace contrib
     return result;
   }
 
+  ///
+  /// max kt split grooming ----
+  /// obtain the splitting of max{kt_i}
+  LundDeclustering DynamicalGroomer::max_kt(const PseudoJet& jet)
+  {
+    if (_cached_jet != &jet)
+    {
+      _lund_splits.clear();
+      _lund_splits = _lund_gen.result(jet);
+      _cached_jet = const_cast<PseudoJet*>(&jet);
+    }
+    _result = max_kt_split(_lund_splits);
+    return _result;    
+  }
+
+  /// obtain the index of the max{z_i} the primary plane of the jet
+  int DynamicalGroomer::max_kt_split_index(const std::vector<LundDeclustering>& lunds)
+  {
+    double max_kt = std::numeric_limits<double>::min();
+    unsigned int max_kt_split = 0;
+    for (unsigned int i = 0; i < lunds.size(); i++) 
+    {
+      if (lunds[i].kt() > max_kt)
+      {
+        max_kt = lunds[i].kt();
+        max_kt_split = i;
+      }
+    }
+    if (max_kt == std::numeric_limits<double>::min())
+    {
+      // throw Error("max pt softer not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max kt not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+      return -1;
+    }
+    if (max_kt_split > std::numeric_limits<int>::max())
+    {
+      DynamicalGroomer::_warnings.warn("strange: max kt split index larger than max int?");
+    }
+    return int(max_kt_split);    
+  }
+
+  LundDeclustering& DynamicalGroomer::max_kt_split(const std::vector<LundDeclustering>& lunds)
+  {
+    LundDeclustering &result = DynamicalGroomer::_zero_split;
+    double max_kt = std::numeric_limits<double>::min();
+    for (auto const &l : lunds)
+    {
+      if (l.kt() > max_kt)
+      {
+        max_kt = l.kt();
+        result = l;
+      }
+    }
+    if (max_kt == std::numeric_limits<double>::min())
+    {
+      // throw Error("max kt not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max kt not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+    }
+    return result;
+  }
+
+  ///
+  /// max kappa split grooming ----
+  /// obtain the splitting of max{kappa_i}
+  LundDeclustering DynamicalGroomer::max_kappa(const PseudoJet& jet)
+  {
+    if (_cached_jet != &jet)
+    {
+      _lund_splits.clear();
+      _lund_splits = _lund_gen.result(jet);
+      _cached_jet = const_cast<PseudoJet*>(&jet);
+    }
+    _result = max_kappa_split(_lund_splits);
+    return _result;    
+  }
+
+  /// obtain the index of the max{z_i} the primary plane of the jet
+  int DynamicalGroomer::max_kappa_split_index(const std::vector<LundDeclustering>& lunds)
+  {
+    double max_kappa = std::numeric_limits<double>::min();
+    unsigned int max_kappa_split = 0;
+    for (unsigned int i = 0; i < lunds.size(); i++) 
+    {
+      if (lunds[i].kappa() > max_kappa)
+      {
+        max_kappa = lunds[i].kappa();
+        max_kappa_split = i;
+      }
+    }
+    if (max_kappa == std::numeric_limits<double>::min())
+    {
+      // throw Error("max pt softer not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max kappa not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+      return -1;
+    }
+    if (max_kappa_split > std::numeric_limits<int>::max())
+    {
+      DynamicalGroomer::_warnings.warn("strange: max kappa split index larger than max int?");
+    }
+    return int(max_kappa_split);    
+  }
+
+  LundDeclustering& DynamicalGroomer::max_kappa_split(const std::vector<LundDeclustering>& lunds)
+  {
+    LundDeclustering &result = DynamicalGroomer::_zero_split;
+    double max_kappa = std::numeric_limits<double>::min();
+    for (auto const &l : lunds)
+    {
+      if (l.kappa() > max_kappa)
+      {
+        max_kappa = l.kappa();
+        result = l;
+      }
+    }
+    if (max_kappa == std::numeric_limits<double>::min())
+    {
+      // throw Error("max kappa not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max kappa not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+    }
+    return result;
+  }
 };
 
 FASTJET_END_NAMESPACE
