@@ -50,6 +50,12 @@ namespace contrib
     int max_pt_softer_split_index(const std::vector<LundDeclustering>& lunds);
     static LundDeclustering& max_pt_softer_split(const std::vector<LundDeclustering>& lunds);
 
+    /// obtain the splitting of max{z_i}
+    virtual LundDeclustering max_z(const PseudoJet& jet);
+    /// obtain the index of the max{z_i} the primary plane of the jet
+    int max_z_split_index(const std::vector<LundDeclustering>& lunds);
+    static LundDeclustering& max_z_split(const std::vector<LundDeclustering>& lunds);
+
   private:
     PseudoJet *_cached_jet;
   	LundGenerator _lund_gen;

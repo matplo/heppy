@@ -59,20 +59,24 @@ public:
   DynamicalGroomer(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
   DynamicalGroomer(const fastjet::JetDefinition & jet_def);
   virtual ~DynamicalGroomer();
+  virtual std::string description() const;
+
   int result_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& alpha);
   virtual LundDeclustering result(const fastjet::PseudoJet& jet, const double& alpha);
   virtual std::vector<fastjet::contrib::LundDeclustering> lund_splits() const;
-
-  virtual std::string description() const;
-
   static fastjet::contrib::LundDeclustering& result_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& alpha);
 
   /// obtain the splitting of max{pT's of softer prongs}
   virtual LundDeclustering max_pt_softer(const fastjet::PseudoJet& jet);
   /// obtain the index of the max{pT's of softer prongs} the primary plane of the jet
   int max_pt_softer_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
-
   static fastjet::contrib::LundDeclustering& max_pt_softer_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+
+  /// obtain the splitting of max{z_i}
+  virtual LundDeclustering max_z(const fastjet::PseudoJet& jet);
+  /// obtain the index of the max{z_i} the primary plane of the jet
+  int max_z_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+  static fastjet::contrib::LundDeclustering& max_z_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
 };
 
 // %include "LundPlane/LundJSON.hh"

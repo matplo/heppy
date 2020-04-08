@@ -147,6 +147,65 @@ namespace contrib
     return result;
   }
 
+  /// max z split grooming ----
+  /// obtain the splitting of max{z_i}
+  LundDeclustering DynamicalGroomer::max_z(const PseudoJet& jet)
+  {
+    if (_cached_jet != &jet)
+    {
+      _lund_splits.clear();
+      _lund_splits = _lund_gen.result(jet);
+      _cached_jet = const_cast<PseudoJet*>(&jet);
+    }
+    _result = max_z_split(_lund_splits);
+    return _result;    
+  }
+
+  /// obtain the index of the max{z_i} the primary plane of the jet
+  int DynamicalGroomer::max_z_split_index(const std::vector<LundDeclustering>& lunds)
+  {
+    double max_z = std::numeric_limits<double>::min();
+    unsigned int max_z_split = 0;
+    for (unsigned int i = 0; i < lunds.size(); i++) 
+    {
+      if (lunds[i].softer().pt() > max_z)
+      {
+        max_z = lunds[i].softer().pt();
+        max_z_split = i;
+      }
+    }
+    if (max_z == std::numeric_limits<double>::min())
+    {
+      // throw Error("max pt softer not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max z not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+      return -1;
+    }
+    if (max_z_split > std::numeric_limits<int>::max())
+    {
+      DynamicalGroomer::_warnings.warn("strange: max z split index larger than max int?");
+    }
+    return int(max_z_split);    
+  }
+
+  LundDeclustering& DynamicalGroomer::max_z_split(const std::vector<LundDeclustering>& lunds)
+  {
+    LundDeclustering &result = DynamicalGroomer::_zero_split;
+    double max_z = std::numeric_limits<double>::min();
+    for (auto const &l : lunds)
+    {
+      if (l.softer().pt() > max_z)
+      {
+        max_z = l.softer().pt();
+        result = l;
+      }
+    }
+    if (max_z == std::numeric_limits<double>::min())
+    {
+      // throw Error("max z not found for a given jet - that's not correct...");
+      DynamicalGroomer::_warnings.warn("max z not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
+    }
+    return result;
+  }
 
 };
 
