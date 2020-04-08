@@ -17,13 +17,17 @@ else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
     execute_process ( COMMAND ${FASTJETCONFIG} --libs --plugins WORKING_DIRECTORY /tmp OUTPUT_VARIABLE FASTJET_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE )
     execute_process ( COMMAND ${FASTJETCONFIG} --version WORKING_DIRECTORY /tmp OUTPUT_VARIABLE FASTJET_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE )
     execute_process ( COMMAND find ${FASTJET_DIR} -name "fastjet.py" WORKING_DIRECTORY /tmp OUTPUT_VARIABLE FASTJET_PYTHON OUTPUT_STRIP_TRAILING_WHITESPACE )
-    if (FASTJET_PYTHON)
+    execute_process ( COMMAND find ${FASTJET_DIR} -name "_fastjet.so" WORKING_DIRECTORY /tmp OUTPUT_VARIABLE FASTJET_PYTHON_SO OUTPUT_STRIP_TRAILING_WHITESPACE )
+    if (FASTJET_PYTHON AND FASTJET_PYTHON_SO)
       message(STATUS "${Green}FastJet python module: ${FASTJET_PYTHON}${ColourReset}")
-      string(REPLACE "${FASTJET_DIR}/" "" FJPYSUBDIR_TMP "${FASTJET_PYTHON}")
-      #string(REPLACE "/fastjet.py" "" FASTJET_PYTHON_SUBDIR ${FJPYSUBDIR_TMP})
-      string(REPLACE "/fastjet.py" "" FASTJET_PYTHON_SUBDIR ${FASTJET_PYTHON})
+      get_filename_component(FASTJET_PYTHON_SUBDIR ${FASTJET_PYTHON} DIRECTORY)
       message(STATUS "${Green}FastJet python module subdir: ${FASTJET_PYTHON_SUBDIR}${ColourReset}")
-      execute_process( COMMAND python -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
+
+      message(STATUS "${Green}FastJet python module shared lib: ${FASTJET_PYTHON_SO}${ColourReset}")
+      get_filename_component(FASTJET_PYTHON_SO_SUBDIR ${FASTJET_PYTHON_SO} DIRECTORY)
+      message(STATUS "${Green}FastJet python so subdir: ${FASTJET_PYTHON_SO_SUBDIR}${ColourReset}")
+
+      execute_process( COMMAND python -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_FASTJET_PYTHON_RESULT 
                         OUTPUT_VARIABLE LOAD_FASTJET_PYTHON 
                         ERROR_VARIABLE LOAD_FASTJET_PYTHON_ERROR 
@@ -37,10 +41,10 @@ else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
         set(FASTJET_LIBRARIES ${FASTJET_LIBS})
         set(FASTJET_INCLUDE_DIR ${FASTJET_CXXFLAGS})
       endif(LOAD_FASTJET_PYTHON_ERROR)      
-    else()
-      message(STATUS "${Red}FastJet python module missing.${ColourReset}")
-    endif()  
-  else()
+    else (FASTJET_PYTHON AND FASTJET_PYTHON_SO)
+      message(STATUS "${Red}Missing fastjet python [${FASTJET_PYTHON}] or python so [${FASTJET_PYTHON_SO}]${ColourReset}")
+    endif (FASTJET_PYTHON AND FASTJET_PYTHON_SO)  
+  else(EXISTS ${FASTJETCONFIG})
     message(STATUS "${Yellow}Hint: fastjet-config not in \$PATH nor in \${FASTJET_DIR}/bin${ColourReset}")
   endif()
   mark_as_advanced(FASTJET_INCLUDE_DIR FASTJET_LIBRARIES)
