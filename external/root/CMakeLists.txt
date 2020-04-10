@@ -25,6 +25,13 @@ message(STATUS "${Green}Will use ${MAKE_EXE} when needed.${ColourReset}")
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
+find_package(SWIG REQUIRED)
+if (SWIG_FOUND)
+    message(STATUS "${Green}SWIG ver. ${SWIG_VERSION} found.${ColourReset}")
+  else(SWIG_FOUND)
+    message(FATAL_ERROR "${Red}SWIG not found while it is the key package here...${ColourReset}")
+endif(SWIG_FOUND)
+
 set (CMAKE_CXX_STANDARD 11)
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -32,6 +39,9 @@ message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
 if (Python3_FOUND)
     message(STATUS "${Green}Python ver. ${Python3_VERSION} found.${ColourReset}")
+	execute_process(COMMAND ${Python3_EXECUTABLE} -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
+					/tmp OUTPUT_VARIABLE HEPPY_PYTHON_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+	message(STATUS "Some python libs info: ${Python3_EXECUTABLE} ${Python3_INCLUDE_DIRS} ${Python3_STDLIB} ${Python3_LIBRARIES} ${HEPPY_PYTHON_LIBS}")
 	#add_definitions(-DPYTHON_EXECUTABLE=${Python3_EXECUTABLE} -DPYTHON_INCLUDE_DIR=${Python3_INCLUDE_DIRS} -DPYTHON_LIBRARY=${Python3_STDLIB})
   else(Python3_FOUND)
     message(FATAL_ERROR "${Red}Python not found while it is the key package here...${ColourReset}")
@@ -61,9 +71,9 @@ ExternalProject_Add(ROOT
 	GIT_REPOSITORY    	http://github.com/root-project/root.git
 	GIT_TAG 		  	${ROOT_VERSION}
 	GIT_PROGRESS 		TRUE
-	CMAKE_ARGS 			-DCMAKE_INSTALL_PREFIX=${ROOT_HEPPY_PREFIX} -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=${Python3_EXECUTABLE} -DPYTHON_INCLUDE_DIR=${Python3_INCLUDE_DIRS} -DPYTHON_LIBRARY=${Python3_STDLIB} -Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON
-	BUILD_COMMAND       ${MAKE_EXE} -j ${NCPU}
-	INSTALL_COMMAND     ${MAKE_EXE} install
+	CMAKE_ARGS 			${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${ROOT_HEPPY_PREFIX} -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=${Python3_EXECUTABLE} -DPYTHON_INCLUDE_DIR=${Python3_INCLUDE_DIRS} -DPYTHON_LIBRARY=${Python3_LIBRARIES} -Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON
+	BUILD_COMMAND       ${CMAKE_COMMAND} --build . -- -j ${NCPU}
+	INSTALL_COMMAND     ${CMAKE_COMMAND} --build . --target install
 	LOG_DOWNLOAD 		TRUE
 	LOG_UPDATE 			TRUE
 	LOG_CONFIGURE 		TRUE

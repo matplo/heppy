@@ -26,11 +26,12 @@ if [ ! -z ${clean} ]; then
 	rm -rf ./build_root
 fi
 
-build_dir=${$THISD}/build_root
+build_dir=${THISD}/build_root
 mkdir -p ${build_dir}
 cd ${build_dir}
 
-root_version=6.18.04
+root_version=v6-18-04
+#root_version=v6-20-04 -Dglew=OFF
 root_heppy_prefix="${THISD}/root-${root_version}"
 fname=root_v${root_version}.source
 
@@ -79,10 +80,10 @@ if [ -d ${dirsrc} ]; then
 			fi
 		fi
 
-		echo_info "extra options: ${config_opts} ${compiler_opts}"
+		echo_info "extra options: ${config_opts} ${compiler_opts} ${root_version}"
 
 		# cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${dirsrc}
-		cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${THISD}
+		cmake -DCMAKE_BUILD_TYPE=Release -DROOT_VERSION=${root_version} ${compiler_opts} ${config_opts} ${THISD}
 
 	separator "build"
 		cmake --build . 
@@ -98,6 +99,7 @@ if [ -d ${dirsrc} ]; then
 		separator summary
 		rver=$(${root_heppy_prefix}/bin/root-config --version)
 		echo_info "ROOT at ${rver} via root-config"
+		ln -sfv ${root_heppy_prefix} ${THISD}/root-current
 	else
 		echo_error "[e] sorry... the build failed: no root library in ${root_heppy_prefix}"
 		separator "root build script done"

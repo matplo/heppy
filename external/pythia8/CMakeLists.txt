@@ -81,7 +81,7 @@ endif(HepMC3_FOUND)
 
 find_package(ROOT4HEPPY)
 if(ROOT_FOUND)
-	
+	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-root=${ROOT_HEPPY_PREFIX})	
 endif(ROOT_FOUND)
 
 message(STATUS "configure command: ${PYTHIA8_CONFIGURE_COMMAND}")
