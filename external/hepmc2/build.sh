@@ -28,7 +28,6 @@ fi
 
 build_dir=${PWD}/build_hepmc2
 mkdir -p ${build_dir}
-
 cd ${build_dir}
 
 hepmc2_version=2.06.09
@@ -42,11 +41,11 @@ if [ ! -e ${THISD}/downloads/${fname}.tar.gz ]; then
 	cd ${THISD}
 fi
 
+cd ${build_dir}
 dirsrc="${build_dir}/HepMC-${hepmc2_version}"
 if [ -e ${THISD}/downloads/${fname}.tar.gz ]; then
 	if [ ! -d ${dirsrc} ]; then
 		tar zxvf ${THISD}/downloads/${fname}.tar.gz
-
 	fi
 else
 	echo_error "[e] unable to get the sources ./downloads/${fname}.tar.gz does not exists"

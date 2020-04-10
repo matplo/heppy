@@ -7,10 +7,15 @@
 #  HEPMC3_LIBRARIES
 #  adopted from https://gitlab.cern.ch/sft/lcgcmake/tree/master/cmake/modules
 
+if (NOT HEPMC3_DIR)
+  set(HEPMC3_DIR ${CMAKE_CURRENT_LIST_DIR}/../../hepmc3/hepmc3-current)
+  message(STATUS "Setting HEPMC3_DIR to ${HEPMC3_DIR}")
+endif(NOT HEPMC3_DIR)
+
 find_path(HEPMC3_INCLUDE_DIR HepMC/GenEvent.h 
-          HINTS ${HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_DIR}/include)
+          HINTS ${HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_DIR}/include ${HEPMC3_DIR}/include)
 find_library(HEPMC3_LIBRARY NAMES HepMC 
-             HINTS ${HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_DIR}/lib)
+             HINTS ${HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib64)
 
 set(HEPMC3_INCLUDE_DIRS ${HEPMC3_INCLUDE_DIR})
 set(HEPMC3_LIBRARIES ${HEPMC3_LIBRARY})
