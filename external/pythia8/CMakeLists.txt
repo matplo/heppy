@@ -79,6 +79,10 @@ if (Python3_FOUND)
 endif(Python3_FOUND)
 
 find_package(HepMC3 QUIET COMPONENTS HepMC)
+if (HepMC3_FOUND)
+	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-hepmc3=${HEPMC3_DIR} --with-hepmc3-include=${HEPMC3_INCLUDE_DIR} --with-hepmc3-lib=${HEPMC3_LIB_DIR})
+endif(HepMC3_FOUND)
+
 find_package(ROOT 6.18 QUIET COMPONENTS RIO EG PyROOT)
 
 message(STATUS "configure command: ${PYTHIA8_CONFIGURE_COMMAND}")
