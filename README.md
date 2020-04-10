@@ -10,52 +10,31 @@
  
 # recommended build/setup
 
-- simply type and get a short (long if building with root) coffee
+ - prerequisites in path (compiled with the same python3 >= 3.6:
+ ```
+ root-config
+ pythia8-config
+ ```
+
+## build external libraries
+
+ - to check if you have all what you need execute
+
 ```
-./scripts/setup.sh --buildext --root --all
+	./external/build.sh
 ```
 
-- ... load module to use ...
+- to build individual (missing) packages:
 
 ```
-pipenv shell
-./scripts/setup.sh --buildext --root --all
-module use $PWD/modules
-module load heppy/main_python
-examples/pythia_gen_fastjet_lund_test.py
-```
+	./external/fastjet/build.sh
+	./external/lhapdf6/build.sh
+	./external/hepmc/build.sh
+	./external/hepmc/build.sh
+	./external/root/build.sh
+	./external/pythia8/build.sh
 
-- to wipe out and rebuild everything
 ```
-./scripts/cleanup.sh
-./scripts/setup.sh --buildext --rebuild
-```
-
-- to rebuild the swigified fjcontrib and the few tools only
-```
-./scripts/setup.sh --rebuild
-```
-
-- to change the external builds you can use scripts...
-```
-external/setup_pythia8.sh --version=8.XYZ
-external/setup_fastjet.sh
-external/setup_hepmc3.sh           
-external/setup_hepmc2_cmake.sh     
-external/setup_root.sh
-external/setup_lhapdf6.sh
-```
-... but the best is to edit the `external/setup.sh`
-
-- useful debuging option `--configure-only` (no build just configure and exit)
-
-- to rebuild cpptools only
-```
-./scripts/setup.sh
-```
-- useful debuging option `--configure-only`
-
-- one can also use ./cpptools/scripts/build_cpptools.sh directly with [--rebuild] [--install] [--clean] [--cleanall]
 
 # modules
 
