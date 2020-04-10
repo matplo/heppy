@@ -10,7 +10,20 @@
  
 # recommended build/setup
 
- - prerequisites in path (compiled with the same python3 >= 3.6:
+ - for full functionality (compiled with the *same* python3 >= 3.6):
+
+ -- FASTJET 3
+
+ -- PYTHIA 8
+
+ -- HEPMC2 and HEPMC3
+
+ -- LHAPDF6
+
+ -- ROOT 6
+
+ - prerequisites in path (compiled with the same python3 >= 3.6):
+
  ```
  root-config
  pythia8-config
@@ -36,15 +49,9 @@
 
 ```
 
-# modules
-
-- ./modules/heppy contains modules - use the one with 'main' to load everything
-
-
-## Notes: 
+## note: 
 
 - this will download and install PYTHIA, HepMC2, HepMC3, LHAPDF6, FASTJET, ROOT into the `external` subdirectory. User can control what version packages to use by building those libs yourself...
-- for some options `./scripts/build_cpptools.sh --help`
 
 # running
 
