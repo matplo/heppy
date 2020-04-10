@@ -55,8 +55,11 @@ if (ROOT_FOUND)
         # message(STATUS "${Green}ROOT python module: ${ROOT_PYTHON}${ColourReset}")
         string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
         string(REPLACE "/ROOT.py" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
-        # message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
-        execute_process( COMMAND python -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('# ROOT version from within python:',ROOT.gROOT.GetVersion());" 
+        message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
+        find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+        #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
+        #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
+        execute_process(  COMMAND ${CMAKE_CURRENT_LIST_DIR}/../../root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python3_EXECUTABLE}
                           WORKING_DIRECTORY /tmp 
                           RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
                           OUTPUT_VARIABLE LOAD_ROOT_PYTHON 
