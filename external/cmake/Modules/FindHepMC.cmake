@@ -45,10 +45,10 @@ endif()
 # handle the QUIETLY and REQUIRED arguments and set HEPMC_FOUND to TRUE if
 # all listed variables are TRUE
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(HepMC DEFAULT_MSG HEPMC_INCLUDE_DIR HEPMC_LIBRARIES HEPMC_DIR HEPMC_LIB_DIR)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(HepMC DEFAULT_MSG HEPMC_DIR HEPMC_INCLUDE_DIR HEPMC_LIBRARIES HEPMC_LIB_DIR)
 
 if (HepMC_FOUND)
-  message(STATUS "${Green}HEPMC2 found ${HEPMC_INCLUDE_DIR} ${HEPMC_LIBRARIES}.${ColourReset}")
+  message(STATUS "${Green}HEPMC2 found ${HEPMC_DIR} ${ColourReset}")
   add_definitions(-DUSE_HEPMC)
 else(HepMC_FOUND)
   message(STATUS "${Yellow}HEPMC2 not found - some of the functionality will be misssing.${ColourReset}")

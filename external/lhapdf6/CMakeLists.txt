@@ -67,7 +67,7 @@ endif(Python3_FOUND)
 
 message(STATUS "configure command: ${LHAPDF6_CONFIGURE_COMMAND}")
 
-ExternalProject_Add(PYTHIA8
+ExternalProject_Add(LHAPDF6
 	PREFIX            ${LHAPDF6_BUILD}
 	URL               https://lhapdf.hepforge.org/downloads/?f=LHAPDF-${LHAPDF6_VERSION}.tar.gz
 	DOWNLOAD_DIR      ${CMAKE_CURRENT_SOURCE_DIR}/downloads

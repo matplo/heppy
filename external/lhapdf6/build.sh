@@ -32,19 +32,20 @@ cd ./build_lhapdf6
 lhapdf6_version=6.2.3
 lhapdf6_heppy_prefix="${THISD}/lhapdf6-${lhapdf6_version}"
 separator configuration
-cmake -DCMAKE_BUILD_TYPE=Release -DPYTHIA8_VERSION="${lhapdf6_version}" -DPYTHIA8_HEPPY_PREFIX=${lhapdf6_heppy_prefix} ..
+cmake -DCMAKE_BUILD_TYPE=Release -DLHAPDF6_VERSION="${lhapdf6_version}" -DLHAPDF6_HEPPY_PREFIX=${lhapdf6_heppy_prefix} ..
 separator build
 cmake --build . --target all  
 
 cd ${cdir}
 
-if [ -e ${lhapdf6_heppy_prefix}/bin/lhapdf6-config ]; 
+if [ -e ${lhapdf6_heppy_prefix}/bin/lhapdf-config ]; 
 then
 	ln -sf ${lhapdf6_heppy_prefix} ${THISD}/lhapdf6-current
 	separator summary
-	${lhapdf6_heppy_prefix}/bin/lhapdf6-config --config
+	echo_info "LHAPDF version: $(${lhapdf6_heppy_prefix}/bin/lhapdf-config --version)"
+	echo_info "LHAPDF datadir: $(${lhapdf6_heppy_prefix}/bin/lhapdf-config --datadir)"
 else
-	echo_error "[e] sorry... the build failed: no lhapdf6-config in ${lhapdf6_heppy_prefix}/bin/"
+	echo_error "[e] sorry... the build failed: no lhapdf-config in ${lhapdf6_heppy_prefix}/bin/"
 	separator "lhapdf6 build script done"
 	exit 1
 fi

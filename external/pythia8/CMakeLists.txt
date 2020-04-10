@@ -29,7 +29,6 @@ set (CMAKE_CXX_STANDARD 11)
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
-
 include(ProcessorCount)
 ProcessorCount(NCPU)
 
@@ -57,9 +56,6 @@ endif(HepMC_FOUND)
 
 find_package(LHAPDF QUIET)
 if (LHAPDF6_FOUND)
-	message(status "no ver ${LHAPDF_DIR}")
-	message(status "6 ${LHAPDF6_DIR}")
-	message(status "${LHAPDF6_INCLUDE_DIR}")
 	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-lhapdf6=${LHAPDF6_DIR})
 endif(LHAPDF6_FOUND)
 
