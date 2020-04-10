@@ -26,7 +26,7 @@ if [ ! -z ${clean} ]; then
 	rm -rf ./build_root
 fi
 
-build_dir=${PWD}/build_root
+build_dir=${$THISD}/build_root
 mkdir -p ${build_dir}
 cd ${build_dir}
 
@@ -34,24 +34,24 @@ root_version=6.18.04
 root_heppy_prefix="${THISD}/root-${root_version}"
 fname=root_v${root_version}.source
 
-if [ ! -e ${THISD}/downloads/${fname}.tar.gz ]; then
-	mkdir -p ${THISD}/downloads
-	cd ${THISD}/downloads
-	wget https://root.cern/download/${fname}.tar.gz
-	cd ${THISD}
-fi
+# if [ ! -e ${THISD}/downloads/${fname}.tar.gz ]; then
+# 	mkdir -p ${THISD}/downloads
+# 	cd ${THISD}/downloads
+# 	wget https://root.cern/download/${fname}.tar.gz
+# 	cd ${THISD}
+# fi
 
-cd ${build_dir}
-dirsrc="${build_dir}/root-${root_version}"
-if [ -e ${THISD}/downloads/${fname}.tar.gz ]; then
-	if [ ! -d ${dirsrc} ]; then
-		tar zxvf ${THISD}/downloads/${fname}.tar.gz
-	fi
-else
-	echo_error "[e] unable to get the sources ./downloads/${fname}.tar.gz does not exists"
-fi
+# cd ${build_dir}
+# dirsrc="${build_dir}/root-${root_version}"
+# if [ -e ${THISD}/downloads/${fname}.tar.gz ]; then
+# 	if [ ! -d ${dirsrc} ]; then
+# 		tar zxvf ${THISD}/downloads/${fname}.tar.gz
+# 	fi
+# else
+# 	echo_error "[e] unable to get the sources ./downloads/${fname}.tar.gz does not exists"
+# fi
 
-
+dirsrc="./"
 if [ -d ${dirsrc} ]; then
 	cd ${dirsrc}
 	mkdir -p ${build_dir}/build
@@ -81,10 +81,12 @@ if [ -d ${dirsrc} ]; then
 
 		echo_info "extra options: ${config_opts} ${compiler_opts}"
 
-		cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${dirsrc}
+		# cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${dirsrc}
+		cmake -DCMAKE_BUILD_TYPE\=Release ${compiler_opts} ${config_opts} ${THISD}
 
 	separator "build"
-		cmake --build . -- -j $(n_cores)
+		cmake --build . 
+		# -- -j $(n_cores)
 
 	separator "install"
 		cmake -DCMAKE_INSTALL_PREFIX=${root_heppy_prefix} -P cmake_install.cmake
