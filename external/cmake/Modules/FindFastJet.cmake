@@ -5,11 +5,16 @@
 #  FASTJET_LIBRARIES, the libraries needed to use CGAL.
 #  FASTJET_FOUND, If false, do not try to use CGAL.
 
+if (NOT FASTJET_DIR)
+  set(FASTJET_DIR "${CMAKE_CURRENT_LIST_DIR}/../../fastjet/fastjet-current")
+  message(STATUS "Setting FASTJET_DIR to ${FASTJET_DIR}")
+endif(NOT FASTJET_DIR)
+
 if(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
    set(FASTJET_FOUND TRUE)
 else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
   message(STATUS "Looking for FastJet with fastjet-config...")
-  find_program ( FASTJETCONFIG fastjet-config PATHS $ENV{FASTJET_DIR}/bin ${FASTJET_HEPPY_BUILD}/bin)
+  find_program ( FASTJETCONFIG fastjet-config PATHS $ENV{FASTJET_DIR}/bin ${FASTJET_DIR}/bin)
   if (EXISTS ${FASTJETCONFIG})
     message(STATUS "Using fastjet-config at ${FASTJETCONFIG}")
     execute_process ( COMMAND ${FASTJETCONFIG} --prefix WORKING_DIRECTORY /tmp OUTPUT_VARIABLE FASTJET_DIR OUTPUT_STRIP_TRAILING_WHITESPACE )
@@ -21,11 +26,11 @@ else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
     if (FASTJET_PYTHON AND FASTJET_PYTHON_SO)
       message(STATUS "${Green}FastJet python module: ${FASTJET_PYTHON}${ColourReset}")
       get_filename_component(FASTJET_PYTHON_SUBDIR ${FASTJET_PYTHON} DIRECTORY)
-      message(STATUS "${Green}FastJet python module subdir: ${FASTJET_PYTHON_SUBDIR}${ColourReset}")
+      #message(STATUS "${Green}FastJet python module subdir: ${FASTJET_PYTHON_SUBDIR}${ColourReset}")
 
-      message(STATUS "${Green}FastJet python module shared lib: ${FASTJET_PYTHON_SO}${ColourReset}")
+      #message(STATUS "${Green}FastJet python module shared lib: ${FASTJET_PYTHON_SO}${ColourReset}")
       get_filename_component(FASTJET_PYTHON_SO_SUBDIR ${FASTJET_PYTHON_SO} DIRECTORY)
-      message(STATUS "${Green}FastJet python so subdir: ${FASTJET_PYTHON_SO_SUBDIR}${ColourReset}")
+      #message(STATUS "${Green}FastJet python so subdir: ${FASTJET_PYTHON_SO_SUBDIR}${ColourReset}")
 
       execute_process( COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_FASTJET_PYTHON_RESULT 

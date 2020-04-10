@@ -8,23 +8,31 @@
 #  HEPMC_LIBRARIES (not cached)
 #  HEPMC_LIBRARY_DIRS (not cached)
 
-find_path(HEPMC_INCLUDE_DIR HepMC/GenEvent.h HINTS $ENV{HEPMC_DIR}/include $ENV{HEPMC2_DIR}/include)
+if (NOT HEPMC_DIR)
+  set(HEPMC2_DIR ${CMAKE_CURRENT_LIST_DIR}/../../hepmc2/hepmc2-current)
+  message(STATUS "Setting HEPMC2_DIR to ${HEPMC2_DIR}")
+endif(NOT HEPMC_DIR)
+
+find_path(HEPMC_INCLUDE_DIR HepMC/GenEvent.h HINTS $ENV{HEPMC_DIR}/include $ENV{HEPMC2_DIR}/include ${HEPMC2_DIR}/include )
 set(HEPMC_INCLUDE_DIRS ${HEPMC_INCLUDE_DIR})
+get_filename_component(HEPMC_DIR ${HEPMC_INCLUDE_DIR} DIRECTORY)
 
 if(NOT HepMC_FIND_COMPONENTS)
   set(HepMC_FIND_COMPONENTS HepMC)
 endif()
 foreach(component ${HepMC_FIND_COMPONENTS})
-  find_library(HEPMC_${component}_LIBRARY NAMES HepMC${component} ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib)
+  find_library(HEPMC_${component}_LIBRARY NAMES HepMC${component} ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib ${HEPMC2_DIR}/lib)
   list(APPEND HEPMC_LIBRARIES ${HEPMC_${component}_LIBRARY})
   get_filename_component(_comp_dir ${HEPMC_${component}_LIBRARY} PATH)
   list(APPEND HEPMC_LIBRARY_DIRS ${_comp_dir})
 
-  find_library(COMP NAMES ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib)
+  set(HEPMC_LIB_DIR ${HEPMC_LIBRARY_DIRS})
+
+  find_library(COMP NAMES ${component} HINTS $ENV{HEPMC_DIR}/lib $ENV{HEPMC2_DIR}/lib ${HEPMC2_DIR}/lib)
   if (COMP)
   	list(APPEND HEPMC_LINKS ${component})
-  endif()
-endforeach()
+  endif(COMP)
+endforeach(component ${HepMC_FIND_COMPONENTS})
 
 if(HEPMC_LIBRARY_DIRS)
   list(REMOVE_DUPLICATES HEPMC_LIBRARY_DIRS)
@@ -37,4 +45,11 @@ endif()
 # handle the QUIETLY and REQUIRED arguments and set HEPMC_FOUND to TRUE if
 # all listed variables are TRUE
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(HepMC DEFAULT_MSG HEPMC_INCLUDE_DIR HEPMC_LIBRARIES)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(HepMC DEFAULT_MSG HEPMC_INCLUDE_DIR HEPMC_LIBRARIES HEPMC_DIR HEPMC_LIB_DIR)
+
+if (HepMC_FOUND)
+  message(STATUS "${Green}HEPMC2 found ${HEPMC_INCLUDE_DIR} ${HEPMC_LIBRARIES}.${ColourReset}")
+  add_definitions(-DUSE_HEPMC)
+else(HepMC_FOUND)
+  message(STATUS "${Yellow}HEPMC2 not found - some of the functionality will be misssing.${ColourReset}")
+endif(HepMC_FOUND)

@@ -48,28 +48,15 @@ include(ProcessorCount)
 ProcessorCount(NCPU)
 include(ExternalProject)
 
-set(FASTJET_HEPPY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/fastjet/fastjet-current")
 find_package(FastJet 3.0 REQUIRED)
 if (NOT FASTJET_FOUND)
   message(STATUS "${Yellow}Hint: build FJ with ${CMAKE_CURRENT_SOURCE_DIR}/fastjet/build.sh ${ColourReset}")
   message(SEND_ERROR "${Red}FASTJET not found.${ColourReset}")
 endif(NOT FASTJET_FOUND)
 
-# if (NOT FASTJET_FOUND)
-#   message(SEND_ERROR " ${Red}This will not work without fastjet...${ColourReset}")
-# endif(NOT FASTJET_FOUND)
-
 find_package(LHAPDF QUIET)
 
 find_package(HepMC QUIET COMPONENTS HepMC)
-if (HEPMC_FOUND)
-  add_definitions(-DUSE_HEPMC)
-  # message( STATUS "HEPMC_LIBRARIES: ${HEPMC_LIBRARIES}")
-  # message( STATUS "HEPMC_LIBRARY_DIRS: ${HEPMC_LIBRARY_DIRS}")
-  # message( STATUS "HEPMC_LINK_LIBRARIES: ${HEPMC_LINK_LIBRARIES}")
-else()
-  message(STATUS "${Yellow}Some of Pythia tools require HEPMC ver. >= 2 ${ColourReset}")
-endif()
 
 find_package(HepMC3 QUIET COMPONENTS HepMC)
 if (HEPMC3_FOUND)
@@ -109,10 +96,10 @@ if (ROOT_FOUND)
     execute_process ( COMMAND root-config --version WORKING_DIRECTORY /tmp OUTPUT_VARIABLE ROOT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE )
     execute_process ( COMMAND find ${ROOT_LIBRARY_DIR} -name "ROOT.py" WORKING_DIRECTORY /tmp OUTPUT_VARIABLE ROOT_PYTHON OUTPUT_STRIP_TRAILING_WHITESPACE )
     if (ROOT_PYTHON)
-      message(STATUS "${Green}ROOT python module: ${ROOT_PYTHON}${ColourReset}")
+      # message(STATUS "${Green}ROOT python module: ${ROOT_PYTHON}${ColourReset}")
       string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
       string(REPLACE "/ROOT.py" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
-      message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
+      # message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
       execute_process( COMMAND python -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('# ROOT version from within python:',ROOT.gROOT.GetVersion());" 
                         WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
@@ -134,5 +121,4 @@ if (ROOT_FOUND)
     message(STATUS "${Yellow}ROOT not found - root-config not in the path? - some of the tools in pyjetty will require ROOT.${ColourReset}")
 endif(ROOT_FOUND)
 
-set(PYTHIA8_HEPPY_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/pythia8/pythia8-current")
 find_package(Pythia8)

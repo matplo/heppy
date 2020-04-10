@@ -16,16 +16,9 @@ function thisdir()
 THISD=$(thisdir)
 cd ${THISD}
 
-. ${THISD}/../scripts/util.sh
+. ${THISD}/../../scripts/util.sh
 
-separator "mkdir ${THISD}/build"
-rm -rf ${THISD}/build
-mkdir ${THISD}/build
-cd ${THISD}/build
+separator "cleanup hepmc2 ${PWD}"
 
-separator "call cmake"
-cmake .. 
+rm -rf ./hepmc2-current ./build ./build_hepmc2 ./CMakeFiles ./CMakeCache.txt ./Makefile ./cmake_install.cmake
 
-separator "done."
-
-cd ${cdir}

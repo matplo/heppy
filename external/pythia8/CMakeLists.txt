@@ -29,11 +29,6 @@ set (CMAKE_CXX_STANDARD 11)
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
-find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
-find_package(LHAPDF QUIET)
-find_package(HepMC QUIET COMPONENTS HepMC)
-find_package(HepMC3 QUIET COMPONENTS HepMC)
-find_package(ROOT 6.18 QUIET COMPONENTS RIO EG PyROOT)
 
 include(ProcessorCount)
 ProcessorCount(NCPU)
@@ -55,6 +50,12 @@ message(STATUS "PYTHIA8_HEPPY_PREFIX ${PYTHIA8_HEPPY_PREFIX}")
 set(PYTHIA8_CONFIGURE_COMMAND ./configure)
 list(APPEND PYTHIA8_CONFIGURE_COMMAND --prefix=${PYTHIA8_HEPPY_PREFIX})
 
+find_package(HepMC QUIET COMPONENTS HepMC)
+if (HepMC_FOUND)
+	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-hepmc2=${HEPMC_DIR} --with-hepmc2-include=${HEPMC_INCLUDE_DIR} --with-hepmc2-lib=${HEPMC_LIB_DIR})
+endif(HepMC_FOUND)
+
+find_package(LHAPDF QUIET)
 if (LHAPDF6_FOUND)
 	message(status "no ver ${LHAPDF_DIR}")
 	message(status "6 ${LHAPDF6_DIR}")
@@ -62,6 +63,7 @@ if (LHAPDF6_FOUND)
 	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-lhapdf6=${LHAPDF6_DIR})
 endif(LHAPDF6_FOUND)
 
+find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
 if (Python3_FOUND)
 	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-include=${Python3_INCLUDE_DIRS})
 	get_filename_component(Python3_EXE_NAME ${Python3_EXECUTABLE} NAME)
@@ -75,6 +77,9 @@ if (Python3_FOUND)
 		list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-bin=${CMAKE_CURRENT_SOURCE_DIR}/)
 	endif(Python3_EXE_NAME STREQUAL "python")
 endif(Python3_FOUND)
+
+find_package(HepMC3 QUIET COMPONENTS HepMC)
+find_package(ROOT 6.18 QUIET COMPONENTS RIO EG PyROOT)
 
 message(STATUS "configure command: ${PYTHIA8_CONFIGURE_COMMAND}")
 
