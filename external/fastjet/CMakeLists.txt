@@ -13,9 +13,9 @@ if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules")
-include(colors)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../cmake/Modules")
+include(common_heppy)
 set(PROJECT_NAME heppy_external_fastjet)
 project(${PROJECT_NAME} VERSION 1.0 LANGUAGES CXX)
 message(STATUS "${Green}This is ${PROJECT_NAME} ver. ${PROJECT_VERSION}${ColourReset}")
@@ -27,7 +27,7 @@ find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PA
 
 set (CMAKE_CXX_STANDARD 11)
 
-message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+message( STATUS "CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
 
 find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
 if (Python3_FOUND)
@@ -48,7 +48,7 @@ endif(NOT FASTJET_VERSION)
 message(STATUS "FASTJET_VERSION ${FASTJET_VERSION}")
 
 if (NOT FASTJET_HEPPY_PREFIX)
-	set(FASTJET_HEPPY_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/fastjet-${FASTJET_VERSION}")
+	set(FASTJET_HEPPY_PREFIX "${CMAKE_CURRENT_LIST_DIR}/fastjet-${FASTJET_VERSION}")
 endif(NOT FASTJET_HEPPY_PREFIX)
 
 message(STATUS "FASTJET_HEPPY_PREFIX ${FASTJET_HEPPY_PREFIX}")
@@ -57,12 +57,17 @@ message(STATUS "FASTJET_HEPPY_PREFIX ${FASTJET_HEPPY_PREFIX}")
 set(FASTJET_CONFIGURE_COMMAND ./configure)
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)
-    include(${CGAL_USE_FILE}) 
     message(STATUS "${Green}CGAL found. ${ColourReset}") 
-    message(STATUS "${CGAL_USE_FILE} ${CGAL_INCLUDE_DIRS} ${CGAL_LIBRARY} ${ColourReset}")
-    get_filename_component(CGAL_GUESS_DIR ${CGAL_INCLUDE_DIRS} DIRECTORY)
-	message(STATUS "${Yellow}Workaround: Guessing CGAL dir for FJ ${CGAL_GUESS_DIR}${ColourReset}")
-	list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext --enable-cgal --with-cgaldir=${CGAL_GUESS_DIR})
+	if (${CGAL_USE_FILE})
+		message(STATUS "CGAL_USE_FILE: ${CGAL_USE_FILE}")
+    	include(${CGAL_USE_FILE}) 
+	    message(STATUS "${CGAL_USE_FILE} ${CGAL_INCLUDE_DIRS} ${CGAL_LIBRARY} ${ColourReset}")
+	    get_filename_component(CGAL_GUESS_DIR ${CGAL_INCLUDE_DIRS} DIRECTORY)
+		message(STATUS "${Yellow}Workaround: Guessing CGAL dir for FJ ${CGAL_GUESS_DIR}${ColourReset}")
+		list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext --enable-cgal --with-cgaldir=${CGAL_GUESS_DIR})
+	else(${CGAL_USE_FILE})
+		list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext --enable-cgal --with-cgaldir=${CGAL_DIR})		
+    endif(${CGAL_USE_FILE})
 else(CGAL_FOUND)
     message(STATUS "No CGAL found.")
 	list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext)
@@ -71,9 +76,9 @@ endif(CGAL_FOUND)
 ExternalProject_Add(FASTJET
 	PREFIX            ${FASTJET_BUILD}
 	URL               http://fastjet.fr/repo/fastjet-${FASTJET_VERSION}.tar.gz
-	DOWNLOAD_DIR      ${CMAKE_CURRENT_SOURCE_DIR}/downloads
+	DOWNLOAD_DIR      ${CMAKE_CURRENT_LIST_DIR}/downloads
 	# DOWNLOAD_NAME     fastjet-${FASTJET_VERSION}.tar.gz
-	# SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/build/fastjet-${FASTJET_VERSION}
+	# SOURCE_DIR        ${CMAKE_CURRENT_LIST_DIR}/build/fastjet-${FASTJET_VERSION}
 	BUILD_IN_SOURCE 	1
 	INSTALL_DIR       ${FASTJET_BUILD}
 	CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ${FASTJET_CONFIGURE_COMMAND}

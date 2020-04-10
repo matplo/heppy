@@ -33,8 +33,8 @@ endif(NOT $ENV{ROOTSYS})
 
 find_program( ROOTCONFIG root-config HINTS $ENV{ROOTSYS}/bin)
 if (NOT ROOTCONFIG)
-  message(STATUS "Adding path to ${CMAKE_CURRENT_LIST_DIR}/../../root/root-current")
-  list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_LIST_DIR}/../../root/root-current)
+  message(STATUS "Adding path to ${CMAKE_HEPPY_DIR}/external/root/root-current")
+  list(APPEND CMAKE_PREFIX_PATH ${CMAKE_HEPPY_DIR}/external/root/root-current)
 endif(NOT ROOTCONFIG)
 
 # if ($ENV{ROOTSYS})
@@ -53,13 +53,14 @@ if (ROOT_FOUND)
       execute_process ( COMMAND ${ROOTCONFIG} --prefix WORKING_DIRECTORY /tmp OUTPUT_VARIABLE ROOT_HEPPY_PREFIX OUTPUT_STRIP_TRAILING_WHITESPACE )
       if (ROOT_PYTHON)
         # message(STATUS "${Green}ROOT python module: ${ROOT_PYTHON}${ColourReset}")
+        # message(STATUS "${Green}ROOT_LIBRARY_DIR: ${ROOT_LIBRARY_DIR}${ColourReset}")
         string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
         string(REPLACE "/ROOT.py" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
         message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
         find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
         #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
-        execute_process(  COMMAND ${CMAKE_CURRENT_LIST_DIR}/../../root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python3_EXECUTABLE}
+        execute_process(  COMMAND ${CMAKE_HEPPY_DIR}/external/root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python3_EXECUTABLE}
                           WORKING_DIRECTORY /tmp 
                           RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
                           OUTPUT_VARIABLE LOAD_ROOT_PYTHON 

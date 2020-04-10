@@ -6,7 +6,7 @@
 #  PYTHIA8_FOUND, If false, do not try to use CGAL.
 
 if (NOT PYTHIA8_DIR)
-  set(PYTHIA8_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pythia8/pythia8-current")
+  set(PYTHIA8_DIR "${CMAKE_HEPPY_DIR}/external/pythia8/pythia8-current")
   message(STATUS "Setting PYTHIA8_DIR to ${PYTHIA8_DIR}")
 endif(NOT PYTHIA8_DIR)
 

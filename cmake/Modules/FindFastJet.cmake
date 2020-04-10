@@ -6,7 +6,7 @@
 #  FASTJET_FOUND, If false, do not try to use CGAL.
 
 if (NOT FASTJET_DIR)
-  set(FASTJET_DIR "${CMAKE_CURRENT_LIST_DIR}/../../fastjet/fastjet-current")
+  set(FASTJET_DIR "${CMAKE_HEPPY_DIR}/external/fastjet/fastjet-current")
   message(STATUS "Setting FASTJET_DIR to ${FASTJET_DIR}")
 endif(NOT FASTJET_DIR)
 

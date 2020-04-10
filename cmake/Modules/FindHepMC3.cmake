@@ -8,7 +8,7 @@
 #  adopted from https://gitlab.cern.ch/sft/lcgcmake/tree/master/cmake/modules
 
 if (NOT HEPMC3_DIR)
-  set(HEPMC3_DIR ${CMAKE_CURRENT_LIST_DIR}/../../hepmc3/hepmc3-current)
+  set(HEPMC3_DIR ${CMAKE_HEPPY_DIR}/external/hepmc3/hepmc3-current)
   message(STATUS "Setting HEPMC3_DIR to ${HEPMC3_DIR}")
 endif(NOT HEPMC3_DIR)
 

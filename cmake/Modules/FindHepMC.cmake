@@ -9,7 +9,7 @@
 #  HEPMC_LIBRARY_DIRS (not cached)
 
 if (NOT HEPMC_DIR)
-  set(HEPMC2_DIR ${CMAKE_CURRENT_LIST_DIR}/../../hepmc2/hepmc2-current)
+  set(HEPMC2_DIR ${CMAKE_HEPPY_DIR}/external/hepmc2/hepmc2-current)
   message(STATUS "Setting HEPMC2_DIR to ${HEPMC2_DIR}")
 endif(NOT HEPMC_DIR)
 

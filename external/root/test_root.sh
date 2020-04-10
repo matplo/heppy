@@ -23,4 +23,6 @@ if [ os_darwin ]; then
 	export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${1}
 fi
 
+echo "<i> PYTHON_PATH to append: ${1}"
+echo "<i> PYTHON_EXECUTABLE: ${2}"
 ${2} -c "import sys; sys.path.append('${1}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());"

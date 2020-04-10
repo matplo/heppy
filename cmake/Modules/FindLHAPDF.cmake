@@ -9,7 +9,7 @@
 #  LHAPDF6_LIBRARY_DIRS (not cached)
 
 if (NOT LHAPDF6_DIR)
-  set(LHAPDF6_DIR ${CMAKE_CURRENT_LIST_DIR}/../../lhapdf6/lhapdf6-current)
+  set(LHAPDF6_DIR ${CMAKE_HEPPY_DIR}/external/lhapdf6/lhapdf6-current)
   message(STATUS "Setting LHAPDF6_DIR to ${LHAPDF6_DIR}")
 endif(NOT LHAPDF6_DIR)
 

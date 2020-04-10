@@ -23,7 +23,8 @@ else(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
                  $ENV{CGAL_ROOT}/lib
                  $ENV{CGAL_DIR}/lib64
                  $ENV{CGAL_ROOT}/lib64
-                 /usr/local/lib)
+                 /usr/local/lib
+                 /usr/local/lib64)
     else()
     find_path(CGAL_INCLUDE_DIR CGAL/basic.h
               /usr/local/include
@@ -43,7 +44,7 @@ else(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
 endif(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
 
 if(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
-  get_filename_component(CGAL_DIR ${CGAL_LIBRARIES} DIRECTORY)
+  get_filename_component(CGAL_DIR ${CGAL_INCLUDE_DIR} DIRECTORY)
   # message(STATUS "CGAL_INCLUDE_DIR=${CGAL_INCLUDE_DIR}")
   # message(STATUS "CGAL_LIBRARIES=${CGAL_LIBRARIES}")
   message(STATUS "${Green}CGAL found in ${CGAL_DIR}${ColourReset}")
