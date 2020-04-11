@@ -18,7 +18,10 @@ separator "heppy: ${BASH_SOURCE}"
 install_path=$(abspath ${THISD})
 build_path=${THISD}/build
 
-rn -rf ${build_path}
+clean=$(get_opt "clean" $@)
+if [ ! -z ${clean} ]; then
+    rm -rf ${build_path}
+fi
 
 verbose=$(get_opt "verbose" $@)
 if [ ! -z ${verbose} ]; then

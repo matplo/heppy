@@ -91,3 +91,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 add_subdirectory(src)
+
+include(list_vars)
+foreach(pack PROJECT_* HEPPY_* Python3_EXECUTABLE PYTHIA8_DIR ROOT_DIR HEPMC3_DIR HepMC_DIR LHAPDF6_DIR FASTJET_DIR CMAKE_MODULE_PATH )
+  dump_cmake_variables(${pack})
+endforeach()
