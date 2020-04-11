@@ -40,7 +40,7 @@ cd ${cdir}
 
 if [ -e ${pythia8_heppy_prefix}/bin/pythia8-config ]; 
 then
-	${THISD}/pythia8-current
+	rm -f ${THISD}/pythia8-current
 	ln -sfv ${pythia8_heppy_prefix} ${THISD}/pythia8-current
 	separator summary
 	${pythia8_heppy_prefix}/bin/pythia8-config --config
