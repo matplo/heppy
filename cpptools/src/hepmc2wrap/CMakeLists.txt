@@ -2,7 +2,7 @@ set(MODULE_NAME hepmc2wrap)
 set(MODULE ${PROJECT_NAME}_${MODULE_NAME})
 set(NAME_LIB ${MODULE})
 
-message(STATUS "${Red}module: ${MODULE}${ColourReset}")
+# message(STATUS "${Red}module: ${MODULE}${ColourReset}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 file(GLOB SOURCES_LIB ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)

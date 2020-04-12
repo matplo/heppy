@@ -49,7 +49,7 @@ mkdir -p ${build_path}
 if [ -d ${build_path} ]; then
     cd ${build_path}
     separator "configure"
-    cmake -DBUILD_PYTHON=${build_python_iface} ${build_python_iface} -DCMAKE_INSTALL_PREFIX=${install_path} -DCMAKE_BUILD_TYPE=${build_configuration} ${THISD}
+    cmake -DMAKE_MODULE=TRUE -DBUILD_PYTHON=${build_python_iface} ${build_python_iface} -DCMAKE_INSTALL_PREFIX=${install_path} -DCMAKE_BUILD_TYPE=${build_configuration} ${THISD}
     if [ "x${configure_only}" == "xyes" ]; then
         warning "stopping short of building...- configure-only requested"
         exit 0
