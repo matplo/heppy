@@ -69,7 +69,7 @@
 ```
 module use heppy/modules
 module load heppy/1.0
-./cpptools/tests/pythia_gen_fj_lund_test.py
+heppython ./cpptools/tests/pythia_gen_fj_lund_test.py
 ...
 # or for eIC
 $HEPPYDIR/heppy/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignore-mycfg
