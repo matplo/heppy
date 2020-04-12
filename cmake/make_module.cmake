@@ -43,6 +43,7 @@ function(make_module)
 
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}/cpptools/lib")
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}/cpptools/lib64")
+    module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}")
 
 endfunction(make_module)
 
