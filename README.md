@@ -8,7 +8,7 @@
     - note: during installation it will download and patch fjcontrib v. 1.042
   - usage of ROOT (Pythia8 bindings; also HEPMC2, HEPMC3, LHAPDF6) is up to the user
     - for Pythia8 pythia8-config should be in $PATH or in $PYTHIA8_DIR/bin
-    - for ROOT (compiled with the same python) root-config in $PATH or in $ROOTSYS/bin
+    - for ROOT (compiled with the same python - ROOT.py etc should be built) root-config in $PATH or in $ROOTSYS/bin
  
 # recommended build/setup
 
@@ -16,6 +16,8 @@
 ```
 ./cpptools/build.sh
 ```
+ - note this will also create `./modules/heppy/1.0` - a handy environmental module
+   - apart from setting up the paths it also adds a couple of aliases `heppython` for python executable in particular (and `heppy_cd` to cd to heppy directory...)
  - notable environment variables:
  -- $CGAL_DIR; $FASTJET_DIR; $HEPMC_DIR; $HEPMC2_DIR; $HEPMC3_DIR; $LHAPDF6_DIR; $PYTHIA8_DIR; $ROOTSYS
 
@@ -33,7 +35,7 @@
  ```
  - otherwise the system depends on CMake's `findPackage` (provided) see https://github.com/matplo/heppy/tree/newbuild/cmake/Modules
 
-## build setup 
+## setting up external packages... 
 
  - provided scripts can build external libraries (see below) and install them in heppy/external/...
  - to check if you have all what you need execute
