@@ -4,7 +4,6 @@ set(NAME_LIB ${MODULE})
 
 message(STATUS "${Red}module: ${MODULE}${ColourReset}")
 
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 file(GLOB SOURCES_LIB ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 message(STATUS "SOURCES: ${SOURCES_LIB}")

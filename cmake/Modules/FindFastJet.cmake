@@ -6,8 +6,11 @@
 #  FASTJET_FOUND, If false, do not try to use CGAL.
 
 if (NOT FASTJET_DIR)
-  set(FASTJET_DIR "${CMAKE_HEPPY_DIR}/external/fastjet/fastjet-current")
-  message(STATUS "Setting FASTJET_DIR to ${FASTJET_DIR}")
+  find_program ( FASTJETCONFIG fastjet-config PATHS $ENV{FASTJET_DIR}/bin ${FASTJET_DIR}/bin)
+  if (NOT EXISTS ${FASTJETCONFIG})
+    set(FASTJET_DIR "${CMAKE_HEPPY_DIR}/external/fastjet/fastjet-current")
+    message(STATUS "Setting FASTJET_DIR to ${FASTJET_DIR}")
+  endif(NOT EXISTS ${FASTJETCONFIG})
 endif(NOT FASTJET_DIR)
 
 if(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
@@ -32,7 +35,8 @@ else(FASTJET_INCLUDE_DIR AND FASTJET_LIBRARIES)
       get_filename_component(FASTJET_PYTHON_SO_SUBDIR ${FASTJET_PYTHON_SO} DIRECTORY)
       #message(STATUS "${Green}FastJet python so subdir: ${FASTJET_PYTHON_SO_SUBDIR}${ColourReset}")
 
-      execute_process( COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
+      message(STATUS "python exec ${Python_EXECUTABLE}")
+      execute_process( COMMAND ${Python_EXECUTABLE} -c "import sys; sys.path.append('${FASTJET_PYTHON_SUBDIR}'); sys.path.append('${FASTJET_PYTHON_SO_SUBDIR}'); import fastjet; fastjet.ClusterSequence.print_banner();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_FASTJET_PYTHON_RESULT 
                         OUTPUT_VARIABLE LOAD_FASTJET_PYTHON 
                         ERROR_VARIABLE LOAD_FASTJET_PYTHON_ERROR 

@@ -6,8 +6,11 @@
 #  PYTHIA8_FOUND, If false, do not try to use CGAL.
 
 if (NOT PYTHIA8_DIR)
-  set(PYTHIA8_DIR "${CMAKE_HEPPY_DIR}/external/pythia8/pythia8-current")
-  message(STATUS "Setting PYTHIA8_DIR to ${PYTHIA8_DIR}")
+  find_program ( PYTHIA8CONFIG pythia8-config PATHS $ENV{PYTHIA8_DIR}/bin ${PYTHIA8_DIR}/bin)
+  if (NOT EXISTS ${PYTHIA8CONFIG})
+    set(PYTHIA8_DIR "${CMAKE_HEPPY_DIR}/external/pythia8/pythia8-current")
+    message(STATUS "Setting PYTHIA8_DIR to ${PYTHIA8_DIR}")
+  endif(NOT EXISTS ${PYTHIA8CONFIG})
 endif(NOT PYTHIA8_DIR)
 
 if(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
@@ -28,7 +31,7 @@ else(PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIBRARIES)
       string(REPLACE "${PYTHIA8_DIR}/" "" FJPYSUBDIR_TMP "${PYTHIA8_PYTHON}")
       string(REPLACE "/pythia8.py" "" PYTHIA8_PYTHON_SUBDIR ${PYTHIA8_PYTHON})
       #message(STATUS "${Green}Pythia8 python module subdir: ${PYTHIA8_PYTHON_SUBDIR}${ColourReset}")
-      execute_process( COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${PYTHIA8_PYTHON_SUBDIR}'); import pythia8; pythia = pythia8.Pythia();" WORKING_DIRECTORY /tmp 
+      execute_process( COMMAND ${Python_EXECUTABLE} -c "import sys; sys.path.append('${PYTHIA8_PYTHON_SUBDIR}'); import pythia8; pythia = pythia8.Pythia();" WORKING_DIRECTORY /tmp 
                         RESULT_VARIABLE LOAD_PYTHIA8_PYTHON_RESULT 
                         OUTPUT_VARIABLE LOAD_PYTHIA8_PYTHON 
                         ERROR_VARIABLE LOAD_PYTHIA8_PYTHON_ERROR 
