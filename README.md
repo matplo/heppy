@@ -67,9 +67,8 @@
 - example 'workflow'
 
 ```
-pipenv shell
 module use heppy/modules
-module load heppy/main_python
+module load heppy/1.0
 ./cpptools/tests/pythia_gen_fj_lund_test.py
 ...
 # or for eIC
