@@ -45,5 +45,8 @@ function(make_module)
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}/cpptools/lib64")
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}")
 
+    file(APPEND ${heppy_module_file} "setenv HEPPY_PYTHON_EXECUTABLE ${Python_EXECUTABLE}\n")
+    file(APPEND ${heppy_module_file} "set-alias heppython \"${Python_EXECUTABLE}\"\n")
+    file(APPEND ${heppy_module_file} "set-alias heppy_cd \"cd ${HEPPY_DIR}\"\n")
 endfunction(make_module)
 
