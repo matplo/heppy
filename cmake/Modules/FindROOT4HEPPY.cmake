@@ -57,7 +57,7 @@ if (ROOT_FOUND)
         string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
         string(REPLACE "/ROOT.py" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
         message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
-        find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+        find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
         #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
         execute_process(  COMMAND ${CMAKE_HEPPY_DIR}/external/root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python_EXECUTABLE}
