@@ -12,6 +12,20 @@
  
 # recommended build/setup
 
+ - a pre-build note: because of the particularities of fastjet build (also pythia8 to some extent) we recommend building in virtual environment - for example:
+ ```
+./scripts/pipenv_heppy.sh shell
+pipenv install numpy
+# now build commands here...
+./external/fastjet/build.sh
+./external/lhapdf6/build.sh
+./external/hepmc/build.sh
+./external/hepmc3/build.sh
+./external/root/build.sh
+./external/pythia8/build.sh
+./cpptools/build.sh
+ ```
+  
  - to build the main interface
 ```
 ./cpptools/build.sh
