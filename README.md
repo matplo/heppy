@@ -12,7 +12,7 @@
  
 # recommended build/setup
 
- - a pre-build note: because of the particularities of fastjet build (also pythia8 to some extent) we recommend building in virtual environment - for example:
+ - a pre-build note: *because of the interaction of python2 and python3 on some systems and the particularities of fastjet build (also pythia8 to some extent) we recommend building in virtual environment* - for example:
  ```
 ./scripts/pipenv_heppy.sh shell
 pipenv install numpy
