@@ -83,6 +83,7 @@ if [ -d ${dirsrc} ]; then
 	then
 		separator summary
 		ls $(dirname ${hepmc2lib})
+		rm ${THISD}/hepmc2-current
 		ln -sfv ${hepmc2_heppy_prefix} ${THISD}/hepmc2-current
 		echo_info "looks like the libraries are there - so ignore if the tests have failed. "
 	else
