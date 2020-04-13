@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cdir=$(pwd)
+
 function thisdir()
 {
 	SOURCE="${BASH_SOURCE[0]}"
@@ -11,8 +13,19 @@ function thisdir()
 	DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 	echo ${DIR}
 }
-export -f thisdir
-
 THISD=$(thisdir)
+cd ${THISD}
 
-${THISD}/make_modules.sh $@
+. ${THISD}/../scripts/util.sh
+
+separator "mkdir ${THISD}/build"
+rm -rf ${THISD}/build
+mkdir ${THISD}/build
+cd ${THISD}/build
+
+separator "call cmake"
+cmake .. 
+
+separator "done."
+
+cd ${cdir}

@@ -1,0 +1,43 @@
+# - Locate HepMC library
+# Defines:
+#
+#  HEPMC3_FOUND
+#  HEPMC3_INCLUDE_DIR
+#  HEPMC3_INCLUDE_DIRS (not cached)
+#  HEPMC3_LIBRARIES
+#  adopted from https://gitlab.cern.ch/sft/lcgcmake/tree/master/cmake/modules
+
+if (NOT HEPMC3_DIR)
+  set(HEPMC3_DIR ${CMAKE_HEPPY_DIR}/external/hepmc3/hepmc3-current)
+  message(STATUS "Setting HEPMC3_DIR to ${HEPMC3_DIR}")
+endif(NOT HEPMC3_DIR)
+
+find_path(HEPMC3_INCLUDE_DIR HepMC/GenEvent.h 
+          HINTS ${HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_DIR}/include ${HEPMC3_DIR}/include)
+find_library(HEPMC3_LIBRARY NAMES HepMC 
+             HINTS ${HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib64)
+
+set(HEPMC3_INCLUDE_DIRS ${HEPMC3_INCLUDE_DIR})
+set(HEPMC3_LIBRARIES ${HEPMC3_LIBRARY})
+get_filename_component(HEPMC3_LIB_DIR ${HEPMC3_LIBRARY} DIRECTORY)
+
+# handle the QUIETLY and REQUIRED arguments and set HEPMC3_FOUND to TRUE if
+# all listed variables are TRUE
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(HepMC3 DEFAULT_MSG HEPMC3_INCLUDE_DIR HEPMC3_LIBRARY HEPMC_LIB_DIR)
+
+if (HEPMC3_FOUND)
+	execute_process(COMMAND ${HEPMC3_INCLUDE_DIR}/../bin/HepMC3-config --version OUTPUT_VARIABLE HEPMC3_VERSION ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+	string(REPLACE "." ";" HEPMC3_VERSION_LIST ${HEPMC3_VERSION})
+	#message(STATUS "HEPMC3_VERSION_LIST ${HEPMC3_VERSION_LIST}")
+	list(GET HEPMC3_VERSION_LIST 0 HEPMC3_VERSION_MAJOR)
+	list(GET HEPMC3_VERSION_LIST 1 HEPMC3_VERSION_MINOR)
+	#message(STATUS "${Green}HEPMC3 found ${HEPMC3_VERSION} - MAJOR: ${HEPMC3_VERSION_MAJOR} - MINOR: ${HEPMC3_VERSION_MINOR} ${ColourReset}")
+	message(STATUS "${Green}HEPMC3 ver. ${HEPMC3_VERSION}${ColourReset}")
+	mark_as_advanced(HEPMC3_FOUND HEPMC3_INCLUDE_DIR HEPMC3_LIBRARY HEPMC3_VERSION HEPMC3_VERSION_LIST HEPMC3_VERSION_MAJOR HEPMC3_VERSION_MINOR)
+	# message( STATUS "HEPMC3_INCLUDE_DIR: ${HEPMC3_INCLUDE_DIR}")
+	# message( STATUS "HEPMC3_LIBRARY: ${HEPMC3_LIBRARY}")
+	# message( STATUS "HEPMC3_LIBRARY: ${HEPMC3_LIB_DIR}")
+else(HEPMC3_FOUND)
+	message(STATUS "${Yellow}HEPMC3 not found - some of the functionality will be misssing.${ColourReset}")
+endif()

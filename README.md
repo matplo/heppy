@@ -1,81 +1,75 @@
 # heppy
 
 - some work on HEP things in python (with quite a bit of help on c++ side)
-- this uses CMake, SWIG
-- usage of ROOT (Pythia8 bindings; also HEPMC3) is up to the user
+- dependencies:
+  - CMake, SWIG, Python ver. >= 3.6
+  - FastJet ver. >= 3.
+    - expects fastjet-config in $PATH or in $FASTJET_DIR/bin
+    - note: during installation it will download and patch fjcontrib v. 1.042
+  - usage of ROOT (Pythia8 bindings; also HEPMC2, HEPMC3, LHAPDF6) is up to the user
+    - for Pythia8 pythia8-config should be in $PATH or in $PYTHIA8_DIR/bin
+    - for ROOT (compiled with the same python - ROOT.py etc should be built) root-config in $PATH or in $ROOTSYS/bin
+ 
+# recommended build/setup
+
+ - to build the main interface
+```
+./cpptools/build.sh
+```
+ - note this will also create `./modules/heppy/1.0` - a handy environmental module
+   - apart from setting up the paths it also adds a couple of aliases `heppython` for python executable in particular (and `heppy_cd` to cd to heppy directory...)
+ - notable environment variables:
+ -- $CGAL_DIR; $FASTJET_DIR; $HEPMC_DIR; $HEPMC2_DIR; $HEPMC3_DIR; $LHAPDF6_DIR; $PYTHIA8_DIR; $ROOTSYS
+
+ - for full functionality (compiled with the *same* python3 >= 3.6):
+ -- FASTJET 3 (the builtin build will attempt to find CGAL on the system - guess is $CGAL_DIR})
+ -- PYTHIA 8
+ -- HEPMC2 and HEPMC3
+ -- LHAPDF6
+ -- ROOT 6
+
+ - some prerequisites expected in path (compiled with the same python3 >= 3.6):
+ ```
+ root-config
+ pythia8-config
+ ```
+ - otherwise the system depends on CMake's `findPackage` (provided) see https://github.com/matplo/heppy/tree/newbuild/cmake/Modules
+
+## setting up external packages... 
+
+ - provided scripts can build external libraries (see below) and install them in heppy/external/...
+ - to check if you have all what you need execute
+
+```
+	./external/build.sh
+```
+
+- to build individual (missing) packages:
+
+```
+	./external/fastjet/build.sh
+	./external/lhapdf6/build.sh
+	./external/hepmc/build.sh
+	./external/hepmc3/build.sh
+	./external/root/build.sh
+	./external/pythia8/build.sh
+
+```
+
+  - these will download and install PYTHIA, HepMC2, HepMC3, LHAPDF6, FASTJET, ROOT into the `external` subdirectory. User can control what version packages to use by building those libs yourself...
 
 # example python script
 
  - heppy/examples/pythia_gen_fastjet_lund_test.py
- 
-# recommended build/setup
-
-- simply type and get a short (long if building with root) coffee
-```
-./scripts/setup.sh --buildext --root --all
-```
-
-- ... load module to use ...
-
-```
-pipenv shell
-./scripts/setup.sh --buildext --root --all
-module use $PWD/modules
-module load heppy/main_python
-examples/pythia_gen_fastjet_lund_test.py
-```
-
-- to wipe out and rebuild everything
-```
-./scripts/cleanup.sh
-./scripts/setup.sh --buildext --rebuild
-```
-
-- to rebuild the swigified fjcontrib and the few tools only
-```
-./scripts/setup.sh --rebuild
-```
-
-- to change the external builds you can use scripts...
-```
-external/setup_pythia8.sh --version=8.XYZ
-external/setup_fastjet.sh
-external/setup_hepmc3.sh           
-external/setup_hepmc2_cmake.sh     
-external/setup_root.sh
-external/setup_lhapdf6.sh
-```
-... but the best is to edit the `external/setup.sh`
-
-- useful debuging option `--configure-only` (no build just configure and exit)
-
-- to rebuild cpptools only
-```
-./scripts/setup.sh
-```
-- useful debuging option `--configure-only`
-
-- one can also use ./cpptools/scripts/build_cpptools.sh directly with [--rebuild] [--install] [--clean] [--cleanall]
-
-# modules
-
-- ./modules/heppy contains modules - use the one with 'main' to load everything
-
-
-## Notes: 
-
-- this will download and install PYTHIA, HepMC2, HepMC3, LHAPDF6, FASTJET, ROOT into the `external` subdirectory. User can control what version packages to use by building those libs yourself...
-- for some options `./scripts/build_cpptools.sh --help`
 
 # running
 
 - example 'workflow'
 
 ```
-pipenv shell
-module use heppy/modules
-module load heppy/main_python
-./cpptools/tests/pythia_gen_fj_lund_test.py
+module use <where heppy>/modules
+module load heppy/1.0
+heppython $HEPPY_DIR/cpptools/tests/pythia_gen_fj_lund_test.py
 ...
 # or for eIC
 $HEPPYDIR/heppy/examples/pythia_gen_fastjet_lund_test.py --eic --eic-dis --ignore-mycfg

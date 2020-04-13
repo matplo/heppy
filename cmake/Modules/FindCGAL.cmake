@@ -14,14 +14,17 @@ else(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
     find_path(CGAL_INCLUDE_DIR CGAL/basic.h
               HINTS
               $ENV{CGAL_DIR}/include
-              $ENV{CGAL_ROOT}/include)
+              $ENV{CGAL_ROOT}/include
+              /usr/local/include)
 
     find_library(CGAL_LIBRARIES NAMES CGAL libCGAL
                  HINTS
                  $ENV{CGAL_DIR}/lib
                  $ENV{CGAL_ROOT}/lib
                  $ENV{CGAL_DIR}/lib64
-                 $ENV{CGAL_ROOT}/lib64)
+                 $ENV{CGAL_ROOT}/lib64
+                 /usr/local/lib
+                 /usr/local/lib64)
     else()
     find_path(CGAL_INCLUDE_DIR CGAL/basic.h
               /usr/local/include
@@ -41,10 +44,12 @@ else(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
 endif(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
 
 if(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
-  message(STATUS "CGAL_INCLUDE_DIR=${CGAL_INCLUDE_DIR}")
-  message(STATUS "CGAL_LIBRARIES=${CGAL_LIBRARIES}")
+  get_filename_component(CGAL_DIR ${CGAL_INCLUDE_DIR} DIRECTORY)
+  # message(STATUS "CGAL_INCLUDE_DIR=${CGAL_INCLUDE_DIR}")
+  # message(STATUS "CGAL_LIBRARIES=${CGAL_LIBRARIES}")
+  message(STATUS "${Green}CGAL found in ${CGAL_DIR}${ColourReset}")
   set(CGAL_FOUND TRUE)
 else(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)
   set(CGAL_FOUND FALSE)
-  message(STATUS "CGAL not found.")
+  message(STATUS "${Yellow}CGAL not found.${ColourReset}")
 endif(CGAL_INCLUDE_DIR AND CGAL_LIBRARIES)

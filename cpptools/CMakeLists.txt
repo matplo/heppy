@@ -3,25 +3,27 @@ cmake_minimum_required(VERSION 3.13.5)
 # SWIG: use SWIG_MODULE_NAME property.
 if(POLICY CMP0086)
   cmake_policy(SET CMP0086 NEW)
-endif()
+endif(POLICY CMP0086)
 # target_sources: use absolute path for INTERFACE_SOURCES.
 if(POLICY CMP0076)
   cmake_policy(SET CMP0076 NEW)
-endif()
+endif(POLICY CMP0076)
 # SWIG: use standard target name.
 if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
-endif()
-
-find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
-find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-
-set (CMAKE_CXX_STANDARD 11)
+endif(POLICY CMP0078)
 
 project(heppy VERSION 1.0 LANGUAGES CXX)
 message(STATUS "version: ${PROJECT_VERSION}")
+
+find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
+find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../cmake")
+message(STATUS "module path ${CMAKE_MODULE_PATH}")
+include(common_heppy)
+include(common_heppy_finds)
+include(swigify)
+include(install_targets_custom)
 
 # Layout build dir like install dir
 if(UNIX)
@@ -80,7 +82,6 @@ else()
 endif()
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Force default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
@@ -89,7 +90,15 @@ if(NOT CMAKE_BUILD_TYPE)
     FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-include(colors)
-include(swigify)
-include(install_targets_custom)
 add_subdirectory(src)
+
+# for debugging only
+# include(list_vars)
+# foreach(pack PROJECT_DIR HEPPY_DIR Python_EXECUTABLE PYTHIA8_DIR ROOT_HEPPY_PREFIX HEPMC3_DIR HEPMC_DIR LHAPDF6_DIR FASTJET_DIR CMAKE_MODULE_PATH )
+#   dump_cmake_variables(${pack})
+# endforeach()
+
+if (MAKE_MODULE)
+  include(make_module)
+  make_module()
+endif(MAKE_MODULE)
