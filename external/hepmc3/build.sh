@@ -83,20 +83,22 @@ if [ -d ${dirsrc} ]; then
 	cmake --build . --target install
 
 	cd ${cdir}
-	hepmc3lib=$(find ${hepmc3_heppy_prefix} -name libHepMC3.dylib)
+	hepmc3lib=$(find ${hepmc3_heppy_prefix} -name "libHepMC3.*" | head -n 1)
 	if [ -e ${hepmc3lib} ];
 	then
 		separator "post build"
 		echo_info "link: ln -s ${dirinst}/include/HepMC3 ${dirinst}/include/HepMC"
-		ln -s ${dirinst}/include/HepMC3 ${dirinst}/include/HepMC
-		echo_info "link ${dirinst}/lib/libHepMC3.dylib"
+		rm ${dirinst}/include/HepMC
+		ln -sfv ${dirinst}/include/HepMC3 ${dirinst}/include/HepMC
+		echo_info "link ${hepmc3lib}"
 		_libdir=${dirinst}/lib
-		[ -e ${dirinst}/lib64 ] && ln -s ${dirinst}/lib64 ${_libdir} && _libdir=${dirinst}/lib64
-		[ -e ${_libdir}/libHepMC3.dylib ] && ln -s ${_libdir}/libHepMC3.dylib ${_libdir}/libHepMC.dylib
-		[ -e ${_libdir}/libHepMC3.so ] && ln -s ${_libdir}/libHepMC3.so ${_libdir}/libHepMC.so
+		[ -e ${dirinst}/lib64 ] && ln -svf ${dirinst}/lib64 ${_libdir} && _libdir=${dirinst}/lib64
+		[ -e ${_libdir}/libHepMC3.dylib ] && ln -svf ${_libdir}/libHepMC3.dylib ${_libdir}/libHepMC.dylib
+		[ -e ${_libdir}/libHepMC3.so ] && ln -svf ${_libdir}/libHepMC3.so ${_libdir}/libHepMC.so
 		separator summary
 		ls $(dirname ${hepmc3lib})
-		ln -sf ${hepmc3_heppy_prefix} ${THISD}/hepmc3-current
+		rm ${THISD}/hepmc3-current
+		ln -sfv ${hepmc3_heppy_prefix} ${THISD}/hepmc3-current
 	else
 		echo_error "[e] sorry... the build failed: no hepmc3 library in ${hepmc3_heppy_prefix}"
 		separator "hepmc3 build script done"
