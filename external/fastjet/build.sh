@@ -26,13 +26,21 @@ if [ ! -z ${clean} ]; then
 	rm -rf ./build_fastjet
 fi
 
+cgal_opt=$(get_opt "cgal" $@)
+if [ ! -z ${cgal_opt} ]; then
+	echo_info "enabling CGAL"
+	cgal_opt="-DENABLE_CGAL=TRUE"
+else
+	cgal_opt=""
+fi
+
 mkdir -p ./build_fastjet
 cd ./build_fastjet
 
 fastjet_version=3.3.3
 fastjet_heppy_prefix="${THISD}/fastjet-${fastjet_version}"
 separator configuration
-cmake -DCMAKE_BUILD_TYPE=Release -DFASTJET_VERSION="${fastjet_version}" -DFASTJET_HEPPY_PREFIX=${fastjet_heppy_prefix} ..
+cmake -DCMAKE_BUILD_TYPE=Release -DFASTJET_VERSION="${fastjet_version}" -DFASTJET_HEPPY_PREFIX=${fastjet_heppy_prefix} ${cgal_opt} ..
 separator build
 cmake --build . --target all  
 
