@@ -77,12 +77,13 @@ if [ -d ${dirsrc} ]; then
 	cmake --build . --target test
 
 	cd ${cdir}
-	hepmc2lib=$(find ${hepmc2_heppy_prefix} -name libHepMC.dylib)
+	hepmc2lib=$(find ${hepmc2_heppy_prefix} -name "libHepMC.*" | head -n 1)
+	echo "$hepmc2lib"
 	if [ -e ${hepmc2lib} ];
 	then
 		separator summary
 		ls $(dirname ${hepmc2lib})
-		ln -sf ${hepmc2_heppy_prefix} ${THISD}/hepmc2-current
+		ln -sfv ${hepmc2_heppy_prefix} ${THISD}/hepmc2-current
 		echo_info "looks like the libraries are there - so ignore if the tests have failed. "
 	else
 		echo_error "[e] sorry... the build failed: no hepmc2 library in ${hepmc2_heppy_prefix}"
