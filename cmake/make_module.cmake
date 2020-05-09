@@ -65,6 +65,7 @@ function(make_module)
     module_append_command_no_prop("setenv" "HEPPY_PYTHON_EXECUTABLE" "${Python_EXECUTABLE}" TRUE)
     module_append_command_no_prop("set-alias" "heppython" "\"${Python_EXECUTABLE}\"" FALSE)
     module_append_command_no_prop("set-alias" "heppy_cd" "\"cd ${HEPPY_DIR}\"" FALSE)
+    module_append_command_no_prop("set-alias" "heppy_pipenv" "\"${HEPPY_DIR}/scripts/pipenv_heppy.sh\"" FALSE)
 
 
 endfunction(make_module)
