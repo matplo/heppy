@@ -14,15 +14,26 @@
 
  - a pre-build note: **because of the interaction of python2 and python3 on some systems and the particularities of fastjet build (also pythia8 to some extent) we recommend building in virtual environment** - for example:
  ```
- ./scripts/pipenv_heppy.sh install numpy
+./scripts/pipenv_heppy.sh install numpy
 ./scripts/pipenv_heppy.sh shell
-# now build commands here...
+
+# now build commands for the external packages follow...
+
+# note: fastjet compilation relies on python-config (or python3.X-config to be precise)
 ./external/fastjet/build.sh
+# note: use --clean to start with a clean configuration step
+# ./external/fastjet/build.sh --clean
+
 ./external/lhapdf6/build.sh
+
 ./external/hepmc2/build.sh
+
 ./external/hepmc3/build.sh
+
 ./external/root/build.sh
+
 ./external/pythia8/build.sh
+
 ./cpptools/build.sh
  ```
   
