@@ -89,6 +89,18 @@ public:
   /// obtain the index of the max{kappa_i} the primary plane of the jet
   int max_kappa_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
   static fastjet::contrib::LundDeclustering& max_kappa_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+
+  /// obtain the splitting of max{tf_i}
+  virtual LundDeclustering max_tf(const fastjet::PseudoJet& jet);
+  /// obtain the index of the max{tf_i} the primary plane of the jet
+  int max_tf_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+  static fastjet::contrib::LundDeclustering& max_tf_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+
+  /// obtain the splitting of min{tf_i}
+  virtual LundDeclustering min_tf(const fastjet::PseudoJet& jet);
+  /// obtain the index of the min{tf_i} the primary plane of the jet
+  int min_tf_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
+  static fastjet::contrib::LundDeclustering& min_tf_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
 };
 
 // %include "LundPlane/LundJSON.hh"

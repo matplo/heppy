@@ -68,6 +68,18 @@ namespace contrib
     int max_kappa_split_index(const std::vector<LundDeclustering>& lunds);
     static LundDeclustering& max_kappa_split(const std::vector<LundDeclustering>& lunds);
 
+    /// obtain the splitting of max{tf_i} : tf = z\theta^2
+    virtual LundDeclustering max_tf(const PseudoJet& jet);
+    /// obtain the index of the max{tf_i} the primary plane of the jet
+    int max_tf_split_index(const std::vector<LundDeclustering>& lunds);
+    static LundDeclustering& max_tf_split(const std::vector<LundDeclustering>& lunds);
+
+    /// obtain the splitting of min{tf_i} : tf = z\theta^2
+    virtual LundDeclustering min_tf(const PseudoJet& jet);
+    /// obtain the index of the min{tf_i} the primary plane of the jet
+    int min_tf_split_index(const std::vector<LundDeclustering>& lunds);
+    static LundDeclustering& min_tf_split(const std::vector<LundDeclustering>& lunds);
+
   private:
     PseudoJet *_cached_jet;
   	LundGenerator _lund_gen;
