@@ -28,7 +28,7 @@ if (NOT FASTJET_FOUND)
   message(SEND_ERROR "${Red}FASTJET not found.${ColourReset}")
 endif(NOT FASTJET_FOUND)
 
-find_package(LHAPDF QUIET)
+find_package(LHAPDF6 QUIET)
 
 find_package(HepMC QUIET COMPONENTS HepMC)
 
