@@ -262,6 +262,26 @@ def pythia_config_from_args(args):
 		sconfig_pythia.append("HardQCD:all=on")
 		procsel += 1
 
+	if args.py_PbPb:
+		# from main113.cc
+		sconfig_pythia.append("Beams:idA = 1000822080")
+		sconfig_pythia.append("Beams:idB = 1000822080") # The lead ion.
+		# sconfig_pythia.append("Beams:eCM = 2760.0")
+		sconfig_pythia.append("Beams:frameType = 1")
+		# Initialize the Angantyr model to fit the total and semi-includive
+		# cross sections in Pythia within some tolerance.
+		sconfig_pythia.append("HeavyIon:SigFitErr = 0.02,0.02,0.1,0.05,0.05,0.0,0.1,0.0")
+		# These parameters are typicall suitable for sqrt(S_NN)=5TeV
+		sconfig_pythia.append("HeavyIon:SigFitDefPar = 17.24,2.15,0.33,0.0,0.0,0.0,0.0,0.0")
+		# A simple genetic algorithm is run for 20 generations to fit the parameters.
+		sconfig_pythia.append("HeavyIon:SigFitNGen = 20")
+		procsel += 1
+
+	if args.pythiaopts:
+		_extra = [s.replace("_", " ") for s in args.pythiaopts.split(',')]
+		sconfig_pythia.extend(_extra)
+		procsel += 1
+
 	if procsel == 0:
 		sconfig_pythia.append("HardQCD:all=on")
 
@@ -295,25 +315,6 @@ def pythia_config_from_args(args):
 
 	if args.py_ecm:
 		sconfig_pythia.append("Beams:eCM = {}".format(args.py_ecm))
-
-	if args.py_PbPb:
-		# from main113.cc
-		sconfig_pythia.append("Beams:idA = 1000822080")
-		sconfig_pythia.append("Beams:idB = 1000822080") # The lead ion.
-		# sconfig_pythia.append("Beams:eCM = 2760.0")
-		sconfig_pythia.append("Beams:frameType = 1")
-		# Initialize the Angantyr model to fit the total and semi-includive
-		# cross sections in Pythia within some tolerance.
-		sconfig_pythia.append("HeavyIon:SigFitErr = 0.02,0.02,0.1,0.05,0.05,0.0,0.1,0.0")
-		# These parameters are typicall suitable for sqrt(S_NN)=5TeV
-		sconfig_pythia.append("HeavyIon:SigFitDefPar = 17.24,2.15,0.33,0.0,0.0,0.0,0.0,0.0")
-		# A simple genetic algorithm is run for 20 generations to fit the parameters.
-		sconfig_pythia.append("HeavyIon:SigFitNGen = 20")
-
-	if args.pythiaopts:
-		_extra = [s.replace("_", " ") for s in args.pythiaopts.split(',')]
-		sconfig_pythia.extend(_extra)
-		procsel += 1
 
 	print(sconfig_pythia)
 	return sconfig_pythia
