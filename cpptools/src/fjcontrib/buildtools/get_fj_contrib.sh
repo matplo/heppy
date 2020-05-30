@@ -34,6 +34,7 @@ if [ -d ${srcdir} ]; then
 			fi
 			if [ -d ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane ]; then
 				cp -v ${srcdir}/custom/DynamicalGroomer.* ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane
+				cp -v ${srcdir}/custom/GroomerShop.* ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane
 			fi
 
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/ConstituentSubtractor ]; then
