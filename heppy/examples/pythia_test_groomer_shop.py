@@ -80,6 +80,8 @@ def main():
 			sd_info = fjcontrib.get_SD_jet_info(j_sd)
 			print("  |-> SD jet params          z={} dR={} mu={}".format(sd_info.z, sd_info.dR, sd_info.mu))
 			print('  |-> GroomerShop::soft_drop', gshop.soft_drop(0, 0.1, 1.0).as_string())
+			# or call with no radius param - will use max allowed
+			# print('  |-> GroomerShop::soft_drop', gshop.soft_drop(0, 0.1).as_string())
 
 
 	pythia.stat()
