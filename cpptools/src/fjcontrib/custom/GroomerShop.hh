@@ -2,7 +2,6 @@
 #define __FASTJET_CONTRIB_GROOMERSHOP_HH__
 
 #include <sstream>
-#include <fastjet/LimitedWarning.hh>
 #include "LundGenerator.hh"
 
 FASTJET_BEGIN_NAMESPACE
@@ -54,35 +53,33 @@ namespace contrib
 
     /// obtain the splitting after dynamical grooming of the primary plane of the jet
     // https://arxiv.org/abs/1911.00375
-    virtual LundDeclustering& dynamical(const double& alpha);
+    virtual LundDeclustering* dynamical(const double& alpha);
 
     /// obtain the splitting of max{pT's of softer prongs}
-    virtual LundDeclustering& max_pt_softer();
+    virtual LundDeclustering* max_pt_softer();
 
     /// obtain the splitting of max{z_i}
-    virtual LundDeclustering& max_z();
+    virtual LundDeclustering* max_z();
 
     /// obtain the splitting of max{kt_i}
-    virtual LundDeclustering& max_kt();
+    virtual LundDeclustering* max_kt();
 
     /// obtain the splitting of max{kappa_i}
-    virtual LundDeclustering& max_kappa();
+    virtual LundDeclustering* max_kappa();
 
     /// obtain the splitting of max{tf_i} : tf = z\theta^2
-    virtual LundDeclustering& max_tf();
+    virtual LundDeclustering* max_tf();
 
     /// obtain the splitting of min{tf_i} : tf = z\theta^2
-    virtual LundDeclustering& min_tf();
+    virtual LundDeclustering* min_tf();
 
     /// soft drop - returns zero_split in case no substructure found
-    LundDeclustering& soft_drop(double beta, double zcut, double R0 = JetDefinition::max_allowable_R);
+    virtual LundDeclustering* soft_drop(double beta, double zcut, double R0 = JetDefinition::max_allowable_R);
 
   private:
   	LundGenerator _lund_gen;
     std::vector<LundDeclustering> _lund_splits;
     LundDeclustering _result;
-    static LundDeclustering _zero_split;
-    static LimitedWarning _warnings;
   };
 
 } // namespace contrib

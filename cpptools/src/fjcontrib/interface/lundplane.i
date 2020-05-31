@@ -27,6 +27,8 @@ namespace fastjet{
 // %nodefaultdtor LundDeclustering;
 class LundDeclustering {
 public:
+  LundDeclustering();
+  virtual void reset();
   const fastjet::PseudoJet & pair()  const;
   const fastjet::PseudoJet & harder() const;
   const fastjet::PseudoJet & softer() const;
@@ -166,28 +168,28 @@ public:
 
   /// obtain the splitting after dynamical grooming of the primary plane of the jet
   // https://arxiv.org/abs/1911.00375
-  virtual LundDeclustering dynamical(const double& alpha);
+  virtual LundDeclustering* dynamical(const double& alpha);
 
   /// obtain the splitting of max{pT's of softer prongs}
-  virtual LundDeclustering max_pt_softer();
+  virtual LundDeclustering* max_pt_softer();
 
   /// obtain the splitting of max{z_i}
-  virtual LundDeclustering max_z();
+  virtual LundDeclustering* max_z();
 
   /// obtain the splitting of max{kt_i}
-  virtual LundDeclustering max_kt();
+  virtual LundDeclustering* max_kt();
 
   /// obtain the splitting of max{kappa_i}
-  virtual LundDeclustering max_kappa();
+  virtual LundDeclustering* max_kappa();
 
   /// obtain the splitting of max{tf_i} : tf = z\theta^2
-  virtual LundDeclustering max_tf();
+  virtual LundDeclustering* max_tf();
 
   /// obtain the splitting of min{tf_i} : tf = z\theta^2
-  virtual LundDeclustering min_tf();
+  virtual LundDeclustering* min_tf();
 
   /// soft drop - returns zero_split in case no substructure found
-  LundDeclustering& soft_drop(double zcut, double beta, double R0 = JetDefinition::max_allowable_R);
+  virtual LundDeclustering* soft_drop(double zcut, double beta, double R0 = JetDefinition::max_allowable_R);
 
 };
 
