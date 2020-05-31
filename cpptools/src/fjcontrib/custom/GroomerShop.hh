@@ -74,6 +74,9 @@ namespace contrib
     /// obtain the splitting of min{tf_i} : tf = z\theta^2
     virtual LundDeclustering& min_tf();
 
+    /// soft drop - returns zero_split in case no substructure found
+    LundDeclustering& soft_drop(double beta, double zcut, double R0 = JetDefinition::max_allowable_R);
+
   private:
   	LundGenerator _lund_gen;
     std::vector<LundDeclustering> _lund_splits;

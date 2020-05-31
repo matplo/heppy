@@ -64,14 +64,23 @@ def main():
 			# or use indices
 			if idg01 == idg20 and idg01 > 0:
 				print('- interesting jet?:')
-				print('  dg01=', dg01.as_string(), 'index dg01=', idg01)
-				print('  dg20=', dg20.as_string(), 'index dg20=', idg20)
-				print('  max_kt=', max_kt.as_string(), 'index max_kt=', imax_kt)
-				print('  max_pt_softer=', max_pt_softer.as_string())
-				print('  max_kappa=', gshop.max_kappa().as_string())
-				print('  max_tf=', gshop.max_tf().as_string())
-				print('  min_tf=', gshop.min_tf().as_string())
-				print('  max_z=', gshop.max_z().as_string())
+				print('  dg01         :', dg01.as_string(), 'index dg01:', idg01)
+				print('  dg20         :', dg20.as_string(), 'index dg20:', idg20)
+				print('  max_kt       :', max_kt.as_string(), 'index max_kt:', imax_kt)
+				print('  max_pt_softer:', max_pt_softer.as_string())
+				print('  max_kappa    :', gshop.max_kappa().as_string())
+				print('  max_tf       :', gshop.max_tf().as_string())
+				print('  min_tf       :', gshop.min_tf().as_string())
+				print('  max_z        :', gshop.max_z().as_string())
+
+			print('softdrop check for jet:', j)
+			sd = fjcontrib.SoftDrop(0, 0.1, 1.0)
+			j_sd = sd.result(j)
+			#print('  |-> after soft drop pT={0:10.3f} delta={1:10.3f}'.format(j_sd.perp(), j_sd.perp() - j.perp()))
+			sd_info = fjcontrib.get_SD_jet_info(j_sd)
+			print("  |-> SD jet params          z={} dR={} mu={}".format(sd_info.z, sd_info.dR, sd_info.mu))
+			print('  |-> GroomerShop::soft_drop', gshop.soft_drop(0, 0.1, 1.0).as_string())
+
 
 	pythia.stat()
 

@@ -186,6 +186,9 @@ public:
   /// obtain the splitting of min{tf_i} : tf = z\theta^2
   virtual LundDeclustering min_tf();
 
+  /// soft drop - returns zero_split in case no substructure found
+  LundDeclustering& soft_drop(double zcut, double beta, double R0 = JetDefinition::max_allowable_R);
+
 };
 
 // %include "LundPlane/LundJSON.hh"

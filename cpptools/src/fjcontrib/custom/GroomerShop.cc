@@ -3,6 +3,7 @@
 #include <limits>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 FASTJET_BEGIN_NAMESPACE      // defined in fastjet/internal/base.hh
 
@@ -238,6 +239,21 @@ namespace contrib
 		{
 			// throw Error("min tf not found for a given jet");
 			GroomerShop::_warnings.warn("min tf not found for a given jet - jet with no substructure? returning and 'empty' split");
+		}
+		return result;
+	}
+
+	// soft drop
+	LundDeclustering& GroomerShop::soft_drop(double beta, double zcut, double R0)
+	{
+		LundDeclustering &result = GroomerShop::_zero_split;
+		for (auto const &l : _lund_splits)
+		{
+			if (l.z() > zcut * pow(l.Delta() / R0, beta))
+			{
+				result = l;
+				break;
+			}
 		}
 		return result;
 	}
