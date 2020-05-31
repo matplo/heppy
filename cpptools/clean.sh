@@ -20,4 +20,4 @@ cd ${THISD}
 
 separator "cleanup cpptools ${PWD}"
 
-rm -rf ${THISD}/build ${THISD}/lib
+rm -rf ${THISD}/build ${THISD}/lib ${THISD}/src/fjcontrib/fjcontrib-*
