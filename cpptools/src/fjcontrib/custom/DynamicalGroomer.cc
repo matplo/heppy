@@ -332,8 +332,9 @@ namespace contrib
 
   ///
   /// max tf split grooming ----
-  /// obtain the splitting of max{tf_i}
-  LundDeclustering DynamicalGroomer::max_tf(const PseudoJet& jet)
+  /// obtain the splitting of min{tf_i}
+  // note t_f = 1/(z\Delta^2) - so we maximize z\Delta^2
+  LundDeclustering DynamicalGroomer::min_tf(const PseudoJet& jet)
   {
     if (_cached_jet != &jet)
     {
@@ -341,12 +342,12 @@ namespace contrib
       _lund_splits = _lund_gen.result(jet);
       _cached_jet = const_cast<PseudoJet*>(&jet);
     }
-    _result = max_tf_split(_lund_splits);
+    _result = min_tf_split(_lund_splits);
     return _result;    
   }
 
   /// obtain the index of the max{z_i} the primary plane of the jet
-  int DynamicalGroomer::max_tf_split_index(const std::vector<LundDeclustering>& lunds)
+  int DynamicalGroomer::min_tf_split_index(const std::vector<LundDeclustering>& lunds)
   {
     double max_tf = std::numeric_limits<double>::min();
     unsigned int max_tf_split = 0;
@@ -372,7 +373,7 @@ namespace contrib
     return int(max_tf_split);    
   }
 
-  LundDeclustering& DynamicalGroomer::max_tf_split(const std::vector<LundDeclustering>& lunds)
+  LundDeclustering& DynamicalGroomer::min_tf_split(const std::vector<LundDeclustering>& lunds)
   {
     LundDeclustering &result = DynamicalGroomer::_zero_split;
     double max_tf = std::numeric_limits<double>::min();
@@ -395,8 +396,9 @@ namespace contrib
 
   ///
   /// min tf split grooming ----
-  /// obtain the splitting of min{tf_i}
-  LundDeclustering DynamicalGroomer::min_tf(const PseudoJet& jet)
+  /// obtain the splitting of max{tf_i}
+  // note t_f = 1/(z\Delta^2) - so we minimize z\Delta^2
+  LundDeclustering DynamicalGroomer::max_tf(const PseudoJet& jet)
   {
     if (_cached_jet != &jet)
     {
@@ -404,12 +406,12 @@ namespace contrib
       _lund_splits = _lund_gen.result(jet);
       _cached_jet = const_cast<PseudoJet*>(&jet);
     }
-    _result = min_tf_split(_lund_splits);
+    _result = max_tf_split(_lund_splits);
     return _result;    
   }
 
   /// obtain the index of the min{z_i} the primary plane of the jet
-  int DynamicalGroomer::min_tf_split_index(const std::vector<LundDeclustering>& lunds)
+  int DynamicalGroomer::max_tf_split_index(const std::vector<LundDeclustering>& lunds)
   {
     double min_tf = std::numeric_limits<double>::max();
     unsigned int min_tf_split = 0;
@@ -435,7 +437,7 @@ namespace contrib
     return int(min_tf_split);    
   }
 
-  LundDeclustering& DynamicalGroomer::min_tf_split(const std::vector<LundDeclustering>& lunds)
+  LundDeclustering& DynamicalGroomer::max_tf_split(const std::vector<LundDeclustering>& lunds)
   {
     LundDeclustering &result = DynamicalGroomer::_zero_split;
     double min_tf = std::numeric_limits<double>::max();

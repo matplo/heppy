@@ -208,8 +208,9 @@ namespace contrib
 	}
 
 	/// max tf split grooming ----
-	/// obtain the splitting of max{tf_i}
-	LundDeclustering* GroomerShop::max_tf()
+	/// obtain the splitting of min{tf_i}
+	/// note t_f = 1/(z\Delta^2) - so we maximize z\Delta^2
+	LundDeclustering* GroomerShop::min_tf()
 	{
 		LundDeclustering* result = GroomerShopUtil::zero_split();
 		double max_tf = std::numeric_limits<double>::min();
@@ -231,8 +232,9 @@ namespace contrib
 	}
 
 	/// min tf split grooming ----
-	/// obtain the splitting of min{tf_i}
-	LundDeclustering* GroomerShop::min_tf()
+	/// obtain the splitting of max{tf_i}
+	/// note t_f = 1/(z\Delta^2) - so we minimize z\Delta^2
+	LundDeclustering* GroomerShop::max_tf()
 	{
 		LundDeclustering* result = GroomerShopUtil::zero_split();
 		double min_tf = std::numeric_limits<double>::max();
