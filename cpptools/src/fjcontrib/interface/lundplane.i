@@ -149,6 +149,7 @@ class GroomerShop
 public:
   GroomerShop(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
   GroomerShop(const fastjet::PseudoJet & jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+  GroomerShop(const fastjet::PseudoJet & jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
   GroomerShop(const fastjet::JetDefinition & jet_def);
 
   virtual ~GroomerShop();

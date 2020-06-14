@@ -26,6 +26,14 @@ namespace contrib
       recluster(jet);
     }
 
+    GroomerShop(const PseudoJet &jet, const double& R0, JetAlgorithm jet_alg = cambridge_algorithm)
+    : _lund_gen(JetDefinition(jet_alg, R0))
+    , _lund_splits()
+    , _result()
+    {
+      recluster(jet);
+    }
+
   	GroomerShop(const JetDefinition & jet_def) 
   	: _lund_gen(jet_def)
     , _lund_splits()
