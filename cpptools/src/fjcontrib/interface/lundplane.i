@@ -45,6 +45,15 @@ public:
   // friend class fastjet::contrib::LundGenerator;
 };
 
+%extend LundDeclustering 
+{
+  fastjet::contrib::LundDeclustering copy() const
+    {
+      fastjet::contrib::LundDeclustering result = fastjet::contrib::LundDeclustering(self->pair(), self->harder(), self->softer());
+      return result;
+    };
+};
+
 // const str * seem to be gone once passed to a print
 // use as_string()
 // %extend LundDeclustering {
