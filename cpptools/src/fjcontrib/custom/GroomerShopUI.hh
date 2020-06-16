@@ -1,54 +1,53 @@
-#ifndef __FASTJET_CONTRIB_GROOMERSHOP_HH__
-#define __FASTJET_CONTRIB_GROOMERSHOP_HH__
+#ifndef __FASTJET_CONTRIB_GROOMERSHOPUI_HH__
+#define __FASTJET_CONTRIB_GROOMERSHOPUI_HH__
 
 #include <sstream>
+#include <fastjet/PseudoJet.hh>
 #include "LundGenerator.hh"
-
 FASTJET_BEGIN_NAMESPACE
 
 namespace contrib
 {
-  bool operator==(const LundDeclustering &ld1, const LundDeclustering &ld2);
-  template < typename T>
-  std::pair<bool, int > findInVector(const std::vector<T>  & vecOfElements, const T  & element);
-
-  class GroomerShop
+  class GroomerShopUI : public PseudoJet::UserInfoBase
   {
   public:
 
-  	GroomerShop(JetAlgorithm jet_alg = cambridge_algorithm)
-  	: _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
+  	GroomerShopUI(JetAlgorithm jet_alg = cambridge_algorithm)
+    : PseudoJet::UserInfoBase::UserInfoBase()
+  	, _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
     , _lund_splits()
   	{;}
 
-    GroomerShop(const PseudoJet &jet, JetAlgorithm jet_alg = cambridge_algorithm)
-    : _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
+    GroomerShopUI(const PseudoJet &jet, JetAlgorithm jet_alg = cambridge_algorithm)
+    : PseudoJet::UserInfoBase::UserInfoBase()
+    , _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
     , _lund_splits()
     {
       recluster(jet);
     }
 
-    GroomerShop(const PseudoJet &jet, const double& R0, JetAlgorithm jet_alg = cambridge_algorithm)
-    : _lund_gen(JetDefinition(jet_alg, R0))
+    GroomerShopUI(const PseudoJet &jet, const double& R0, JetAlgorithm jet_alg = cambridge_algorithm)
+    : PseudoJet::UserInfoBase::UserInfoBase()
+    , _lund_gen(JetDefinition(jet_alg, R0))
     , _lund_splits()
     {
       recluster(jet);
     }
 
-  	GroomerShop(const JetDefinition & jet_def) 
-  	: _lund_gen(jet_def)
+  	GroomerShopUI(const JetDefinition & jet_def) 
+    : PseudoJet::UserInfoBase::UserInfoBase()
+  	, _lund_gen(jet_def)
     , _lund_splits()
   	{;}
 
     /// destructor
-    virtual ~GroomerShop() 
-    {;}
+    virtual ~GroomerShopUI();
 
     /// description of the class
     virtual std::string description() const;
 
     /// a convenienve - once you have the split - get it's index in the vector of primary lund
-    int index(const LundDeclustering &l);
+    // int index(const LundDeclustering &l);
 
     /// recluster and set the vector of primary lund plane splittings
     bool recluster(const PseudoJet& jet);
@@ -88,6 +87,13 @@ namespace contrib
   	LundGenerator _lund_gen;
     std::vector<LundDeclustering> _lund_splits;
   };
+
+  void setGroomer(PseudoJet& jet, JetAlgorithm jet_alg = cambridge_algorithm);
+  void setGroomer(PseudoJet& jet, const double& R0, JetAlgorithm jet_alg = cambridge_algorithm);
+  const GroomerShopUI *groom(PseudoJet& jet, 
+                            const double& R0 = JetDefinition::max_allowable_R, 
+                            JetAlgorithm jet_alg = cambridge_algorithm,
+                            const bool& reset = false);
 
 } // namespace contrib
 
