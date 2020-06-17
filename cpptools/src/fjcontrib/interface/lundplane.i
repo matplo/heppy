@@ -5,7 +5,7 @@
   #include <LundPlane/LundGenerator.hh>
   #include <LundPlane/DynamicalGroomer.hh>
   #include <LundPlane/GroomerShop.hh>
-  #include <LundPlane/GroomerShopUI.hh>
+  // #include <LundPlane/GroomerShopUI.hh>
   #include <LundPlane/LundJSON.hh>
   #include <LundPlane/LundWithSecondary.hh>
   #include <LundPlane/SecondaryLund.hh>
@@ -171,6 +171,9 @@ public:
   /// recluster and set the vector of primary lund plane splittings
   bool recluster(const fastjet::PseudoJet& jet);
 
+  // return the reference to the last groomed jet
+  const fastjet::PseudoJet* jet(); 
+
   /// obtain the declusterings of the primary plane of the jet
   virtual std::vector<LundDeclustering> lund_splits() const;
 
@@ -204,47 +207,48 @@ public:
 
 };
 
-// %include "LundPlane/GroomerShopUI.hh"
-class GroomerShopUI
-{
-public:
-  GroomerShopUI(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShopUI(const fastjet::PseudoJet & jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShopUI(const fastjet::PseudoJet & jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShopUI(const fastjet::JetDefinition & jet_def);
-  virtual ~GroomerShopUI();
-  virtual std::string description() const;
-  /// recluster and set the vector of primary lund plane splittings
-  bool recluster(const fastjet::PseudoJet& jet);
-  /// obtain the declusterings of the primary plane of the jet
-  virtual std::vector<LundDeclustering> lund_splits() const;
-  /// set the declusterings of the primary plane of the jet
-  virtual void set_lund_splits(const std::vector<LundDeclustering>& lunds);
-  /// obtain the splitting after dynamical grooming of the primary plane of the jet
-  // https://arxiv.org/abs/1911.00375
-  virtual LundDeclustering* dynamical(const double& alpha);
-  /// obtain the splitting of max{pT's of softer prongs}
-  virtual LundDeclustering* max_pt_softer();
-  /// obtain the splitting of max{z_i}
-  virtual LundDeclustering* max_z();
-  /// obtain the splitting of max{kt_i}
-  virtual LundDeclustering* max_kt();
-  /// obtain the splitting of max{kappa_i}
-  virtual LundDeclustering* max_kappa();
-  /// obtain the splitting of max{tf_i} : tf = z\theta^2
-  virtual LundDeclustering* max_tf();
-  /// obtain the splitting of min{tf_i} : tf = z\theta^2
-  virtual LundDeclustering* min_tf();
-  /// soft drop - returns zero_split in case no substructure found
-  virtual LundDeclustering* soft_drop(double zcut, double beta, double R0 = JetDefinition::max_allowable_R);
-};
-
-void setGroomer(fastjet::PseudoJet &jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-void setGroomer(fastjet::PseudoJet &jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-const GroomerShopUI *groom(fastjet::PseudoJet &jet, 
-                          const double& R0 = fastjet::JetDefinition::max_allowable_R, 
-                          fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm,
-                          const bool& reset = false);
+// // %include "LundPlane/GroomerShopUI.hh"
+// JM and MP decided against using it - in favor of python calls to set_python_user_info or equivalent
+// class GroomerShopUI
+// {
+// public:
+//   GroomerShopUI(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+//   GroomerShopUI(const fastjet::PseudoJet & jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+//   GroomerShopUI(const fastjet::PseudoJet & jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+//   GroomerShopUI(const fastjet::JetDefinition & jet_def);
+//   virtual ~GroomerShopUI();
+//   virtual std::string description() const;
+//   /// recluster and set the vector of primary lund plane splittings
+//   bool recluster(const fastjet::PseudoJet& jet);
+//   /// obtain the declusterings of the primary plane of the jet
+//   virtual std::vector<LundDeclustering> lund_splits() const;
+//   /// set the declusterings of the primary plane of the jet
+//   virtual void set_lund_splits(const std::vector<LundDeclustering>& lunds);
+//   /// obtain the splitting after dynamical grooming of the primary plane of the jet
+//   // https://arxiv.org/abs/1911.00375
+//   virtual LundDeclustering* dynamical(const double& alpha);
+//   /// obtain the splitting of max{pT's of softer prongs}
+//   virtual LundDeclustering* max_pt_softer();
+//   /// obtain the splitting of max{z_i}
+//   virtual LundDeclustering* max_z();
+//   /// obtain the splitting of max{kt_i}
+//   virtual LundDeclustering* max_kt();
+//   /// obtain the splitting of max{kappa_i}
+//   virtual LundDeclustering* max_kappa();
+//   /// obtain the splitting of max{tf_i} : tf = z\theta^2
+//   virtual LundDeclustering* max_tf();
+//   /// obtain the splitting of min{tf_i} : tf = z\theta^2
+//   virtual LundDeclustering* min_tf();
+//   /// soft drop - returns zero_split in case no substructure found
+//   virtual LundDeclustering* soft_drop(double zcut, double beta, double R0 = JetDefinition::max_allowable_R);
+// };
+// 
+// void setGroomer(fastjet::PseudoJet &jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+// void setGroomer(fastjet::PseudoJet &jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
+// const GroomerShopUI *groom(fastjet::PseudoJet &jet, 
+//                           const double& R0 = fastjet::JetDefinition::max_allowable_R, 
+//                           fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm,
+//                           const bool& reset = false);
 
 // not working
 // %extend fastjet::PseudoJet {

@@ -54,6 +54,39 @@ namespace contrib
 		return result;
 	}
 
+  	GroomerShop::GroomerShop(JetAlgorithm jet_alg)
+  	: _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
+    , _lund_splits()
+    , _jet(0)
+  	{;}
+
+  	GroomerShop::GroomerShop(const JetDefinition & jet_def) 
+  	: _lund_gen(jet_def)
+    , _lund_splits()
+    , _jet(0)
+  	{;}
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, JetAlgorithm jet_alg)
+    : _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, const double& R0, JetAlgorithm jet_alg)
+    : _lund_gen(JetDefinition(jet_alg, R0))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+    const PseudoJet* GroomerShop::jet() const
+    {
+    	return _jet;
+    }
+
 	int GroomerShop::index(const LundDeclustering &l)
 	{
 		int result = -1;
@@ -71,6 +104,7 @@ namespace contrib
 	{
 		_lund_splits.clear();
 		_lund_splits = _lund_gen.result(jet);
+		_jet = &jet;
 		return (_lund_splits.size() > 0);
 	}
 
