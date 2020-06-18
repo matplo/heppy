@@ -29,17 +29,17 @@ namespace contrib
     /// description of the class
     virtual std::string description() const;
 
-    /// a convenienve - once you have the split - get it's index in the vector of primary lund
-    int index(const LundDeclustering &l);
-
-    /// recluster and set the vector of primary lund plane splittings
-    bool recluster(const PseudoJet& jet);
-
     // return the pointer to the last groomed jet
-    const fastjet::PseudoJet* jet() const; 
+    virtual const fastjet::PseudoJet* jet() const; 
 
     /// return the LundGenerator used
-    const LundGenerator &lund_generator() const;
+    virtual const LundGenerator &lund_generator() const;
+
+    /// a convenienve - once you have the split - get it's index in the vector of primary lund
+    virtual int index(const LundDeclustering &l);
+
+    /// recluster and set the vector of primary lund plane splittings
+    virtual bool recluster(const PseudoJet& jet);
 
     /// obtain the declusterings of the primary plane of the jet
     virtual std::vector<LundDeclustering> lund_splits() const;

@@ -163,16 +163,23 @@ public:
   GroomerShop(const fastjet::JetDefinition & jet_def);
 
   virtual ~GroomerShop();
+
+  // return the reference to the last groomed jet
+  virtual const fastjet::PseudoJet* jet(); 
+
+  /// return the LundGenerator used
+  virtual const LundGenerator& lund_generator() const;
+
   virtual std::string description() const;
 
   /// a convenienve - once you have the split - get it's index in the vector of primary lund
-  int index(const LundDeclustering &l);
+  virtual int index(const LundDeclustering &l);
 
   /// recluster and set the vector of primary lund plane splittings
-  bool recluster(const fastjet::PseudoJet& jet);
+  virtual bool recluster(const fastjet::PseudoJet& jet);
 
   // return the reference to the last groomed jet
-  const fastjet::PseudoJet* jet(); 
+  virtual const fastjet::PseudoJet* jet(); 
 
   /// obtain the declusterings of the primary plane of the jet
   virtual std::vector<LundDeclustering> lund_splits() const;

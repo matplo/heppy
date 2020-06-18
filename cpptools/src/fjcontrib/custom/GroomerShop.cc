@@ -82,9 +82,23 @@ namespace contrib
       recluster(jet);
     }
 
+	/// description of the class
+	std::string GroomerShop::description() const 
+	{
+		std::ostringstream oss;
+		oss << "GroomerShop with " << _lund_gen.description();
+		return oss.str();
+	}
+
     const PseudoJet* GroomerShop::jet() const
     {
     	return _jet;
+    }
+
+    /// return the LundGenerator used
+    const LundGenerator& GroomerShop::lund_generator() const
+    {
+    	return _lund_gen;
     }
 
 	int GroomerShop::index(const LundDeclustering &l)
@@ -119,14 +133,6 @@ namespace contrib
 	void GroomerShop::set_lund_splits(const std::vector<LundDeclustering>& lunds)
 	{
 		_lund_splits = lunds;
-	}
-
-	/// description of the class
-	std::string GroomerShop::description() const 
-	{
-		std::ostringstream oss;
-		oss << "GroomerShop with " << _lund_gen.description();
-		return oss.str();
 	}
 
 	// return the split of dynamical grooming with alpha
