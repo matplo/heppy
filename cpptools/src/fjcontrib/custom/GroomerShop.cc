@@ -54,19 +54,33 @@ namespace contrib
 		return result;
 	}
 
-  	GroomerShop::GroomerShop(JetAlgorithm jet_alg)
+  	GroomerShop::GroomerShop()
+  	: _lund_gen(JetDefinition(JetAlgorithm::cambridge_algorithm, JetDefinition::max_allowable_R))
+    , _lund_splits()
+    , _jet(0)
+  	{;}
+
+  	GroomerShop::GroomerShop(const JetAlgorithm& jet_alg)
   	: _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(0)
   	{;}
 
-  	GroomerShop::GroomerShop(const JetDefinition & jet_def) 
-  	: _lund_gen(jet_def)
+  	GroomerShop::GroomerShop(const int& jet_alg)
+  	: _lund_gen(JetDefinition(static_cast<JetAlgorithm>(jet_alg), JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(0)
   	{;}
 
-    GroomerShop::GroomerShop(const PseudoJet& jet, JetAlgorithm jet_alg)
+    GroomerShop::GroomerShop(const PseudoJet& jet)
+    : _lund_gen(JetDefinition(JetAlgorithm::cambridge_algorithm, JetDefinition::max_allowable_R))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, const JetAlgorithm& jet_alg)
     : _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(&jet)
@@ -74,13 +88,51 @@ namespace contrib
       recluster(jet);
     }
 
-    GroomerShop::GroomerShop(const PseudoJet& jet, const double& R0, JetAlgorithm jet_alg)
+    GroomerShop::GroomerShop(const PseudoJet& jet, const int& jet_alg)
+    : _lund_gen(JetDefinition(static_cast<JetAlgorithm>(jet_alg), JetDefinition::max_allowable_R))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, const double& R0, const JetAlgorithm& jet_alg)
     : _lund_gen(JetDefinition(jet_alg, R0))
     , _lund_splits()
     , _jet(&jet)
     {
       recluster(jet);
     }
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, const double& R0, const int& jet_alg)
+    : _lund_gen(JetDefinition(static_cast<JetAlgorithm>(jet_alg), R0))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+    GroomerShop::GroomerShop(const PseudoJet& jet, const double& R0)
+    : _lund_gen(JetDefinition(JetAlgorithm::cambridge_algorithm, R0))
+    , _lund_splits()
+    , _jet(&jet)
+    {
+      recluster(jet);
+    }
+
+  	GroomerShop::GroomerShop(const JetDefinition& jet_def) 
+  	: _lund_gen(jet_def)
+    , _lund_splits()
+    , _jet(0)
+  	{;}
+
+  	GroomerShop::GroomerShop(const PseudoJet& jet, const JetDefinition& jet_def) 
+  	: _lund_gen(jet_def)
+    , _lund_splits()
+    , _jet(&jet)
+  	{
+      recluster(jet);
+  	}
 
 	/// description of the class
 	std::string GroomerShop::description() const 

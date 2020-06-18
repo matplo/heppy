@@ -157,10 +157,20 @@ public:
 class GroomerShop
 {
 public:
-  GroomerShop(fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShop(const fastjet::PseudoJet & jet, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShop(const fastjet::PseudoJet & jet, const double& R0, fastjet::JetAlgorithm jet_alg = fastjet::Algorithm::cambridge_algorithm);
-  GroomerShop(const fastjet::JetDefinition & jet_def);
+
+  GroomerShop();
+  GroomerShop(const fastjet::JetAlgorithm& jet_alg);
+  GroomerShop(const int& jet_alg);
+
+  GroomerShop(const fastjet::PseudoJet& jet);
+  GroomerShop(const fastjet::PseudoJet& jet, const fastjet::JetAlgorithm& jet_alg);
+  GroomerShop(const fastjet::PseudoJet& jet, const int& jet_alg);
+  GroomerShop(const fastjet::PseudoJet& jet, const double& R0, const fastjet::JetAlgorithm& jet_alg);
+  GroomerShop(const fastjet::PseudoJet& jet, const double& R0, const int& jet_alg);
+  GroomerShop(const fastjet::PseudoJet& jet, const double& R0);
+
+  GroomerShop(const fastjet::JetDefinition& jet_def);
+  GroomerShop(const fastjet::PseudoJet& jet, const fastjet::JetDefinition& jet_def);
 
   virtual ~GroomerShop();
 

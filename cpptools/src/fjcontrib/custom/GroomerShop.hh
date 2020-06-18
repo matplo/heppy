@@ -17,10 +17,19 @@ namespace contrib
   public:
 
     /// constructors
-  	GroomerShop(JetAlgorithm jet_alg = cambridge_algorithm);
-    GroomerShop(const PseudoJet& jet, JetAlgorithm jet_alg = cambridge_algorithm);
-    GroomerShop(const PseudoJet& jet, const double& R0, JetAlgorithm jet_alg = cambridge_algorithm);
+    GroomerShop();
+  	GroomerShop(const JetAlgorithm& jet_alg);
+    GroomerShop(const int& jet_alg);
+
+    GroomerShop(const PseudoJet& jet);
+    GroomerShop(const PseudoJet& jet, const JetAlgorithm& jet_alg);
+    GroomerShop(const PseudoJet& jet, const int& jet_alg);
+    GroomerShop(const PseudoJet& jet, const double& R0, const JetAlgorithm& jet_alg);
+    GroomerShop(const PseudoJet& jet, const double& R0, const int& jet_alg);
+    GroomerShop(const PseudoJet& jet, const double& R0);
+
   	GroomerShop(const JetDefinition& jet_def);
+    GroomerShop(const PseudoJet& jet, const JetDefinition& jet_def);
 
     /// destructor
     virtual ~GroomerShop() 
