@@ -38,6 +38,27 @@ namespace FJTools
 		return v;
 	}
 
+	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi_m(double *pt, int npt, double *eta, int neta, double *phi, int nphi, double *m, int nm, int user_index_offset)
+	{
+		std::vector<fastjet::PseudoJet> v;
+		if (npt != neta || npt != nphi || npt != nm) 
+		{
+			std::cerr << "[error] vectorize_pt_eta_phi : incompatible array sizes" << std::endl;
+			return v;
+		}
+		for (unsigned int i = 0; i < npt; i++)
+		{
+		    double px = pt[i] * cos(phi[i]);
+		    double py = pt[i] * sin(phi[i]);
+		    double pz = pt[i] * sinh(eta[i]);
+		    double e  = sqrt(px*px + py*py + pz*pz * m[i]*m[i]);
+			fastjet::PseudoJet psj(px, py, pz, e);
+			psj.set_user_index(i + user_index_offset);
+			v.push_back(psj);
+		}
+		return v;
+	}
+
 	std::vector<fastjet::PseudoJet> vectorize_px_py_pz(double *px, int npx, double *py, int npy, double *pz, int npz, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
