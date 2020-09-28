@@ -51,7 +51,7 @@ namespace FJTools
 		    double px = pt[i] * cos(phi[i]);
 		    double py = pt[i] * sin(phi[i]);
 		    double pz = pt[i] * sinh(eta[i]);
-		    double e  = sqrt(px*px + py*py + pz*pz * m[i]*m[i]);
+		    double e  = sqrt(px*px + py*py + pz*pz + m[i]*m[i]);
 			fastjet::PseudoJet psj(px, py, pz, e);
 			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
@@ -104,7 +104,7 @@ namespace FJTools
 		}
 		for (unsigned int i = 0; i < npx; i++)
 		{
-		    double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i] * m[i]*m[i]);
+		    double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i] + m[i]*m[i]);
 			fastjet::PseudoJet psj(px[i], py[i], pz[i], e);
 			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
