@@ -22,6 +22,7 @@ pipfilepath=$(abspath ${THISD}/../Pipfile)
 [ -f ${pipfilepath} ] && export PIPENV_PIPFILE=${pipfilepath}
 export WORKON_HOME=$(abspath ${THISD}/../venv)
 unset PIPENV_VENV_IN_PROJECT
+which pipenv
 pipenv $@
 
 cd ${savedir}

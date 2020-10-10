@@ -30,6 +30,7 @@ build_dir=${THISD}/build_root
 mkdir -p ${build_dir}
 cd ${build_dir}
 
+#root_version=v6-22-02
 root_version=v6-18-04
 #root_version=v6-20-04 -Dglew=OFF
 root_heppy_prefix="${THISD}/root-${root_version}"
