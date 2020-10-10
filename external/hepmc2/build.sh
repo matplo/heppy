@@ -30,31 +30,37 @@ build_dir=${PWD}/build_hepmc2
 mkdir -p ${build_dir}
 cd ${build_dir}
 
-hepmc2_version=2.06.09
+# hepmc2_version=2.06.09
+hepmc2_version=2.06.11
 hepmc2_heppy_prefix="${THISD}/hepmc2-${hepmc2_version}"
 
 fname=HepMC-${hepmc2_version}
-if [ ! -e ${THISD}/downloads/${fname}.tar.gz ]; then
+fname_archive=${fname}.tar.gz
+fname=hepmc${hepmc2_version}
+fname_archive=${fname}.tgz
+if [ ! -e ${THISD}/downloads/${fname_archive} ]; then
 	mkdir -p ${THISD}/downloads
 	cd ${THISD}/downloads
-	wget http://lcgapp.cern.ch/project/simu/HepMC/download/${fname}.tar.gz
+	# wget http://lcgapp.cern.ch/project/simu/HepMC/download/${fname_archive}
+	wget http://hepmc.web.cern.ch/hepmc/releases/${fname_archive}
 	cd ${THISD}
 fi
 
 cd ${build_dir}
 dirsrc="${build_dir}/HepMC-${hepmc2_version}"
-if [ -e ${THISD}/downloads/${fname}.tar.gz ]; then
+[ "x${hepmc2_version}" == "x2.06.09" ] && dirsrc="${build_dir}/hepmc${hepmc2_version}"
+if [ -e ${THISD}/downloads/${fname_archive} ]; then
 	if [ ! -d ${dirsrc} ]; then
-		tar zxvf ${THISD}/downloads/${fname}.tar.gz
+		tar zxvf ${THISD}/downloads/${fname_archive}
 	fi
 else
-	echo_error "[e] unable to get the sources ./downloads/${fname}.tar.gz does not exists"
+	echo_error "[e] unable to get the sources ./downloads/${fname_archive} does not exists"
 fi
 
 
 if [ -d ${dirsrc} ]; then
 	cd ${dirsrc}
-	[ "x${version}" == "x2.06.09" ] && patch -N CMakeLists.txt -i ${THISD}/../patches/HepMC-2.06.09-CMakeLists.txt.patch
+	[ "x${hepmc2_version}" == "x2.06.09" ] && patch -N CMakeLists.txt -i ${THISD}/../patches/HepMC-2.06.09-CMakeLists.txt.patch
 	mkdir -p ${build_dir}/build
 	cd ${build_dir}/build
 	separator configuration
