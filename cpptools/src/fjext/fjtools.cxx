@@ -20,12 +20,11 @@ namespace FJTools
 	// Angularity definition as it is given in arXiv:1408.3122
 	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa, double scaleR0)
 	{
+		// If there are no constituents (empty jet), return an underflow value
+		if (!j.has_constituents()) { return -1; }
+
 		double _l = 0;  // init lambda
 		const std::vector<fastjet::PseudoJet> &_cs = j.constituents();
-
-		// If there are no constituents (empty jet), return an underflow value
-		if (_cs.size() < 1) { return -1; }
-
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
