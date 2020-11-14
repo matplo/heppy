@@ -8,6 +8,8 @@ namespace FJTools
 {
 	double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0);
 	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa, double scaleR0);
+	double lambda_beta_kappa(const fastjet::PseudoJet &j, double jet_pT,
+							 double beta, double kappa, double scaleR0);
 
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi, int user_index_offset = 0);
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi_m(double *pt, int npt, double *eta, int neta, double *phi, int nphi, double *m, int nm, int user_index_offset = 0);
