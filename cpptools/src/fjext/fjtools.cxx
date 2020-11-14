@@ -34,6 +34,24 @@ namespace FJTools
 		return _l;
 	}
 
+	// Overloaded definition allowing for a custom jet pT
+	// For example: Use this definition for groomed jets (passing in ungroomed pT)
+	double lambda_beta_kappa(const fastjet::PseudoJet &j, double jet_pT,
+							 double beta, double kappa, double scaleR0)
+	{
+		// If there are no constituents (empty jet), return an underflow value
+		if (!j.has_constituents()) { return -1; }
+
+		double _l = 0;  // init lambda
+		const std::vector<fastjet::PseudoJet> &_cs = j.constituents();
+		for (unsigned int i = 0; i < _cs.size(); i++)
+		{
+			const fastjet::PseudoJet &_p = _cs[i];
+			_l += std::pow(_p.perp(), kappa) * std::pow(_p.delta_R(j) / scaleR0, beta);
+		}
+		_l /= std::pow(jet_pT, kappa);
+		return _l;
+	}
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
