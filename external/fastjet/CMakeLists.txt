@@ -77,6 +77,7 @@ message(STATUS "Extra python directives for FASTJET compilation PYTHON=${Python3
 set(FASTJET_CONFIGURE_COMMAND PYTHON=${Python3_EXECUTABLE} PYTHON_CONFIG=${Python3_CONFIG} ./configure)
 
 list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext)
+# list(APPEND FASTJET_CONFIGURE_COMMAND --prefix=${FASTJET_HEPPY_PREFIX} --enable-allcxxplugins --enable-pyext --enable-swig)
 if (ENABLE_CGAL)
 	find_package(CGAL REQUIRED COMPONENTS Core)
 	if (NOT CGAL_FOUND)
