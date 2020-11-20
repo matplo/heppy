@@ -46,6 +46,9 @@ cd ${cdir}
 
 if [ -e ${roounfold_heppy_prefix}/bin/RooUnfoldTest ]; 
 then
+	if [ -e ${THISD}/roounfold-current ]; then
+		rm -v ${THISD}/roounfold-current
+	fi
 	ln -sf ${roounfold_heppy_prefix} ${THISD}/roounfold-current
 	separator summary
 	ls -l ${roounfold_heppy_prefix}/include
