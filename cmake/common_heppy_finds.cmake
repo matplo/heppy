@@ -47,3 +47,5 @@ endif(HEPMC3_FOUND)
 find_package(ROOT4HEPPY)
 
 find_package(Pythia8)
+
+find_package(RooUnfold)

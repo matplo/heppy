@@ -32,7 +32,6 @@ function(make_module)
     message(STATUS "${Yellow}Making a module file: ${heppy_module_file}${ColourReset}")
     file(WRITE ${heppy_module_file} "#%Module\n")
     file(APPEND ${heppy_module_file} "set version ${CMAKE_PROJECT_NAME}-1.0\n")
-    find_package(RooUnfold) # not used anywhere else...
     foreach(_pack PYTHIA8_DIR ROOT_HEPPY_PREFIX HEPMC3_DIR HEPMC_DIR LHAPDF6_DIR FASTJET_DIR HEPPY_DIR ROOUNFOLD_DIR)
         message(STATUS "make_module::${_pack} ${${_pack}}")
         if (EXISTS ${${_pack}})
