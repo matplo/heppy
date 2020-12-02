@@ -35,8 +35,8 @@ namespace FJTools
 	}
 
 	// Use this overloaded definition for groomed jets
-	double lambda_beta_kappa(const fastjet::PseudoJet & j, const fastjet::PseudoJet & j_groomed,
-							 double jet_pT, double beta, double kappa, double scaleR0)
+	double lambda_beta_kappa(const fastjet::PseudoJet &j, const fastjet::PseudoJet &j_groomed,
+                             double beta, double kappa, double scaleR0)
 	{
 		// If there are no constituents (empty jet), return an underflow value
 		if (!j.has_constituents() || !j_groomed.has_constituents()) { return -1; }
