@@ -1,0 +1,37 @@
+--- roounfold-2.0.0/src/ROOUNFOLD/CMakeLists.txt	2020-11-20 01:08:20.000000000 -0800
++++ CMakeLists-patched-2.0.0.txt	2020-11-20 01:07:28.000000000 -0800
+@@ -2,6 +2,8 @@
+ # Project: RooUnfold
+ ################################################################################
+ 
++project(RooUnfold)
++
+ if (${RunningAtlasCI})
+   message("Setup for CI in ATLAS analysis release")
+   include (CMakeLists_forAtlasCI.txt)
+@@ -122,10 +124,15 @@
+   
+   # Install the RooUnfoldConfig.cmake and RooUnfoldConfigVersion.cmake
+   install(FILES
+-    "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
+-    "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
++    # "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
++    "${PROJECT_BINARY_DIR}/RooUnfoldConfig.cmake"
++    # "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
+     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
+ 
++  install(TARGETS RooUnfold DESTINATION lib)
++  install(FILES ${PROJECT_BINARY_DIR}/${libprefix}RooUnfold_rdict.pcm DESTINATION lib)
++  install(FILES ${RooUnfoldHeaders} DESTINATION include)
++
+   include(CTest)
+   enable_testing()
+ 
+@@ -133,6 +140,7 @@
+     get_filename_component(ExecName ${ExecSource} NAME_WE)    
+     add_executable( ${ExecName} ${ExecSource} )
+     target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
++    install(TARGETS ${ExecName} DESTINATION bin)
+   endforeach()
+ endif()
+ 
