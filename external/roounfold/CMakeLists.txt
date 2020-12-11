@@ -74,7 +74,7 @@ endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION
 
 ExternalProject_Add(ROOUNFOLD
 	PREFIX        		${ROOUNFOLD_HEPPY_PREFIX}
-	GIT_REPOSITORY    	https://gitlab.cern.ch/RooUnfold/RooUnfold.git
+	GIT_REPOSITORY    	https://gitlab.cern.ch/elesser/RooUnfold.git
 	GIT_TAG 		  	${ROOUNFOLD_VERSION}
 	GIT_PROGRESS 		TRUE
 	PATCH_COMMAND       ${THIS_PATCH_COMMAND}

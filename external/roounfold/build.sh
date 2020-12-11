@@ -35,7 +35,7 @@ fi
 mkdir -p ./build_roounfold
 cd ./build_roounfold
 
-roounfold_version=2.0.0
+roounfold_version=master
 roounfold_heppy_prefix="${THISD}/roounfold-${roounfold_version}"
 separator configuration
 cmake -DCMAKE_BUILD_TYPE=Release -DROOUNFOLD_VERSION="${roounfold_version}" -DROOUNFOLD_HEPPY_PREFIX=${roounfold_heppy_prefix} ..
