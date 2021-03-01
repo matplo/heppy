@@ -15,6 +15,7 @@ if [ -d ${srcdir} ]; then
 		[ ! -e fjcontrib-${fjcontrib_version}.tar.gz ] && wget http://fastjet.hepforge.org/contrib/downloads/fjcontrib-${fjcontrib_version}.tar.gz
 		cd -
 		if [ -e ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz ]; then
+			# RecursiveTools
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/RecursiveTools ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/RecursiveTools
@@ -25,6 +26,7 @@ if [ -d ${srcdir} ]; then
 				cp -v ${srcdir}/custom/Util.* ${srcdir}/fjcontrib-${fjcontrib_version}/RecursiveTools
 			fi
 
+			# LundPlane
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/LundPlane
@@ -38,12 +40,21 @@ if [ -d ${srcdir} ]; then
 				# cp -v ${srcdir}/custom/GroomerShopUI.* ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane
 			fi
 
+			# ConstituentSubtractor
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/ConstituentSubtractor ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/ConstituentSubtractor
 				rm fjcontrib-${fjcontrib_version}/ConstituentSubtractor/example_*.cc
 			fi
 
+			# Nsubjettiness
+			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/Nsubjettiness ]; then
+				cd ${srcdir}
+				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/Nsubjettiness
+				rm fjcontrib-${fjcontrib_version}/Nsubjettiness/example_*.cc
+				patch fjcontrib-${fjcontrib_version}/Nsubjettiness/MeasureDefinition.hh -i ${srcdir}/patches/MeasureDefinition.patch
+				patch fjcontrib-${fjcontrib_version}/Nsubjettiness/AxesDefinition.hh -i ${srcdir}/patches/AxesDefinition.patch
+			fi
 		fi
 	fi
 fi
