@@ -14,8 +14,8 @@ public:
    Nsubjettiness(int N,
                  const AxesDefinition& axes_def,
                  const MeasureDefinition& measure_def);
-   double result(const PseudoJet& jet) const;
-   TauComponents component_result(const PseudoJet& jet) const;
+   double result(const fastjet::PseudoJet& jet) const;
+   TauComponents component_result(const fastjet::PseudoJet& jet) const;
    void setAxes(const std::vector<fastjet::PseudoJet> & myAxes);
    std::vector<fastjet::PseudoJet> seedAxes() const;
    std::vector<fastjet::PseudoJet> currentAxes() const;
@@ -32,7 +32,7 @@ public:
 //    static LimitedWarning _old_constructor_warning;
 
 public:
-    Nsubjettiness(int N,
+   Nsubjettiness(int N,
                  Njettiness::AxesMode axes_mode,
                  Njettiness::MeasureMode measure_mode);
    Nsubjettiness(int N,
