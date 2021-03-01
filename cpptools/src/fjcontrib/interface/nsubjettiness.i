@@ -10,11 +10,10 @@
   #include <Nsubjettiness/MeasureDefinition.hh>
   #include <Nsubjettiness/ExtraRecombiners.hh>
   #include <Nsubjettiness/AxesDefinition.hh>
-
-  // #include <Nsubjettiness/Njettiness.hh>
-  // #include <Nsubjettiness/NjettinessPlugin.hh>
-  // #include <Nsubjettiness/Nsubjettiness.hh>
-  // #include <Nsubjettiness/XConePlugin.hh>
+  #include <Nsubjettiness/Njettiness.hh>
+  #include <Nsubjettiness/NjettinessPlugin.hh>
+  #include <Nsubjettiness/Nsubjettiness.hh>
+  #include <Nsubjettiness/XConePlugin.hh>
 %}
 
 %include "std_string.i"
@@ -27,10 +26,10 @@ namespace fastjet{
   %include "Nsubjettiness/MeasureDefinition_i.hh"
   %include "Nsubjettiness/ExtraRecombiners_i.hh"
   %include "Nsubjettiness/AxesDefinition_i.hh"
+  %include "Nsubjettiness/Njettiness_i.hh"
+  %include "Nsubjettiness/NjettinessPlugin_i.hh"
+  %include "Nsubjettiness/Nsubjettiness_i.hh"
+  %include "Nsubjettiness/XConePlugin_i.hh"
 
-  // %include "Nsubjettiness/Njettiness.hh"
-  // %include "Nsubjettiness/NjettinessPlugin.hh"
-  // %include "Nsubjettiness/Nsubjettiness.hh"
-  // %include "Nsubjettiness/XConePlugin.hh"
   } // namespace contrib
 } // namespace fastjet

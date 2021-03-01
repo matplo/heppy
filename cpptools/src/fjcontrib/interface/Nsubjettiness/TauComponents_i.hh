@@ -63,8 +63,7 @@ class NjettinessExtras : public fastjet::ClusterSequence::Extras, public TauComp
 public:
    /// Constructor
    NjettinessExtras(TauComponents tau_components,
-                    std::vector<int> cluster_hist_indices)
-   : TauComponents(tau_components), _cluster_hist_indices(cluster_hist_indices);
+                    std::vector<int> cluster_hist_indices);
    double tau(const fastjet::PseudoJet& /*jet*/) const;
    double tau_piece(const fastjet::PseudoJet& jet) const;
    fastjet::PseudoJet axis(const fastjet::PseudoJet& jet) const;
