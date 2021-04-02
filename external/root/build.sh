@@ -33,6 +33,7 @@ cd ${build_dir}
 #root_version=v6-22-02
 root_version=v6-18-04
 #root_version=v6-20-04 -Dglew=OFF
+root_version=v6-22-08
 root_heppy_prefix="${THISD}/root-${root_version}"
 fname=root_v${root_version}.source
 
@@ -100,6 +101,8 @@ if [ -d ${dirsrc} ]; then
 		separator summary
 		rver=$(${root_heppy_prefix}/bin/root-config --version)
 		echo_info "ROOT at ${rver} via root-config"
+		echo_info "removing old link to root-current if exists"
+		[ -e ${THISD}/root-current ] && rm -v ${THISD}/root-current
 		ln -sfv ${root_heppy_prefix} ${THISD}/root-current
 	else
 		echo_error "[e] sorry... the build failed: no root library in ${root_heppy_prefix}"
