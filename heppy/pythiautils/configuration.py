@@ -7,6 +7,7 @@ def create_and_init_pythia(config_strings=[]):
 	config_strings.extend(extra_s)
 	for s in config_strings:
 		pythia.readString(s)
+	print("[i] strings read to PYTHIA ", [config_strings])
 	if pythia.init():
 		print ('[i] pythia initialized with', config_strings)
 		return pythia
