@@ -2,7 +2,7 @@
 
 - some work on HEP things in python (with quite a bit of help on c++ side)
 - dependencies:
-  - CMake, SWIG, Python ver. >= 3.6
+  - CMake, SWIG, Python ver. >= 3.8 (>=3.6 allowed if ROOT version is set to 6.18 rather than 6.22)
   - FastJet ver. >= 3.
     - expects fastjet-config in $PATH or in $FASTJET_DIR/bin
     - note: during installation it will download and patch fjcontrib v. 1.042
@@ -46,14 +46,14 @@
  - notable environment variables:
  -- $CGAL_DIR; $FASTJET_DIR; $HEPMC_DIR; $HEPMC2_DIR; $HEPMC3_DIR; $LHAPDF6_DIR; $PYTHIA8_DIR; $ROOTSYS
 
- - for full functionality (compiled with the *same* python3 >= 3.6):
+ - for full functionality (compiled with the *same* python3):
  -- FASTJET 3 (the builtin build will attempt to find CGAL on the system - guess is $CGAL_DIR})
  -- PYTHIA 8
  -- HEPMC2 and HEPMC3
  -- LHAPDF6
  -- ROOT 6
 
- - some prerequisites expected in path (compiled with the same python3 >= 3.6):
+ - some prerequisites expected in path (compiled with the same python3):
  ```
  root-config
  pythia8-config
