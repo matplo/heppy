@@ -29,7 +29,9 @@ fi
 mkdir -p ./build_pythia8
 cd ./build_pythia8
 
-pythia8_version=8244
+# pythia8_version=8244
+pythia8_version=8305
+
 pythia8_heppy_prefix="${THISD}/pythia8-${pythia8_version}"
 separator configuration
 cmake -DCMAKE_BUILD_TYPE=Release -DPYTHIA8_VERSION="${pythia8_version}" -DPYTHIA8_HEPPY_PREFIX=${pythia8_heppy_prefix} ..
