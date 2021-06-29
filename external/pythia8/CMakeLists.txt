@@ -88,7 +88,8 @@ message(STATUS "configure command: ${PYTHIA8_CONFIGURE_COMMAND}")
 
 ExternalProject_Add(PYTHIA8
 	PREFIX            ${PYTHIA8_BUILD}
-	URL               http://home.thep.lu.se/~torbjorn/pythia8/pythia${PYTHIA8_VERSION}.tgz
+	# URL               http://home.thep.lu.se/~torbjorn/pythia8/pythia${PYTHIA8_VERSION}.tgz
+	URL               https://pythia.org/download/pythia83/${PYTHIA8_VERSION}.tgz
 	DOWNLOAD_DIR      ${CMAKE_CURRENT_SOURCE_DIR}/downloads
 	# DOWNLOAD_NAME     fastjet-${PYTHIA8_VERSION}.tar.gz
 	# SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/build/fastjet-${PYTHIA8_VERSION}
