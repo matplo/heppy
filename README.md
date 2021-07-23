@@ -78,6 +78,7 @@
 	./external/hepmc3/build.sh
 	./external/root/build.sh
 	./external/pythia8/build.sh
+	./external/roounfold/build.sh
 
 ```
 
