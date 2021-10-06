@@ -32,6 +32,9 @@
 
 ./external/root/build.sh
 
+./external/roounfold/build.sh
+# hint: if unable to build because Unfold missing in ROOT you are probably missing a dependency to build xml - install libxml2-dev and recompile root 
+
 ./external/pythia8/build.sh
 
 ./cpptools/build.sh
