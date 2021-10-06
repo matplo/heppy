@@ -46,7 +46,12 @@ if (ROOT_FOUND)
   message(STATUS "${Green}ROOT ver. ${ROOT_VERSION}${ColourReset}")
   if (${ROOT_VERSION} VERSION_GREATER "6.22")
     message(STATUS "processing for ROOT version ${ROOT_VERSION}")
-    find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations3_8)
+    if(HEPPY_PYTHON_FOUND) # from common_heppy_finds.cmake
+      message(STATUS "${Yellow}- note will look for ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR}")
+      find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR})
+    else(HEPPY_PYTHON_FOUND)
+        message(FATAL_ERROR "${Red}Python not found - common_heppy_finds.cmake failed already?${ColourReset}")
+    endif(HEPPY_PYTHON_FOUND)
 
     include(${ROOT_USE_FILE}) 
     if (NOT ROOTCONFIG)
