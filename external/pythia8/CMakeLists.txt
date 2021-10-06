@@ -34,6 +34,8 @@ ProcessorCount(NCPU)
 
 include(ExternalProject)
 
+include(heppy_find_python)
+
 if (NOT PYTHIA8_VERSION)
 	set(PYTHIA8_VERSION 8244)
 endif(NOT PYTHIA8_VERSION)

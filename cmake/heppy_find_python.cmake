@@ -1,0 +1,7 @@
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+if (Python_FOUND)
+    message(STATUS "${Green}Python ver. ${Python_VERSION} found.${ColourReset}")
+    set(HEPPY_PYTHON_FOUND True)
+  else(Python_FOUND)
+    message(FATAL_ERROR "${Red}Python not found while it is the key package here...${ColourReset}")
+endif(Python_FOUND)
