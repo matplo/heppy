@@ -16,7 +16,7 @@ def create_and_init_pythia(config_strings=[]):
 
 def add_standard_pythia_args(parser):
 	parser.add_argument('--py-ecms', help='low or high sqrt(s) GeV', default='low', type=str)
-	parser.add_argument('--py-ecm', help='sqrt(s) GeV', default=14000, type=float)
+	parser.add_argument('--py-ecm', help='sqrt(s) GeV', default=-1, type=float)
 	parser.add_argument('--py-pthatmin', help='minimum hat{pT}', default=-1, type=float)
 	parser.add_argument('--py-bias', help='make sure the bias is on', default=False, action='store_true')
 	parser.add_argument('--py-biaspow', help='power of the bias (hard)', default=4, type=float)
@@ -327,7 +327,7 @@ def pythia_config_from_args(args):
 	if args.py_noHadron:
 		sconfig_pythia.append("HadronLevel:all=off")
 
-	if args.py_ecm:
+	if args.py_ecm > 0:
 		sconfig_pythia.append("Beams:eCM = {}".format(args.py_ecm))
 
 	print(sconfig_pythia)
