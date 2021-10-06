@@ -16,7 +16,7 @@ def create_and_init_pythia(config_strings=[]):
 
 def add_standard_pythia_args(parser):
 	parser.add_argument('--py-ecms', help='low or high sqrt(s) GeV', default='low', type=str)
-	parser.add_argument('--py-ecm', help='sqrt(s) GeV', default=13000, type=float)
+	parser.add_argument('--py-ecm', help='sqrt(s) GeV', default=14000, type=float)
 	parser.add_argument('--py-pthatmin', help='minimum hat{pT}', default=-1, type=float)
 	parser.add_argument('--py-bias', help='make sure the bias is on', default=False, action='store_true')
 	parser.add_argument('--py-biaspow', help='power of the bias (hard)', default=4, type=float)
@@ -54,6 +54,8 @@ def add_standard_pythia_args(parser):
 	parser.add_argument('--py-el', help="elastic", default=False, action='store_true')
 	parser.add_argument('--py-nd', help="non-diffractive", default=False, action='store_true')
 	parser.add_argument('--py-PbPb', help="setup PbPb collisions", default=False, action='store_true')
+	parser.add_argument('--py-cmnd', help="read pythia cmnd file(s) - yes, can be multiples", nargs='+', required=False)
+	parser.add_argument('--py-cmnd-out', help="write pythia cmnd file", required=False, default='pythia8.cmnd')
 	# legacy support
 	parser.add_argument('--nev', help='number of events', default=1, type=int)
 
@@ -62,6 +64,16 @@ def pythia_config_from_args(args):
 	sconfig_pythia = []
 	soft_phys = False
 	procsel = 0
+
+	if len(args.py_cmnd) > 0:
+		for fn in args.py_cmnd:
+			with open(fn) as f:
+				cfg = f.readlines()
+			for l in cfg:
+				if len(l):
+					_cl = l.strip('\n')
+					sconfig_pythia.append(_cl)
+					procsel += 1 # assuming processes configured in the config files
 
 	if args.py_time_seed:
 		_extra = [ 	"Random:setSeed=on",
@@ -286,11 +298,12 @@ def pythia_config_from_args(args):
 	if procsel == 0:
 		sconfig_pythia.append("HardQCD:all=on")
 
-	if args.py_pthatmin < 0 and soft_phys == False:
+	if args.py_pthatmin < 0 and len(args.py_cmnd) == 0 and soft_phys == False:
 		if args.py_PbPb is False:
 			args.py_bias = True;
 	else:
-		sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
+		if 'PhaseSpace:pTHatMin' not in ' '.join(sconfig_pythia):
+			sconfig_pythia.append("PhaseSpace:pTHatMin = {}".format(args.py_pthatmin))
 
 	if args.py_bias:
 		_extra = [	"PhaseSpace:bias2Selection=on",
