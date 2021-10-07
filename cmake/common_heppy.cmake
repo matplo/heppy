@@ -9,7 +9,7 @@ message(STATUS "${Green}Will use ${MAKE_EXE} when needed.${ColourReset}")
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
-set (CMAKE_CXX_STANDARD 11)
+# set (CMAKE_CXX_STANDARD 11) # this conflicts with the new compiler/root - std14...
 # set(cmake_external_install_prefix ${CMAKE_CURRENT_SOURCE_DIR}/packages)
 
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
