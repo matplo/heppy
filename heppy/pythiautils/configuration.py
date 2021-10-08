@@ -65,7 +65,7 @@ def pythia_config_from_args(args):
 	soft_phys = False
 	procsel = 0
 
-	if args.py_cmnd > 0:
+	if args.py_cmnd:
 		for fn in args.py_cmnd:
 			with open(fn) as f:
 				cfg = f.readlines()
