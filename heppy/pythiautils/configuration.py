@@ -298,7 +298,7 @@ def pythia_config_from_args(args):
 	if procsel == 0:
 		sconfig_pythia.append("HardQCD:all=on")
 
-	if args.py_pthatmin < 0 and len(args.py_cmnd) == 0 and soft_phys == False:
+	if args.py_pthatmin < 0 and args.py_cmnd is None and soft_phys == False:
 		if args.py_PbPb is False:
 			args.py_bias = True;
 	else:
