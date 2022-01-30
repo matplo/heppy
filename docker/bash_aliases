@@ -1,0 +1,34 @@
+
+export PS1="(heppydock)\e[32;1m[\u\e[31;1m@\h\e[32;1m]\e[34;1m\w\e[0m\n> "
+
+color_prompt=yes
+
+export PATH=/usr/local/docker:/usr/local/docker/fromhost:$PATH
+export DOCKER_EXCHANGE_DIR=/usr/local/docker/fromhost
+
+function docker_exchange_dir()
+{
+	echo ${DOCKER_EXCHANGE_DIR}
+	cd ${DOCKER_EXCHANGE_DIR}
+}
+export -f docker_exchange_dir
+
+export ROOTSYS=/opt/root
+export PATH=$ROOTSYS/bin:$PATH
+export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+export CLING_STANDARD_PCH=none
+
+function heppy_load()
+{
+	if [ -d /usr/local/docker/heppy/modules ]; then
+		module use /usr/local/docker/heppy/modules
+		module load heppy
+	fi
+}
+export -f heppy_load
+
+if [ -f /hostuserhome/.docker_heppy_startup.sh ]; then
+	. /hostuserhome/.docker_heppy_startup.sh
+fi
+
+alias cdhome="cd /hostuserhome"
