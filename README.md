@@ -9,7 +9,17 @@
   - usage of ROOT (Pythia8 bindings; also HEPMC2, HEPMC3, LHAPDF6) is up to the user
     - for Pythia8 pythia8-config should be in $PATH or in $PYTHIA8_DIR/bin
     - for ROOT (compiled with the same python - ROOT.py etc should be built) root-config in $PATH or in $ROOTSYS/bin
- 
+
+# quick start?
+
+- simply run it in a docker(https://www.docker.com) 
+  - see https://github.com/matplo/heppy/tree/master/docker/heppy for a bit more information
+- run the following...
+```
+git clone https://github.com/matplo/heppy.git
+./heppy/docker/heppy/run.sh
+```
+
 # recommended build/setup
 
  - a pre-build note: **because of the interaction of python2 and python3 on some systems and the particularities of fastjet build (also pythia8 to some extent) we recommend building in virtual environment** - for example:
