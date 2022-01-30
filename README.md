@@ -19,6 +19,13 @@
 git clone https://github.com/matplo/heppy.git
 ./heppy/docker/heppy/run.sh
 ```
+- within the docker you may try
+```
+heppy_load
+heppy_cd
+cd heppy/examples/
+./pythia_gen_fastjet_lund_test.py
+```
 
 # recommended build/setup
 
