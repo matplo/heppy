@@ -2,6 +2,7 @@
 %{
 	#define SWIG_FILE_WITH_INIT
 	#include "fjtools.hh"
+	#include <fastjet/JetDefinition.hh>
 %}
 
 %include "std_string.i"
