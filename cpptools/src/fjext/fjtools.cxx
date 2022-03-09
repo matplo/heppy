@@ -28,7 +28,14 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-			_l += std::pow(_p.perp(), kappa) * std::pow(_p.delta_R(j) / scaleR0, beta);
+                        // If particle is a thermal, subtract instead of adding
+                        if (_p.user_info() < 0) {
+				_l -= std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+                        } else {
+				_l += std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+                        }
 		}
 		_l /= std::pow(j.perp(), kappa);
 		return _l;
@@ -46,7 +53,14 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-			_l += std::pow(_p.perp(), kappa) * std::pow(_p.delta_R(j) / scaleR0, beta);
+                        // If particle is a thermal, subtract instead of adding
+                        if (_p.user_info() < 0) {
+				_l -= std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			} else {
+				_l += std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			}
 		}
 		_l /= std::pow(j.perp(), kappa);
 		return _l;
@@ -55,7 +69,7 @@ namespace FJTools
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
-		if (npt != neta || npt != nphi) 
+		if (npt != neta || npt != nphi)
 		{
 			std::cerr << "[error] vectorize_pt_eta_phi : incompatible array sizes" << std::endl;
 			return v;
