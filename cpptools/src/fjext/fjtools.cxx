@@ -28,14 +28,14 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-                        // If particle is a thermal, subtract instead of adding
-                        if (_p.user_index() < 0) {
+			// If particle is a thermal, subtract instead of adding
+			if (_p.user_index() < 0) {
 				_l -= std::pow(_p.perp(), kappa) *
 					std::pow(_p.delta_R(j) / scaleR0, beta);
-                        } else {
+			} else {
 				_l += std::pow(_p.perp(), kappa) *
 					std::pow(_p.delta_R(j) / scaleR0, beta);
-                        }
+			}
 		}
 		_l /= std::pow(j.perp(), kappa);
 		return _l;
@@ -53,8 +53,8 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-                        // If particle is a thermal, subtract instead of adding
-                        if (_p.user_index() < 0) {
+			// If particle is a thermal, subtract instead of adding
+			if (_p.user_index() < 0) {
 				_l -= std::pow(_p.perp(), kappa) *
 					std::pow(_p.delta_R(j) / scaleR0, beta);
 			} else {
