@@ -69,7 +69,7 @@ message(STATUS "ROOUNFOLD_HEPPY_PREFIX ${ROOUNFOLD_HEPPY_PREFIX}")
 # add_definitions(-Dbuiltin_xroounfoldd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON)
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION})
-	set(THIS_PATCH_COMMAND patch -f ${ROOUNFOLD_HEPPY_PREFIX}/src/ROOUNFOLD/CMakeLists.txt < ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION})
+	set(THIS_PATCH_COMMAND patch -N ${ROOUNFOLD_HEPPY_PREFIX}/src/ROOUNFOLD/CMakeLists.txt < ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION})
     message(STATUS "${Green}Will patch CMakeFiles.txt with ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION} ${ColourReset}")
 endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/RooUnfoldCMakePatch-${ROOUNFOLD_VERSION})
 
