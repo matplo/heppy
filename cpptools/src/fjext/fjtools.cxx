@@ -18,7 +18,8 @@ namespace FJTools
 	}
 
 	// Angularity definition as it is given in arXiv:1408.3122
-	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa, double scaleR0)
+	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa,
+		double scaleR0, bool check_user_index/*=false*/)
 	{
 		// If there are no constituents (empty jet), return an underflow value
 		if (!j.has_constituents()) { return -1; }
@@ -29,7 +30,7 @@ namespace FJTools
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
 			// If particle is a thermal, subtract instead of adding
-			if (_p.user_index() < 0) {
+			if (check_user_index && _p.user_index() < 0) {
 				_l -= std::pow(_p.perp(), kappa) *
 					std::pow(_p.delta_R(j) / scaleR0, beta);
 			} else {
@@ -43,7 +44,7 @@ namespace FJTools
 
 	// Use this overloaded definition for groomed jets
 	double lambda_beta_kappa(const fastjet::PseudoJet &j, const fastjet::PseudoJet &j_groomed,
-                             double beta, double kappa, double scaleR0)
+		double beta, double kappa, double scaleR0, bool check_user_index/*=false*/)
 	{
 		// If there are no constituents (empty jet), return an underflow value
 		if (!j.has_constituents() || !j_groomed.has_constituents()) { return -1; }
@@ -54,7 +55,7 @@ namespace FJTools
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
 			// If particle is a thermal, subtract instead of adding
-			if (_p.user_index() < 0) {
+			if (check_user_index && _p.user_index() < 0) {
 				_l -= std::pow(_p.perp(), kappa) *
 					std::pow(_p.delta_R(j) / scaleR0, beta);
 			} else {
