@@ -18,7 +18,8 @@ namespace FJTools
 	}
 
 	// Angularity definition as it is given in arXiv:1408.3122
-	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa, double scaleR0)
+	double lambda_beta_kappa(const fastjet::PseudoJet &j, double beta, double kappa,
+		double scaleR0, bool check_user_index/*=false*/)
 	{
 		// If there are no constituents (empty jet), return an underflow value
 		if (!j.has_constituents()) { return -1; }
@@ -28,7 +29,14 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-			_l += std::pow(_p.perp(), kappa) * std::pow(_p.delta_R(j) / scaleR0, beta);
+			// If particle is a thermal, subtract instead of adding
+			if (check_user_index && _p.user_index() < 0) {
+				_l -= std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			} else {
+				_l += std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			}
 		}
 		_l /= std::pow(j.perp(), kappa);
 		return _l;
@@ -36,7 +44,7 @@ namespace FJTools
 
 	// Use this overloaded definition for groomed jets
 	double lambda_beta_kappa(const fastjet::PseudoJet &j, const fastjet::PseudoJet &j_groomed,
-                             double beta, double kappa, double scaleR0)
+		double beta, double kappa, double scaleR0, bool check_user_index/*=false*/)
 	{
 		// If there are no constituents (empty jet), return an underflow value
 		if (!j.has_constituents() || !j_groomed.has_constituents()) { return -1; }
@@ -46,7 +54,14 @@ namespace FJTools
 		for (unsigned int i = 0; i < _cs.size(); i++)
 		{
 			const fastjet::PseudoJet &_p = _cs[i];
-			_l += std::pow(_p.perp(), kappa) * std::pow(_p.delta_R(j) / scaleR0, beta);
+			// If particle is a thermal, subtract instead of adding
+			if (check_user_index && _p.user_index() < 0) {
+				_l -= std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			} else {
+				_l += std::pow(_p.perp(), kappa) *
+					std::pow(_p.delta_R(j) / scaleR0, beta);
+			}
 		}
 		_l /= std::pow(j.perp(), kappa);
 		return _l;
@@ -55,7 +70,7 @@ namespace FJTools
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi(double *pt, int npt, double *eta, int neta, double *phi, int nphi, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
-		if (npt != neta || npt != nphi) 
+		if (npt != neta || npt != nphi)
 		{
 			std::cerr << "[error] vectorize_pt_eta_phi : incompatible array sizes" << std::endl;
 			return v;
