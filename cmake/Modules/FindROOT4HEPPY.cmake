@@ -48,7 +48,8 @@ if (ROOT_FOUND)
     message(STATUS "processing for ROOT version ${ROOT_VERSION}")
     if(HEPPY_PYTHON_FOUND) # from common_heppy_finds.cmake
       message(STATUS "${Yellow}- note will look for ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR}")
-      find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR})
+      #find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR})
+      find_package(ROOT 6.22 COMPONENTS RIO EG)
     else(HEPPY_PYTHON_FOUND)
         message(FATAL_ERROR "${Red}Python not found - common_heppy_finds.cmake failed already?${ColourReset}")
     endif(HEPPY_PYTHON_FOUND)
@@ -66,16 +67,26 @@ if (ROOT_FOUND)
         # message(STATUS "${Green}ROOT_LIBRARY_DIR: ${ROOT_LIBRARY_DIR}${ColourReset}")
         string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
         string(REPLACE "/ROOTTPython.pcm" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
+        message(STATUS "${Green}ROOT LIBRARY DIR: ${ROOT_LIBRARY_DIR}${ColourReset}")
+        message(STATUS "${Green}Python Executable: ${Python_EXECUTABLE}")
         message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
         find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
         #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
-        execute_process(  COMMAND ${CMAKE_HEPPY_DIR}/external/root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python_EXECUTABLE}
+        set(TESTCMND "import ROOT\; ROOT.gROOT.SetBatch(True)\; print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion())\;")
+        message(STATUS "Test command: ${Python_EXECUTABLE} -c ${TESTCMND}")
+        execute_process(  COMMAND ${Python_EXECUTABLE} -c ${TESTCMND}
                           WORKING_DIRECTORY /tmp 
                           RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
                           OUTPUT_VARIABLE LOAD_ROOT_PYTHON 
                           ERROR_VARIABLE LOAD_ROOT_PYTHON_ERROR 
                           OUTPUT_STRIP_TRAILING_WHITESPACE )
+        # execute_process(  COMMAND ${CMAKE_HEPPY_DIR}/external/root/test_root.sh ${ROOT_LIBRARY_DIR} ${Python_EXECUTABLE}
+        #                   WORKING_DIRECTORY /tmp 
+        #                   RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
+        #                   OUTPUT_VARIABLE LOAD_ROOT_PYTHON 
+        #                   ERROR_VARIABLE LOAD_ROOT_PYTHON_ERROR 
+        #                   OUTPUT_STRIP_TRAILING_WHITESPACE )
         if (LOAD_ROOT_PYTHON_ERROR)
           message(STATUS "${Red}Loading ROOT python module - result:[${LOAD_ROOT_PYTHON_RESULT}] - failure!${ColourReset}")
           message(SEND_ERROR " ${Red}Loading ROOT python module FAILED:\n ${LOAD_ROOT_PYTHON_ERROR}${ColourReset}")

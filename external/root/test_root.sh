@@ -1,4 +1,3 @@
-#!/bin/bash
 
 function thisdir()
 {
@@ -20,7 +19,7 @@ if [ os_linux ]; then
 fi
 
 if [ os_darwin ]; then
-	export DYLD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${1}
+	export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:${1}
 fi
 
 echo "<i> PYTHON_PATH to append: ${1}"
