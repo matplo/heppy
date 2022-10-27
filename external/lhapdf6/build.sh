@@ -30,7 +30,8 @@ mkdir -p ./build_lhapdf6
 cd ./build_lhapdf6
 
 # lhapdf6_version=6.2.3
-lhapdf6_version=6.3.0
+# lhapdf6_version=6.3.0
+lhapdf6_version=6.5.3
 lhapdf6_heppy_prefix="${THISD}/lhapdf6-${lhapdf6_version}"
 separator configuration
 cmake -DCMAKE_BUILD_TYPE=Release -DLHAPDF6_VERSION="${lhapdf6_version}" -DLHAPDF6_HEPPY_PREFIX=${lhapdf6_heppy_prefix} ..
