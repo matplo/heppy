@@ -20,6 +20,15 @@ cd ${THISD}
 
 separator "building roounfold ${PWD}"
 
+export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
+roounfold_version=2.0.0
+
+ezrasru=$(get_opt "ezra" $@)
+if [ ! -z ${clean} ]; then
+	export RUGITREPO=https://gitlab.cern.ch/elesser/RooUnfold.git
+	roounfold_version=master
+fi
+
 clean=$(get_opt "clean" $@)
 if [ ! -z ${clean} ]; then
 	separator "clean"
@@ -35,7 +44,6 @@ fi
 mkdir -p ./build_roounfold
 cd ./build_roounfold
 
-roounfold_version=master
 roounfold_heppy_prefix="${THISD}/roounfold-${roounfold_version}"
 separator configuration
 cmake -DCMAKE_BUILD_TYPE=Release -DROOUNFOLD_VERSION="${roounfold_version}" -DROOUNFOLD_HEPPY_PREFIX=${roounfold_heppy_prefix} ..
