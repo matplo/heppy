@@ -56,11 +56,15 @@ message(STATUS "FASTJET_HEPPY_PREFIX ${FASTJET_HEPPY_PREFIX}")
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
 set($ENV{PYTHON} ${Python3_EXECUTABLE})
 message(STATUS "Python version string is ${Python_VERSION}")
-string(REGEX MATCHALL "[0-9]" PYTHON_VER_MATCH "${Python_VERSION}")
+string(REPLACE "." " " Python_VERSIONx "${Python_VERSION}")
+string(REGEX MATCHALL "[0-9]+" PYTHON_VER_MATCH "${Python_VERSIONx}")
+# string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" PYTHON_VER_MATCH "${Python_VERSION}")
+
 list(GET PYTHON_VER_MATCH 0 Python_Ver_Major)
 list(GET PYTHON_VER_MATCH 1 Python_Ver_Minor)
 list(GET PYTHON_VER_MATCH 2 Python_Ver_Patch)
 message(STATUS "Python version parsed: ${Python_Ver_Major}.${Python_Ver_Minor}.${Python_Ver_Patch}")
+
 set(Python3_CONFIG_NAME "python${Python_Ver_Major}.${Python_Ver_Minor}-config")
 
 find_program(Python3_CONFIG ${Python3_CONFIG_NAME})
