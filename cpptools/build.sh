@@ -57,6 +57,7 @@ if [ -d ${build_path} ]; then
     fi
     separator "build"
     cmake --build . --target all -- -j $(n_cores) && cmake --build . --target install
+    # cmake --build . --target all -- -j 1 && cmake --build . --target install
     # separator "install"
 else
 	error "unable to access build path: ${build_path}"

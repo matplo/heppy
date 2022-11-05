@@ -58,7 +58,8 @@ bool Pythia8HepMC3Wrapper::fillEvent(Pythia8::Pythia &pythia)
 	if (fOutput)
 	{
 		GenEvent hepmc_event( Units::GEV, Units::MM );
-		_filled = fPythiaToHepMC.fill_next_event( pythia.event, &hepmc_event, fiEv, &pythia.info, &pythia.settings);
+		// _filled = fPythiaToHepMC.fill_next_event( pythia.event, &hepmc_event, fiEv, &pythia.info, &pythia.settings);
+		_filled = fPythiaToHepMC.fill_next_event(pythia.event, &hepmc_event, fiEv);
 		if (_filled == false)
 		{
 			std::cerr << "[error] Pythia8HepMC3Wrapper::fillEvent false" << std::endl;

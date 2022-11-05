@@ -19,3 +19,7 @@ message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message(STATUS "${Yellow}Note: this build requires to run within virtual environment of Python...${ColourReset}")
 set(Python_FIND_VIRTUALENV ONLY)
 set(Python3_FIND_VIRTUALENV ONLY)
+
+if (DEFINED ENV{CONDA_DEFAULT_ENV})
+	set(CONDA_ENV_ON TRUE)
+endif()

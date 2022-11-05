@@ -1,3 +1,6 @@
+# required by fastjet
+set (CMAKE_CXX_STANDARD 11)
+
 add_compile_options(${FASTJET_CXXFLAGS})
 
 set(MODULE_NAME fjext)

@@ -1,3 +1,6 @@
+# required by fastjet
+set (CMAKE_CXX_STANDARD 11)
+
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 set(fjcontrib_version "1.042")
 execute_process ( COMMAND

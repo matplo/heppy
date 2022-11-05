@@ -27,6 +27,8 @@
 #   endif(${ROOTCONFIG})
 # endif(NOT $ENV{ROOTSYS})
 
+# include(heppy_find_python)
+
 if (NOT $ENV{ROOTSYS})
   list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 endif(NOT $ENV{ROOTSYS})
@@ -47,8 +49,8 @@ if (ROOT_FOUND)
   if (${ROOT_VERSION} VERSION_GREATER "6.22")
     message(STATUS "processing for ROOT version ${ROOT_VERSION}")
     if(HEPPY_PYTHON_FOUND) # from common_heppy_finds.cmake
-      message(STATUS "${Yellow}- note will look for ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR}")
-      #find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR})
+      # message(STATUS "${Yellow}- note will look for ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR}")
+      # find_package(ROOT 6.22 COMPONENTS RIO EG ROOTPythonizations${Python_VERSION_MAJOR}_${Python_VERSION_MINOR})
       find_package(ROOT 6.22 COMPONENTS RIO EG)
     else(HEPPY_PYTHON_FOUND)
         message(FATAL_ERROR "${Red}Python not found - common_heppy_finds.cmake failed already?${ColourReset}")
@@ -70,7 +72,7 @@ if (ROOT_FOUND)
         message(STATUS "${Green}ROOT LIBRARY DIR: ${ROOT_LIBRARY_DIR}${ColourReset}")
         message(STATUS "${Green}Python Executable: ${Python_EXECUTABLE}")
         message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
-        find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+        # find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
         #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
         set(TESTCMND "import ROOT\; ROOT.gROOT.SetBatch(True)\; print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion())\;")
