@@ -31,6 +31,7 @@ cd ./build_pythia8
 
 pythia8_version=8244
 # pythia8_version=8305
+pythia8_version=8307
 
 pythia8_heppy_prefix="${THISD}/pythia8-${pythia8_version}"
 separator configuration

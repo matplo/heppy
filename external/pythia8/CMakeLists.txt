@@ -61,20 +61,20 @@ if (LHAPDF6_FOUND)
 	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-lhapdf6=${LHAPDF6_DIR})
 endif(LHAPDF6_FOUND)
 
-find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
-if (Python3_FOUND)
-	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-include=${Python3_INCLUDE_DIRS})
-	get_filename_component(Python3_EXE_NAME ${Python3_EXECUTABLE} NAME)
-	if (Python3_EXE_NAME STREQUAL "python")
-		get_filename_component(Python3_BINDIR ${Python3_EXECUTABLE} DIRECTORY)
-		list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-bin=${Python3_BINDIR})
-	else(Python3_EXE_NAME STREQUAL "python")
+# find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+if (Python_FOUND)
+	list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-include=${Python_INCLUDE_DIRS})
+	get_filename_component(Python_EXE_NAME ${Python_EXECUTABLE} NAME)
+	if (Python_EXE_NAME STREQUAL "python")
+		get_filename_component(Python_BINDIR ${Python_EXECUTABLE} DIRECTORY)
+		list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-bin=${Python_BINDIR})
+	else(Python_EXE_NAME STREQUAL "python")
 		# work around pythia build that relies on presence of python (not python3 executable)
 		message(STATUS ${CMAKE_CURRENT_BINARY_DIR})
-		execute_process(COMMAND ln -sf ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/python )
+		execute_process(COMMAND ln -sf ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/python )
 		list(APPEND PYTHIA8_CONFIGURE_COMMAND --with-python-bin=${CMAKE_CURRENT_SOURCE_DIR}/)
-	endif(Python3_EXE_NAME STREQUAL "python")
-endif(Python3_FOUND)
+	endif(Python_EXE_NAME STREQUAL "python")
+endif(Python_FOUND)
 
 find_package(HepMC3 QUIET COMPONENTS HepMC)
 if (HepMC3_FOUND)
@@ -91,7 +91,8 @@ message(STATUS "configure command: ${PYTHIA8_CONFIGURE_COMMAND}")
 ExternalProject_Add(PYTHIA8
 	PREFIX            ${PYTHIA8_BUILD}
 	# URL               http://home.thep.lu.se/~torbjorn/pythia8/pythia${PYTHIA8_VERSION}.tgz
-	URL               https://pythia.org/download/pythia82/pythia${PYTHIA8_VERSION}.tgz
+	# URL               https://pythia.org/download/pythia82/pythia${PYTHIA8_VERSION}.tgz
+	URL               https://pythia.org/download/pythia83/pythia${PYTHIA8_VERSION}.tgz
 	DOWNLOAD_DIR      ${CMAKE_CURRENT_SOURCE_DIR}/downloads
 	# DOWNLOAD_NAME     fastjet-${PYTHIA8_VERSION}.tar.gz
 	# SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/build/fastjet-${PYTHIA8_VERSION}
