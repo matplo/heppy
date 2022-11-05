@@ -29,6 +29,8 @@ namespace pythiafjtools{
 		kMaxSetting
 	};
 
+	void test(const Pythia8::Pythia &p) {return;}
+
 	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p, 
 														int *selection, int nsel, 
 														int user_index_offset = 0,

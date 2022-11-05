@@ -1,6 +1,8 @@
 if (CONDA_ENV_ON)
   set(Python_ROOT_DIR $ENV{CONDA_PREFIX})
   message(STATUS "${Green} CONDA ON - Python_ROOT_DIR set to ${Python_ROOT_DIR} ${ColourReset}")
+  set(Python_FIND_STRATEGY LOCATION)
+  set(Python_FIND_VIRTUALENV FIRST)
 endif()
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
 if (Python_FOUND)
