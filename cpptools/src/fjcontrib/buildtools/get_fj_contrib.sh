@@ -6,7 +6,7 @@ if [ ! -z ${wdir} ]; then
 	[ ! -d ${wdir} ] && mkdir -p ${wdir}
 fi
 
-fjcontrib_version=1.048
+fjcontrib_version=1.051
 [ ! -z ${3} ] && fjcontrib_version=${3}
 
 if [ -d ${srcdir} ]; then
