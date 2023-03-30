@@ -4,3 +4,7 @@ __pycache__
 *.dat
 /venv
 Pipfile*
+external/*/build_*/
+external/*/*-current
+external/*/*-master/
+cpptools/src/fjcontrib/fjcontrib-*

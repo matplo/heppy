@@ -6,13 +6,13 @@ if [ ! -z ${wdir} ]; then
 	[ ! -d ${wdir} ] && mkdir -p ${wdir}
 fi
 
-fjcontrib_version=1.042
+fjcontrib_version=1.048
 [ ! -z ${3} ] && fjcontrib_version=${3}
 
 if [ -d ${srcdir} ]; then
 	if [ -d ${wdir} ]; then
 		cd ${wdir}
-		[ ! -e fjcontrib-${fjcontrib_version}.tar.gz ] && wget http://fastjet.hepforge.org/contrib/downloads/fjcontrib-${fjcontrib_version}.tar.gz
+		[ ! -e fjcontrib-${fjcontrib_version}.tar.gz ] && wget http://fastjet.hepforge.org/contrib/downloads/fjcontrib-${fjcontrib_version}.tar.gz --no-check-certificate
 		cd -
 		if [ -e ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz ]; then
 			# RecursiveTools

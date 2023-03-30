@@ -77,10 +77,10 @@ namespace FJTools
 		}
 		for (unsigned int i = 0; i < npt; i++)
 		{
-		    double px = pt[i] * cos(phi[i]);
-		    double py = pt[i] * sin(phi[i]);
-		    double pz = pt[i] * sinh(eta[i]);
-		    double e  = sqrt(px*px + py*py + pz*pz);
+			double px = pt[i] * cos(phi[i]);
+			double py = pt[i] * sin(phi[i]);
+			double pz = pt[i] * sinh(eta[i]);
+			double e  = sqrt(px*px + py*py + pz*pz);
 			fastjet::PseudoJet psj(px, py, pz, e);
 			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
@@ -91,17 +91,17 @@ namespace FJTools
 	std::vector<fastjet::PseudoJet> vectorize_pt_eta_phi_m(double *pt, int npt, double *eta, int neta, double *phi, int nphi, double *m, int nm, int user_index_offset)
 	{
 		std::vector<fastjet::PseudoJet> v;
-		if (npt != neta || npt != nphi || npt != nm) 
+		if (npt != neta || npt != nphi || npt != nm)
 		{
 			std::cerr << "[error] vectorize_pt_eta_phi : incompatible array sizes" << std::endl;
 			return v;
 		}
 		for (unsigned int i = 0; i < npt; i++)
 		{
-		    double px = pt[i] * cos(phi[i]);
-		    double py = pt[i] * sin(phi[i]);
-		    double pz = pt[i] * sinh(eta[i]);
-		    double e  = sqrt(px*px + py*py + pz*pz + m[i]*m[i]);
+			double px = pt[i] * cos(phi[i]);
+			double py = pt[i] * sin(phi[i]);
+			double pz = pt[i] * sinh(eta[i]);
+			double e  = sqrt(px*px + py*py + pz*pz + m[i]*m[i]);
 			fastjet::PseudoJet psj(px, py, pz, e);
 			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
@@ -119,7 +119,7 @@ namespace FJTools
 		}
 		for (unsigned int i = 0; i < npx; i++)
 		{
-		    double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i]);
+			double e  = sqrt(px[i]*px[i] + py[i]*py[i] + pz[i]*pz[i]);
 			fastjet::PseudoJet psj(px[i], py[i], pz[i], e);
 			psj.set_user_index(i + user_index_offset);
 			v.push_back(psj);
@@ -181,7 +181,7 @@ namespace FJTools
 		// Define coefficients with which to combine particles
 		// If particle has positive user_index: +1 (i.e. add its four-vector)
 		// If particle has negative user_index: -1 (i.e. subtract its four-vector)
-		int c1=1,c2=1;
+		int c1 = 1, c2 = 1;
 		if (particle1.user_index() < 0) {
 			c1 = -1;
 		}
