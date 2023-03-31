@@ -216,6 +216,9 @@ public:
   /// obtain the splitting of max{kt_i}
   virtual LundDeclustering* max_kt();
 
+  /// obtain the splitting of late{kt_i}
+  virtual LundDeclustering* late_kt(const double& kT_cut);
+
   /// obtain the splitting of max{kappa_i}
   virtual LundDeclustering* max_kappa();
 
@@ -256,6 +259,8 @@ public:
 //   virtual LundDeclustering* max_z();
 //   /// obtain the splitting of max{kt_i}
 //   virtual LundDeclustering* max_kt();
+//   /// obtain the splitting of late{kt_i}
+//   virtual LundDeclustering* late_kt(const double& kT_cut);
 //   /// obtain the splitting of max{kappa_i}
 //   virtual LundDeclustering* max_kappa();
 //   /// obtain the splitting of max{tf_i} : tf = z\theta^2
