@@ -9,12 +9,12 @@
 
 FASTJET_BEGIN_NAMESPACE      // defined in fastjet/internal/base.hh
 
-namespace contrib 
+namespace contrib
 {
 	namespace GroomerShopUtil
 	{
 	    static LundDeclustering _zero_split = LundDeclustering();
-	    static LundDeclustering *zero_split() 
+	    static LundDeclustering *zero_split()
 	    {
 	    	_zero_split.reset();
 	    	return &_zero_split;
@@ -36,10 +36,10 @@ namespace contrib
 	std::pair<bool, int > findInVector(const std::vector<T>  & vecOfElements, const T  & element)
 	{
 		std::pair<bool, int > result;
-	 
+
 		// Find given element in vector
 		auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
-	 
+
 		if (it != vecOfElements.end())
 		{
 			result.second = distance(vecOfElements.begin(), it);
@@ -50,24 +50,24 @@ namespace contrib
 			result.first = false;
 			result.second = -1;
 		}
-	 
+
 		return result;
 	}
 
-  	GroomerShop::GroomerShop()
-  	: _lund_gen(JetDefinition(JetAlgorithm::cambridge_algorithm, JetDefinition::max_allowable_R))
+    GroomerShop::GroomerShop()
+    : _lund_gen(JetDefinition(JetAlgorithm::cambridge_algorithm, JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(0)
   	{;}
 
-  	GroomerShop::GroomerShop(const JetAlgorithm& jet_alg)
-  	: _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
+    GroomerShop::GroomerShop(const JetAlgorithm& jet_alg)
+    : _lund_gen(JetDefinition(jet_alg, JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(0)
   	{;}
 
-  	GroomerShop::GroomerShop(const int& jet_alg)
-  	: _lund_gen(JetDefinition(static_cast<JetAlgorithm>(jet_alg), JetDefinition::max_allowable_R))
+    GroomerShop::GroomerShop(const int& jet_alg)
+    : _lund_gen(JetDefinition(static_cast<JetAlgorithm>(jet_alg), JetDefinition::max_allowable_R))
     , _lund_splits()
     , _jet(0)
   	{;}
@@ -120,14 +120,14 @@ namespace contrib
       recluster(jet);
     }
 
-  	GroomerShop::GroomerShop(const JetDefinition& jet_def) 
-  	: _lund_gen(jet_def)
+    GroomerShop::GroomerShop(const JetDefinition& jet_def)
+    : _lund_gen(jet_def)
     , _lund_splits()
     , _jet(0)
-  	{;}
+    {;}
 
-  	GroomerShop::GroomerShop(const PseudoJet& jet, const JetDefinition& jet_def) 
-  	: _lund_gen(jet_def)
+    GroomerShop::GroomerShop(const PseudoJet& jet, const JetDefinition& jet_def)
+    : _lund_gen(jet_def)
     , _lund_splits()
     , _jet(&jet)
   	{
@@ -135,7 +135,7 @@ namespace contrib
   	}
 
 	/// description of the class
-	std::string GroomerShop::description() const 
+	std::string GroomerShop::description() const
 	{
 		std::ostringstream oss;
 		oss << "GroomerShop with " << _lund_gen.description();
@@ -206,7 +206,7 @@ namespace contrib
 		if (min_kappa == std::numeric_limits<double>::max())
 		{
 			// throw Error("minimum kappa not found for a given jet");
-			GroomerShopUtil::_warnings.warn("minimum kappa not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("minimum kappa not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
@@ -228,7 +228,7 @@ namespace contrib
 		if (max_pt_softer == std::numeric_limits<double>::min())
 		{
 			// throw Error("max pt softer not found for a given jet");
-			GroomerShopUtil::_warnings.warn("max pt softer not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("max pt softer not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
@@ -250,7 +250,7 @@ namespace contrib
 		if (max_z == std::numeric_limits<double>::min())
 		{
 			// throw Error("max z not found for a given jet");
-			GroomerShopUtil::_warnings.warn("max z not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("max z not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
@@ -272,10 +272,33 @@ namespace contrib
 		if (max_kt == std::numeric_limits<double>::min())
 		{
 			// throw Error("max kt not found for a given jet");
-			GroomerShopUtil::_warnings.warn("max kt not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("max kt not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
+
+        /// `Late-kT' grooming ----
+        /// Obtain the smallest angle splitting which passes some kT cut
+        /// https://arxiv.org/abs/2211.11789
+        LundDeclustering* GroomerShop::late_kt(const double& kT_cut)
+        {
+                LundDeclustering* result = GroomerShopUtil::zero_split();
+                double min_delta_ij = std::numeric_limits<double>::max();
+                for (unsigned int i = 0; i < _lund_splits.size(); i++)
+                {
+                        if (_lund_splits[i].Delta() < min_delta_ij && _lund_splits[i].kt() > kT_cut)
+                        {
+                                min_delta_ij = _lund_splits[i].Delta();
+                                result = &_lund_splits[i];
+                        }
+                }
+                if (min_delta_ij == std::numeric_limits<double>::max())
+                {
+                        // throw Error("Late kT not found for a given jet");
+                        GroomerShopUtil::_warnings.warn("Late kT not found for a given jet - jet with no substructure? returning an 'empty' split");
+                }
+                return result;
+        }
 
 	/// max kappa split grooming ----
 	/// obtain the splitting of max{kappa_i}
@@ -294,7 +317,7 @@ namespace contrib
 		if (max_kappa == std::numeric_limits<double>::min())
 		{
 			// throw Error("max kappa not found for a given jet");
-			GroomerShopUtil::_warnings.warn("max kappa not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("max kappa not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
@@ -318,7 +341,7 @@ namespace contrib
 		if (max_tf == std::numeric_limits<double>::min())
 		{
 			// throw Error("max tf not found for a given jet");
-			GroomerShopUtil::_warnings.warn("max tf not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("max tf not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
@@ -342,7 +365,7 @@ namespace contrib
 		if (min_tf == std::numeric_limits<double>::max())
 		{
 			// throw Error("min tf not found for a given jet");
-			GroomerShopUtil::_warnings.warn("min tf not found for a given jet - jet with no substructure? returning and 'empty' split");
+			GroomerShopUtil::_warnings.warn("min tf not found for a given jet - jet with no substructure? returning an 'empty' split");
 		}
 		return result;
 	}
