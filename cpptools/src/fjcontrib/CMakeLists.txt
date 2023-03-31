@@ -1,7 +1,7 @@
 message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-set(fjcontrib_version "1.042")
+set(fjcontrib_version "1.051")
 execute_process ( COMMAND
-                 ${CMAKE_CURRENT_SOURCE_DIR}/buildtools/get_fj_contrib.sh 
+                 ${CMAKE_CURRENT_SOURCE_DIR}/buildtools/get_fj_contrib.sh
                  ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/buildtools
                  ${fjcontrib_version}
                  OUTPUT_VARIABLE GET_FJ_CONTRIB

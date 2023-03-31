@@ -30,7 +30,7 @@ build_dir=${PWD}/build_hepmc3
 mkdir -p ${build_dir}
 cd ${build_dir}
 
-hepmc3_version=3.1.1
+hepmc3_version=3.2.5
 hepmc3_heppy_prefix="${THISD}/hepmc3-${hepmc3_version}"
 if [ "x${hepmc3_version}" == "x3.0.0" ]; then
 	archsuffix='.tgz'

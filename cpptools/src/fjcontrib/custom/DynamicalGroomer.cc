@@ -220,7 +220,7 @@ namespace contrib
       _cached_jet = const_cast<PseudoJet*>(&jet);
     }
     _result = max_kt_split(_lund_splits);
-    return _result;    
+    return _result;
   }
 
   /// obtain the index of the max{z_i} the primary plane of the jet
@@ -228,7 +228,7 @@ namespace contrib
   {
     double max_kt = std::numeric_limits<double>::min();
     unsigned int max_kt_split = 0;
-    for (unsigned int i = 0; i < lunds.size(); i++) 
+    for (unsigned int i = 0; i < lunds.size(); i++)
     {
       if (lunds[i].kt() > max_kt)
       {
@@ -246,7 +246,7 @@ namespace contrib
     {
       DynamicalGroomer::_warnings.warn("strange: max kt split index larger than max int?");
     }
-    return int(max_kt_split);    
+    return int(max_kt_split);
   }
 
   LundDeclustering& DynamicalGroomer::max_kt_split(const std::vector<LundDeclustering>& lunds)
@@ -267,6 +267,67 @@ namespace contrib
       DynamicalGroomer::_warnings.warn("max kt not found for a given jet - that's not correct... - jet with no substructure? returning 'empty' split");
     }
     return result;
+  }
+
+  ///
+  /// `Late-kT' grooming ----
+  /// Obtain the smallest angle splitting which passes some kT cut
+  /// https://arxiv.org/abs/2211.11789
+  LundDeclustering DynamicalGroomer::late_kt(const PseudoJet& jet, const double& kT_cut)
+  {
+    if (_cached_jet != &jet)
+    {
+      _lund_splits.clear();
+      _lund_splits = _lund_gen.result(jet);
+      _cached_jet = const_cast<PseudoJet*>(&jet);
+    }
+    _result = late_kt_split(_lund_splits, kT_cut);
+    return _result;
+  }
+
+  LundDeclustering& DynamicalGroomer::late_kt_split(const std::vector<LundDeclustering>& lunds, const double& kT_cut)
+  {
+    LundDeclustering& result = DynamicalGroomer::_zero_split;
+    double min_delta_ij = std::numeric_limits<double>::max();
+    for (auto const &l : lunds)
+    {
+      if (l.Delta() < min_delta_ij && l.kt() > kT_cut)
+      {
+        min_delta_ij = l.Delta();
+        result = l;
+      }
+    }
+    if (min_delta_ij == std::numeric_limits<double>::max())
+    {
+      // throw Error("Late kT not found for a given jet");
+      DynamicalGroomer::_warnings.warn("Late kT not found for a given jet - jet with no substructure? returning an 'empty' split");
+    }
+    return result;
+  }
+
+  /// obtain the index of the late kT the primary plane of the jet
+  int DynamicalGroomer::late_kt_split_index(const std::vector<LundDeclustering>& lunds, const double& kT_cut)
+  {
+    double min_delta_ij = std::numeric_limits<double>::max();
+    unsigned int late_kt_split = 0;
+    for (unsigned int i = 0; i < lunds.size(); i++)
+    {
+      if (lunds[i].Delta() < min_delta_ij && lunds[i].kt() > kT_cut)
+      {
+        min_delta_ij = lunds[i].Delta();
+        late_kt_split = i;
+      }
+    }
+    if (min_delta_ij == std::numeric_limits<double>::max())
+    {
+      // throw Error("Late kT not found for a given jet");
+      DynamicalGroomer::_warnings.warn("Late kT not found for a given jet - jet with no substructure? returning an 'empty' split");
+    }
+    if (late_kt_split > std::numeric_limits<int>::max())
+    {
+      DynamicalGroomer::_warnings.warn("strange: max kt split index larger than max int?");
+    }
+    return int(late_kt_split);
   }
 
   ///

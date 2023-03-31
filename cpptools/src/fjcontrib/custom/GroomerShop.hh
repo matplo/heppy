@@ -69,6 +69,9 @@ namespace contrib
     /// obtain the splitting of max{kt_i}
     virtual LundDeclustering* max_kt();
 
+    /// obtain the smallest angle splitting which passes some kT cut
+    virtual LundDeclustering* late_kt(const double& kT_cut);
+
     /// obtain the splitting of max{kappa_i}
     virtual LundDeclustering* max_kappa();
 
@@ -82,7 +85,7 @@ namespace contrib
     virtual LundDeclustering* soft_drop(double beta, double zcut, double R0 = JetDefinition::max_allowable_R);
 
   private:
-  	LundGenerator _lund_gen;
+    LundGenerator _lund_gen;
     std::vector<LundDeclustering> _lund_splits;
     const fastjet::PseudoJet* _jet;
   };

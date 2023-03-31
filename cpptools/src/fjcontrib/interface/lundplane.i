@@ -134,6 +134,12 @@ public:
   int max_kt_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
   static fastjet::contrib::LundDeclustering& max_kt_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds);
 
+  /// obtain the splitting of late{kt_i}
+  virtual LundDeclustering late_kt(const fastjet::PseudoJet& jet, const double& kT_cut);
+  /// obtain the index of the late{kt_i} in the primary plane of the jet
+  int late_kt_split_index(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& kT_cut);
+  static fastjet::contrib::LundDeclustering& late_kt_split(const std::vector<fastjet::contrib::LundDeclustering>& lunds, const double& kT_cut);
+
   /// obtain the splitting of max{kappa_i}
   virtual LundDeclustering max_kappa(const fastjet::PseudoJet& jet);
   /// obtain the index of the max{kappa_i} the primary plane of the jet
@@ -210,6 +216,9 @@ public:
   /// obtain the splitting of max{kt_i}
   virtual LundDeclustering* max_kt();
 
+  /// obtain the splitting of late{kt_i}
+  virtual LundDeclustering* late_kt(const double& kT_cut);
+
   /// obtain the splitting of max{kappa_i}
   virtual LundDeclustering* max_kappa();
 
@@ -250,6 +259,8 @@ public:
 //   virtual LundDeclustering* max_z();
 //   /// obtain the splitting of max{kt_i}
 //   virtual LundDeclustering* max_kt();
+//   /// obtain the splitting of late{kt_i}
+//   virtual LundDeclustering* late_kt(const double& kT_cut);
 //   /// obtain the splitting of max{kappa_i}
 //   virtual LundDeclustering* max_kappa();
 //   /// obtain the splitting of max{tf_i} : tf = z\theta^2

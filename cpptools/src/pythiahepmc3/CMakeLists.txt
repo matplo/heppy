@@ -10,9 +10,10 @@ file(GLOB SOURCES_LIB ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 #	# this is something to be understood - on linux it is NOT needed... additional link needed?
 #	list(APPEND SOURCES_LIB ${HEPMC3_INCLUDE_DIRS}/../interfaces/pythia8/src/Pythia8ToHepMC3.cc)
 #endif(APPLE)
-list(APPEND SOURCES_LIB ${HEPMC3_INCLUDE_DIRS}/../interfaces/pythia8/src/Pythia8ToHepMC3.cc)
+#list(APPEND SOURCES_LIB ${HEPMC3_INCLUDE_DIRS}/../interfaces/pythia8/src/Pythia8ToHepMC3.cc)
 message(STATUS "SOURCES: ${SOURCES_LIB}")
 string(REPLACE ".cxx" ".hh" HEADERS_LIB "${SOURCES_LIB}")
+list(APPEND HEADERS_LIB ${HEPMC3_INCLUDE_DIRS}/../share/HepMC3/interfaces/pythia8/include/Pythia8/Pythia8ToHepMC3.h)
 string(REPLACE ".cxx" "_wrap.c" SWIG_HEADERS_LIB "${SOURCES_LIB}")
 
 add_library(${NAME_LIB} SHARED ${SOURCES_LIB})

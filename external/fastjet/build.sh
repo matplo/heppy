@@ -37,7 +37,7 @@ fi
 mkdir -p ./build_fastjet
 cd ./build_fastjet
 
-fastjet_version=3.3.3
+fastjet_version=3.3.4
 fastjet_heppy_prefix="${THISD}/fastjet-${fastjet_version}"
 separator configuration
 cmake -DCMAKE_BUILD_TYPE=Release -DFASTJET_VERSION="${fastjet_version}" -DFASTJET_HEPPY_PREFIX=${fastjet_heppy_prefix} ${cgal_opt} ..

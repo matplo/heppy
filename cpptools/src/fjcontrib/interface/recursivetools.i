@@ -1,7 +1,6 @@
 %module recursivetools
 %{
   #include <fastjet/FunctionOfPseudoJet.hh>
-  #include <fastjet/tools/Transformer.hh>
   #include <fastjet/ClusterSequence.hh>
   #include <fastjet/WrappedStructure.hh>
   #include <fastjet/tools/Transformer.hh>
