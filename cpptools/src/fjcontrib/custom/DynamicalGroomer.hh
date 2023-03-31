@@ -62,6 +62,12 @@ namespace contrib
     int max_kt_split_index(const std::vector<LundDeclustering>& lunds);
     static LundDeclustering& max_kt_split(const std::vector<LundDeclustering>& lunds);
 
+    /// obtain the splitting of late{kt_i}
+    virtual LundDeclustering late_kt(const PseudoJet& jet, const double& kT_cut);
+    /// obtain the index of the late{kt_i} the primary plane of the jet
+    int late_kt_split_index(const std::vector<LundDeclustering>& lunds, const double& kT_cut);
+    static LundDeclustering& late_kt_split(const std::vector<LundDeclustering>& lunds, const double& kT_cut);
+
     /// obtain the splitting of max{kappa_i}
     virtual LundDeclustering max_kappa(const PseudoJet& jet);
     /// obtain the index of the max{kappa_i} the primary plane of the jet
