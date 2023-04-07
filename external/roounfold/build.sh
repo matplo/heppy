@@ -23,12 +23,40 @@ separator "building roounfold ${PWD}"
 export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
 roounfold_version=2.0.0
 
+<<<<<<< HEAD
 ezrasru=$(get_opt "ezra" $@)
 if [ ! -z ${clean} ]; then
 	export RUGITREPO=https://gitlab.cern.ch/elesser/RooUnfold.git
 	roounfold_version=master
 fi
 
+=======
+do_master=$(get_opt "master" $@)
+if [ ! -z ${do_master} ]; then
+    roounfold_version=master
+fi
+
+do_patch=""
+do_patch=$(get_opt "patch" $@)
+if [ ! -z ${do_patch} ]; then
+    do_patch="-DROOUNFOLD_PATCH=${do_patch}"
+else
+    do_patch=""
+fi
+
+ezrasru=$(get_opt "ezra" $@)
+if [ ! -z ${ezrasru} ]; then
+	export RUGITREPO=https://gitlab.cern.ch/elesser/RooUnfold.git
+	roounfold_version=master
+	do_patch="-DROOUNFOLD_PATCH=RooUnfoldCMakePatch-ezra"
+fi
+
+echo_warning "[i] Using RooUnfold at ${RUGITREPO} ${roounfold_version}"
+echo_warning "    version=${roounfold_version}"
+echo_warning "    patch: ${do_patch}"
+
+
+>>>>>>> 5fa57a2 (patch Ezra's roounfold)
 clean=$(get_opt "clean" $@)
 if [ ! -z ${clean} ]; then
 	separator "clean"
@@ -38,7 +66,7 @@ fi
 cleanall=$(get_opt "cleanall" $@)
 if [ ! -z ${cleanall} ]; then
 	separator "cleanall"
-	rm -rf ./build_roounfold ./roounfold-2.0.0
+	rm -rf ./build_roounfold ./roounfold-${roounfold_version}
 fi
 
 mkdir -p ./build_roounfold
@@ -46,7 +74,7 @@ cd ./build_roounfold
 
 roounfold_heppy_prefix="${THISD}/roounfold-${roounfold_version}"
 separator configuration
-cmake -DCMAKE_BUILD_TYPE=Release -DROOUNFOLD_VERSION="${roounfold_version}" -DROOUNFOLD_HEPPY_PREFIX=${roounfold_heppy_prefix} ..
+cmake -DCMAKE_BUILD_TYPE=Release -DROOUNFOLD_VERSION="${roounfold_version}" -DROOUNFOLD_HEPPY_PREFIX=${roounfold_heppy_prefix} ${do_patch} ..
 separator build
 cmake --build . --target all  
 

@@ -1,0 +1,26 @@
+--- roounfold-master/src/ROOUNFOLD/CMakeLists.txt	2020-11-20 01:08:20.000000000 -0800
++++ CMakeLists.txt	2023-04-06 22:44:46.369412461 -0700
+@@ -123,10 +123,13 @@
+ 
+   # Install the RooUnfoldConfig.cmake and RooUnfoldConfigVersion.cmake
+   install(FILES
+-    "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/RooUnfoldConfig.cmake"
+-    "${PROJECT_BINARY_DIR}/RooUnfoldConfigVersion.cmake"
++    "${PROJECT_BINARY_DIR}/RooUnfoldConfig.cmake"
+     DESTINATION "${PROJECT_SOURCE_DIR}" COMPONENT dev)
+ 
++  install(TARGETS RooUnfold DESTINATION lib)
++  install(FILES ${PROJECT_BINARY_DIR}/${libprefix}RooUnfold_rdict.pcm DESTINATION lib)
++  install(FILES ${RooUnfoldHeaders} DESTINATION include)
++
+   include(CTest)
+   enable_testing()
+ 
+@@ -134,6 +137,7 @@
+     get_filename_component(ExecName ${ExecSource} NAME_WE)
+     add_executable( ${ExecName} ${ExecSource} )
+     target_link_libraries ( ${ExecName} RooUnfold ${ROOT_LIBRARIES} )
++    install(TARGETS ${ExecName} DESTINATION bin)
+   endforeach()
+ endif()
+ 
