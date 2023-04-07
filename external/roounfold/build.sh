@@ -23,14 +23,6 @@ separator "building roounfold ${PWD}"
 export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
 roounfold_version=2.0.0
 
-<<<<<<< HEAD
-ezrasru=$(get_opt "ezra" $@)
-if [ ! -z ${clean} ]; then
-	export RUGITREPO=https://gitlab.cern.ch/elesser/RooUnfold.git
-	roounfold_version=master
-fi
-
-=======
 do_master=$(get_opt "master" $@)
 if [ ! -z ${do_master} ]; then
     roounfold_version=master
@@ -56,7 +48,6 @@ echo_warning "    version=${roounfold_version}"
 echo_warning "    patch: ${do_patch}"
 
 
->>>>>>> 5fa57a2 (patch Ezra's roounfold)
 clean=$(get_opt "clean" $@)
 if [ ! -z ${clean} ]; then
 	separator "clean"
