@@ -48,6 +48,7 @@ cd heppy/examples/
 ./external/hepmc3/build.sh
 
 ./external/root/build.sh
+# hint: for the next step you may need to source <your dir>/heppy/external/root/root-v6-24-08/bin/thisroot.sh
 
 ./external/roounfold/build.sh
 # hint: if unable to build because Unfold missing in ROOT you are probably missing a dependency to build xml - install libxml2-dev and recompile root 
