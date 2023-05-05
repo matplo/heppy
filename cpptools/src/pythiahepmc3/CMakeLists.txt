@@ -17,7 +17,8 @@ list(APPEND HEADERS_LIB ${HEPMC3_INCLUDE_DIRS}/../share/HepMC3/interfaces/pythia
 string(REPLACE ".cxx" "_wrap.c" SWIG_HEADERS_LIB "${SOURCES_LIB}")
 
 add_library(${NAME_LIB} SHARED ${SOURCES_LIB})
-target_include_directories(${NAME_LIB} PUBLIC ${HEPMC3_INCLUDE_DIRS} ${HEPMC3_INCLUDE_DIRS}/../interfaces/pythia8/include)
+# target_include_directories(${NAME_LIB} PUBLIC ${HEPMC3_INCLUDE_DIRS} ${HEPMC3_INCLUDE_DIRS}/../interfaces/pythia8/include)
+target_include_directories(${NAME_LIB} PUBLIC ${HEPMC3_INCLUDE_DIRS} ${HEPMC3_INCLUDE_DIRS}/../share/HepMC3/interfaces/pythia8/include)
 target_link_libraries(${NAME_LIB} PUBLIC ${PYTHIA8_LDFLAGS} ${HEPMC3_LIBRARIES})
 
 set(SWIG_TARGET_LINK_LIBRARIES ${PYTHIA8_LDFLAGS} ${HEPMC3_LIBRARIES})
