@@ -33,7 +33,8 @@ cd ${build_dir}
 #root_version=v6-18-04
 #root_version=v6-20-08 -Dglew=OFF
 #root_version=v6-22-08
-root_version=v6-24-08
+#root_version=v6-24-08
+root_version=v6-28-04
 root_heppy_prefix="${THISD}/root-${root_version}"
 fname=root_v${root_version}.source
 
@@ -65,7 +66,10 @@ if [ -d ${dirsrc} ]; then
 		_gcc=$(which gcc)
 		_gpp=$(which g++)
 		# config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=ON"
+		# config_opts="-Dbuiltin_xrootd=ON -Dmathmore=ON -Dxml=ON -Dvmc=OFF"
+		config_opts=""
 		compiler_opts="-DCMAKE_C_COMPILER=${_gcc} -DCMAKE_CXX_COMPILER=${_gpp} -DCMAKE_Fortran_COMPILER=${_gff}"
+		# compiler_opts="$compiler_opts -Dbuiltin_xrootd=ON"
 
 		_is_mac=$(uname -s)
 		if [ "x${_is_mac}" == "xDarwin" ]; then
