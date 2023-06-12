@@ -26,7 +26,22 @@ cmnd=$@
 first_run=""
 if [ ! -d ${venvdir} ]; then
 	echo "[i] creating venv"
-	python3 -m venv ${venvdir}
+
+	venv_cmnd=$(which venv)
+	if [ -z ${venv_cmnd} ]; then
+		echo "[w] no venv - trying virtualenv"
+		venv_cmnd=$(which virtualenv)
+		if [ ! -z ${venv_cmnd} ]; then
+			venv_cmnd="virtualenv"
+		fi
+	fi
+
+	if [ -z "${venv_cmnd}" ]; then
+		echo "[e] do not know how to setup virtual environment... bailing out."
+		exit -1
+	fi
+
+	python3 -m ${venv_cmnd} ${venvdir}
 	first_run="yes"
 fi
 
