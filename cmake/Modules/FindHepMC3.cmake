@@ -12,9 +12,9 @@ if (NOT HEPMC3_DIR)
   message(STATUS "Setting HEPMC3_DIR to ${HEPMC3_DIR}")
 endif(NOT HEPMC3_DIR)
 
-find_path(HEPMC3_INCLUDE_DIR HepMC/GenEvent.h 
+find_path(HEPMC3_INCLUDE_DIR HepMC3/GenEvent.h 
           HINTS ${HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_ROOT_DIR}/include $ENV{HEPMC3_DIR}/include ${HEPMC3_DIR}/include)
-find_library(HEPMC3_LIBRARY NAMES HepMC 
+find_library(HEPMC3_LIBRARY NAMES HepMC3 
              HINTS ${HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_ROOT_DIR}/lib $ENV{HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib ${HEPMC3_DIR}/lib64)
 
 set(HEPMC3_INCLUDE_DIRS ${HEPMC3_INCLUDE_DIR})
