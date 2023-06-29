@@ -64,6 +64,11 @@ function(make_module)
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}/cpptools/lib64" TRUE)
     module_append_command("prepend-path" "PYTHONPATH" "${HEPPY_DIR}" "${HEPPY_DIR}" TRUE)
 
+    file(APPEND ${heppy_module_file} "prepend-path LD_LIBRARY_PATH ${Python_LIBRARY_DIRS} \n")
+    file(APPEND ${heppy_module_file} "prepend-path LD_LIBRARY_PATH ${Python_RUNTIME_LIBRARY_DIRS} \n")
+    file(APPEND ${heppy_module_file} "prepend-path DYLD_LIBRARY_PATH ${Python_LIBRARY_DIRS} \n")
+    file(APPEND ${heppy_module_file} "prepend-path DYLD_LIBRARY_PATH ${Python_RUNTIME_LIBRARY_DIRS} \n")
+
     module_append_command_no_prop("setenv" "HEPPY_DIR" "${HEPPY_DIR}" TRUE)
     module_append_command_no_prop("setenv" "HEPPY_PYTHON_EXECUTABLE" "${Python_EXECUTABLE}" TRUE)
     module_append_command_no_prop("set-alias" "heppython" "\"${Python_EXECUTABLE}\"" FALSE)
