@@ -121,6 +121,193 @@ namespace pythiafjtools{
 	}
 
 
+	std::vector<fastjet::PseudoJet> vectorize_select_replaceD0(const Pythia8::Pythia &pythia, 
+													 		   int *selection, 
+													 		   int nsel,
+													 		   int user_index_offset,
+													 		   bool add_particle_info)
+	{
+		std::vector<fastjet::PseudoJet> v;
+
+		int D0_notKpi_counter = 0;
+		std::vector<int> saved_indices; // indices of particles saved to vector v
+		std::vector<int> indices_to_check; // indices of kaons/pions that should not be saved to vector v
+		bool D0found = false;
+		int d0notfound_ctr = 0;
+		
+		std::bitset<kMaxSetting> mask(0); // no particle accepted
+		std::bitset<kMaxSetting> negmask(0); // no particle accepted
+		negmask.flip();
+		for (unsigned int i = 0; i < nsel; i++)
+		{
+			if (selection[i] > 0)
+			{
+				mask[selection[i]] = true;
+			}
+			else
+			{
+				negmask[abs(selection[i])] = false;
+			}
+		}
+		for (int ip = 0; ip < pythia.event.size(); ip++)
+		{
+			std::bitset<kMaxSetting> pmask(0);
+			
+			for (unsigned int i = 0; i < kMaxSetting; i++)
+			{
+				switch(i)
+				{
+					case kIgnore:		pmask[i] = true;							
+					case kAny: 			pmask[i] = true; 							break;
+					case kFinal: 		pmask[i] = pythia.event[ip].isFinal(); 		break;
+					case kCharged: 		pmask[i] = pythia.event[ip].isCharged(); 	break;
+					case kNeutral: 		pmask[i] = pythia.event[ip].isNeutral(); 	break;
+					case kVisible: 		pmask[i] = pythia.event[ip].isVisible(); 	break;
+					case kParton: 		pmask[i] = pythia.event[ip].isParton(); 	break;
+					case kGluon: 		pmask[i] = pythia.event[ip].isGluon(); 		break;
+					case kQuark: 		pmask[i] = pythia.event[ip].isQuark(); 		break;
+					case kDiquark: 		pmask[i] = pythia.event[ip].isDiquark(); 	break;
+					case kLepton: 		pmask[i] = pythia.event[ip].isLepton(); 	break;
+					case kPhoton:       pmask[i] = (pythia.event[ip].id() == 22); 	break;
+					case kHadron: 		pmask[i] = pythia.event[ip].isHadron(); 	break;
+					case kResonance: 	pmask[i] = pythia.event[ip].isResonance(); 	break;
+					// case kD0:			pmask[i] = (pythia.event[ip].idAbs() == 421); break;
+				}
+			}
+			bool accept = ((mask & pmask) == mask) && ((negmask & pmask) == pmask) || pythia.event[ip].idAbs() == 421;
+			// if (accept)
+			// 	std::cout << "[+] ";
+			// else
+			// 	std::cout << "[-] ";
+			// std::cout 
+			// 		<< ip << " "
+			// 		<< mask << " !-" << negmask << " " << pmask << " " << " " << "(mask & pmask) " << (mask & pmask) << " "
+			// 		<< "isFinal = " << pythia.event[ip].isFinal() << " "
+			// 		<< pythia.event[ip].name() 
+			// 		<< std::endl;
+			if (accept)
+			{
+				// see if the particle is a kaon
+				// std::cout << "ip!! " << ip << ", " << pythia.event[ip].idAbs() << std::endl;
+
+				if (pythia.event[ip].idAbs() == 421) { //D0
+					std::vector<int> daughter_indices = pythia.event[ip].daughterList();
+					// std::cout << "pythia.event " << ip << " Found a D0!" << std::endl;
+
+					int idau1 = daughter_indices[0];
+					int idau2 = daughter_indices[1];
+					// std::cout << "all daughters in list indices: ";
+					for (int j=0; j<daughter_indices.size(); j++){
+						// std::cout << daughter_indices[j] << " ";
+					}
+					// std::cout << "all daughters in list IDs: ";
+					for (int j=0; j<daughter_indices.size(); j++){
+						// std::cout << pythia.event[daughter_indices[j]].id() << " ";
+					}
+					// std::cout << std::endl;
+					// std::cout << "pythia.event daughter 1 " << pythia.event[idau1].id() << std::endl;
+					// std::cout << "pythia.event daughter 2 " << pythia.event[idau2].id() << std::endl;
+
+					// std::cout << "pythia.event daughter 2 not from list " << pythia.event[pythia.event[ip].daughter1()].id() << std::endl;
+					// std::cout << "pythia.event daughter 2 not from list " << pythia.event[pythia.event[ip].daughter2()].id() << std::endl;
+
+					if (((pythia.event[idau1].idAbs() == 321 && pythia.event[idau2].idAbs() == 211) || //kaon & pion
+						(pythia.event[idau1].idAbs() == 211 && pythia.event[idau2].idAbs() == 321)) && //pion & kaon 
+						pythia.event[idau1].charge() != pythia.event[idau2].charge() && //kaon and pion are dif charges
+						daughter_indices.size() == 2) //there are only 2 decay products
+					{
+						int ikaon = (pythia.event[idau1].idAbs() == 321) ? idau1 : idau2;
+						int ipion = (pythia.event[idau1].idAbs() == 211) ? idau1 : idau2;
+						
+						std::cout << "pythia.event " << ip << ", " << ikaon << ", " << ipion << " Found a D0->Kpi!" << std::endl;
+						D0found = true;
+
+						// add only the D0
+						fastjet::PseudoJet kaon(pythia.event[ikaon].px(), pythia.event[ikaon].py(), pythia.event[ikaon].pz(), pythia.event[ikaon].e());
+						fastjet::PseudoJet pion(pythia.event[ipion].px(), pythia.event[ipion].py(), pythia.event[ipion].pz(), pythia.event[ipion].e());
+						fastjet::PseudoJet pair = kaon + pion;
+						//could we just do??:
+						fastjet::PseudoJet D0(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
+
+						pair.set_user_index(ip + user_index_offset);
+						if (add_particle_info)
+						{
+							PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
+							pair.set_user_info(_pinfo);
+						}			
+
+						// save particle information
+						v.push_back(D0); //pair);
+						saved_indices.push_back(ip + user_index_offset); //TODO: check whether this is actually what is being saved
+						indices_to_check.push_back(ikaon+user_index_offset);
+						indices_to_check.push_back(ipion+user_index_offset);
+
+						
+						// see if any kaons/pions were previously saved to v
+						if (std::count(saved_indices.begin(), saved_indices.end(), ikaon + user_index_offset)) {
+							std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ikaon+user_index_offset);
+							int index_to_rm = it - saved_indices.begin();
+							remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+						}
+						if (std::count(saved_indices.begin(), saved_indices.end(), ipion + user_index_offset)) {
+							std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ipion+user_index_offset);
+							int index_to_rm = it - saved_indices.begin();
+							remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+						}
+
+						// continue;
+
+					} else { //the case that D0 does not go to k+pi- or k-pi+
+						D0_notKpi_counter++;
+					}
+
+					continue; //don't add any D0's to the vector v after this point
+
+				} // end of if D0 loop
+
+
+				//don't save kaons or pions that came from D0->Kpi
+				if (std::count(indices_to_check.begin(), indices_to_check.end(), ip + user_index_offset)) {
+					continue;
+				}
+
+
+				fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
+				psj.set_user_index(ip + user_index_offset);
+				if (add_particle_info)
+				{
+					PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
+					psj.set_user_info(_pinfo);
+				}
+				v.push_back(psj);
+				saved_indices.push_back(ip);
+			}
+		}	
+
+		// remove all particles if no D0->Kpi decay
+		if (!D0found) {
+			// d0notfound_ctr++;
+			v.clear();
+		}
+
+		// std::cout << v << std::endl;
+
+		// //print statements to check
+		// std::cout << "saved_indices: ";
+		// for (int ind=0; ind<saved_indices.size(); ind++ ){
+		// 	std::cout << saved_indices[ind] << " ";
+		// }
+		// std::cout << std::endl;
+		// std::cout << "indices_to_check: ";
+		// for (int ind=0; ind<indices_to_check.size(); ind++ ){
+		// 	std::cout << indices_to_check[ind] << " ";
+		// }
+		// std::cout << std::endl;
+
+		return v;
+	}
+
+
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0)
 	// {

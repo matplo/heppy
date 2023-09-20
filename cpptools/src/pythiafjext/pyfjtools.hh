@@ -33,6 +33,12 @@ namespace pythiafjtools{
 														int *selection, int nsel, 
 														int user_index_offset = 0,
 														bool add_particle_info = false);
+														
+	std::vector<fastjet::PseudoJet> vectorize_select_replaceD0(	const Pythia8::Pythia &p, 
+																int *selection, int nsel, 
+																int user_index_offset = 0,
+																bool add_particle_info = false);
+
 
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);
