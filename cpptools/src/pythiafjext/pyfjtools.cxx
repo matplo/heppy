@@ -125,7 +125,8 @@ namespace pythiafjtools{
 													 		   int *selection, 
 													 		   int nsel,
 													 		   int user_index_offset,
-													 		   bool add_particle_info)
+													 		   bool add_particle_info,
+															   bool remove_soft_pion)
 	{
 		std::vector<fastjet::PseudoJet> v;
 
@@ -194,16 +195,20 @@ namespace pythiafjtools{
 					std::vector<int> daughter_indices = pythia.event[ip].daughterList();
 					// std::cout << "pythia.event " << ip << " Found a D0!" << std::endl;
 
+					if ( daughter_indices.size() != 2 ) { // if more than two decay products, move to next event
+						continue;
+					}
+
 					int idau1 = daughter_indices[0];
 					int idau2 = daughter_indices[1];
 					// std::cout << "all daughters in list indices: ";
-					for (int j=0; j<daughter_indices.size(); j++){
+					// for (int j=0; j<daughter_indices.size(); j++){
 						// std::cout << daughter_indices[j] << " ";
-					}
+					// }
 					// std::cout << "all daughters in list IDs: ";
-					for (int j=0; j<daughter_indices.size(); j++){
+					// for (int j=0; j<daughter_indices.size(); j++){
 						// std::cout << pythia.event[daughter_indices[j]].id() << " ";
-					}
+					// }
 					// std::cout << std::endl;
 					// std::cout << "pythia.event daughter 1 " << pythia.event[idau1].id() << std::endl;
 					// std::cout << "pythia.event daughter 2 " << pythia.event[idau2].id() << std::endl;
@@ -213,8 +218,7 @@ namespace pythiafjtools{
 
 					if (((pythia.event[idau1].idAbs() == 321 && pythia.event[idau2].idAbs() == 211) || //kaon & pion
 						(pythia.event[idau1].idAbs() == 211 && pythia.event[idau2].idAbs() == 321)) && //pion & kaon 
-						pythia.event[idau1].charge() != pythia.event[idau2].charge() && //kaon and pion are dif charges
-						daughter_indices.size() == 2) //there are only 2 decay products
+						pythia.event[idau1].charge() != pythia.event[idau2].charge()) //kaon and pion are dif charges
 					{
 						int ikaon = (pythia.event[idau1].idAbs() == 321) ? idau1 : idau2;
 						int ipion = (pythia.event[idau1].idAbs() == 211) ? idau1 : idau2;
@@ -228,12 +232,15 @@ namespace pythiafjtools{
 						fastjet::PseudoJet pair = kaon + pion;
 						//could we just do??:
 						fastjet::PseudoJet D0(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
+						// std::cout << "D0   px, py, pz, E " << D0.px() << " " << D0.py() << " " << D0.pz() << " " << D0.e() << std::endl;
+						// std::cout << "pair px, py, pz, E " << pair.px() << " " << pair.py() << " " << pair.pz() << " " << pair.e() << std::endl;
 
-						pair.set_user_index(ip + user_index_offset);
+						D0.set_user_index(ip + user_index_offset);
+						// std::cout << "D0 set user index is " << ip + user_index_offset << std::endl;
 						if (add_particle_info)
 						{
 							PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[ip]);
-							pair.set_user_info(_pinfo);
+							D0.set_user_info(_pinfo);
 						}			
 
 						// save particle information
@@ -242,18 +249,34 @@ namespace pythiafjtools{
 						indices_to_check.push_back(ikaon+user_index_offset);
 						indices_to_check.push_back(ipion+user_index_offset);
 
-						
+
+						// check if D0's mother is D*
+						if (remove_soft_pion) {
+							if (checkD0mother(pythia, ip)) {
+								int softpion_index = getSoftPion(pythia, ip);
+								//TODO: run this:
+								if (softpion_index != -1) {
+									indices_to_check.push_back(softpion_index + user_index_offset);
+
+									// remove any soft pions previously saved to v
+									int index_to_rm = removeIndexFromv(v, saved_indices, softpion_index+user_index_offset);
+									remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+								}
+
+							}
+						}
+
 						// see if any kaons/pions were previously saved to v
-						if (std::count(saved_indices.begin(), saved_indices.end(), ikaon + user_index_offset)) {
-							std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ikaon+user_index_offset);
-							int index_to_rm = it - saved_indices.begin();
-							remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
-						}
-						if (std::count(saved_indices.begin(), saved_indices.end(), ipion + user_index_offset)) {
-							std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ipion+user_index_offset);
-							int index_to_rm = it - saved_indices.begin();
-							remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
-						}
+						// if (std::count(saved_indices.begin(), saved_indices.end(), ikaon + user_index_offset)) {
+						// 	std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ikaon+user_index_offset);
+						// 	int index_to_rm = it - saved_indices.begin();
+						// 	remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+						// }
+						// if (std::count(saved_indices.begin(), saved_indices.end(), ipion + user_index_offset)) {
+						// 	std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), ipion+user_index_offset);
+						// 	int index_to_rm = it - saved_indices.begin();
+						// 	remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+						// }
 
 						// continue;
 
@@ -305,6 +328,50 @@ namespace pythiafjtools{
 		// std::cout << std::endl;
 
 		return v;
+	}
+
+
+	// check if D0's mother is D*
+	bool checkD0mother( const Pythia8::Pythia &pythia, int D0particle_index ) {
+
+		bool motherisDstar = false;
+
+		if (pythia.event[D0particle_index].idAbs() == 421) { //D0
+
+			std::vector<int> mother_indices = pythia.event[D0particle_index].motherList();
+			if ( mother_indices.size() == 1 ) { // assuming D* is the only mother to D0
+				int mo1 = mother_indices[0];
+				if (pythia.event[mo1].idAbs() == 413) { //D*
+					motherisDstar = true;
+				}
+			}
+		}
+		// std::cout << "is mother a Dstar?  " << motherisDstar << std::endl;
+		return motherisDstar;
+	}
+
+	int getSoftPion( const Pythia8::Pythia &pythia, int D0particle_index ) {
+		int softpion_index = -1;
+		
+		int Dstar_index = pythia.event[D0particle_index].motherList()[0];
+		std::vector<int> poss_softpion_indices = pythia.event[Dstar_index].daughterList(); 
+		//TODO: check if there are only two daughters??
+		for (int daughter_index : poss_softpion_indices ) {
+			int poss_softpion_idAbs = pythia.event[daughter_index].idAbs();
+			if (poss_softpion_idAbs == 211) 
+				softpion_index = daughter_index;
+		}
+		return softpion_index;
+
+	}
+
+	int removeIndexFromv( std::vector<fastjet::PseudoJet> v, std::vector<int> saved_indices, int index) {
+		if (std::count(saved_indices.begin(), saved_indices.end(), index)) {
+			std::vector<int>::iterator it = std::find(saved_indices.begin(), saved_indices.end(), index);
+			int index_to_rm = it - saved_indices.begin();
+			// remove(v.begin(), v.end(), v[index_to_rm]); //TODO: see if this is doing what we think it's doing
+			return index_to_rm;
+		}
 	}
 
 
