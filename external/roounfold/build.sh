@@ -20,8 +20,11 @@ cd ${THISD}
 
 separator "building roounfold ${PWD}"
 
-export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
-roounfold_version=2.0.0
+v3=$(get_opt "v3" $@)
+if [ ! -z ${official} ]; then
+	export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
+	roounfold_version=3.0.1
+fi
 
 do_master=$(get_opt "master" $@)
 if [ ! -z ${do_master} ]; then
@@ -41,6 +44,16 @@ if [ ! -z ${ezrasru} ]; then
 	export RUGITREPO=https://gitlab.cern.ch/elesser/RooUnfold.git
 	roounfold_version=master
 	do_patch="-DROOUNFOLD_PATCH=RooUnfoldCMakePatch-ezra"
+	export RUGITREPO=https://gitlab.cern.ch/mploskon/RooUnfold.git
+	roounfold_version=2.1.heppy
+	do_patch=""
+fi
+
+heppyru=$(get_opt "heppy" $@)
+if [ ! -z ${heppyru} ]; then
+	export RUGITREPO=https://gitlab.cern.ch/mploskon/RooUnfold.git
+	roounfold_version=2.1.heppy
+	do_patch=""
 fi
 
 echo_warning "[i] Using RooUnfold at ${RUGITREPO} ${roounfold_version}"
