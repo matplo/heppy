@@ -20,6 +20,7 @@ find_library(HEPMC3_LIBRARY NAMES HepMC3
 set(HEPMC3_INCLUDE_DIRS ${HEPMC3_INCLUDE_DIR})
 set(HEPMC3_LIBRARIES ${HEPMC3_LIBRARY})
 get_filename_component(HEPMC3_LIB_DIR ${HEPMC3_LIBRARY} DIRECTORY)
+get_filename_component(HEPMC3_DIR ${HEPMC3_INCLUDE_DIR} DIRECTORY)
 
 # handle the QUIETLY and REQUIRED arguments and set HEPMC3_FOUND to TRUE if
 # all listed variables are TRUE
@@ -38,6 +39,7 @@ if (HEPMC3_FOUND)
 	# message( STATUS "HEPMC3_INCLUDE_DIR: ${HEPMC3_INCLUDE_DIR}")
 	# message( STATUS "HEPMC3_LIBRARY: ${HEPMC3_LIBRARY}")
 	# message( STATUS "HEPMC3_LIBRARY: ${HEPMC3_LIB_DIR}")
+	# message( STATUS "HEPMC3_DIR: ${HEPMC3_DIR}")
 else(HEPMC3_FOUND)
 	message(STATUS "${Yellow}HEPMC3 not found - some of the functionality will be misssing.${ColourReset}")
 endif()
