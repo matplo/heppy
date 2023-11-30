@@ -374,6 +374,54 @@ namespace pythiafjtools{
 		}
 	}
 
+	std::vector<fastjet::PseudoJet> removeByIndex(std::vector<fastjet::PseudoJet> v, int indextoremove)
+	{
+		// std::cout << "in removeByIndex " << v.size() << " indextoremove " << indextoremove << std::endl; 
+		v.erase(v.begin()+indextoremove);
+		return v;
+	}
+	std::vector<fastjet::PseudoJet> removeByIndex(std::vector<fastjet::PseudoJet> v, int *selection, int nsel) //selection must be a reverse-ordered list
+	{
+		for (int i=0; i<nsel; i++) {
+			// std::cout << "in removeByIndex " << v.size() << " indextoremove " << selection[i] << std::endl; 
+			v.erase(v.begin() + selection[i]);
+		}
+		return v;
+	}
+
+	std::vector<fastjet::PseudoJet> replaceKPwD0(const Pythia8::Pythia &pythia, std::vector<fastjet::PseudoJet> v, int D0index, int dau1index, int dau2index)
+	{
+		// std::cout << "checkpoint 1 " << v.size() << std::endl;
+		// std::cout << " D0 " << D0index << " dau1 " << dau1index << " dau2 " << dau2index << std::endl;
+		std::cout << "Replacing (!) Kpi " << dau1index << " and " << dau2index << " with D0 " << D0index << std::endl;
+		fastjet::PseudoJet D0(pythia.event[D0index].px(), pythia.event[D0index].py(), pythia.event[D0index].pz(), pythia.event[D0index].e());
+
+		D0.set_user_index(D0index);
+		// std::cout << "D0 set user index is " << ip + user_index_offset << std::endl;
+		PythiaParticleInfo * _pinfo = new PythiaParticleInfo(pythia.event[D0index]);
+		D0.set_user_info(_pinfo);
+		v.push_back(D0); 
+
+		// remove the kaon and pion
+		std::vector<int> ind_to_rem;
+		int ctr = 0;
+		for (int i=0; i<v.size(); i++) {
+			if (v[i].user_index() == dau1index || v[i].user_index() == dau2index){
+				ind_to_rem.push_back(i);
+				ctr++;
+			}
+			if (ctr == 2) break;
+		}
+
+		int maxindex = (ind_to_rem[0] > ind_to_rem[1]) ? ind_to_rem[0] : ind_to_rem[1];
+		int minindex = (ind_to_rem[0] > ind_to_rem[1]) ? ind_to_rem[1] : ind_to_rem[0];
+		std::vector<fastjet::PseudoJet> temp_v = removeByIndex(v, maxindex);
+		std::vector<fastjet::PseudoJet> temp_v2 = removeByIndex(temp_v, minindex);
+		// std::cout << "checkpoint 6 " << temp_v2.size() << std::endl;
+
+		return temp_v2;
+	}
+
 
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0)

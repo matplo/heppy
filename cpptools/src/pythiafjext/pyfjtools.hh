@@ -43,7 +43,9 @@ namespace pythiafjtools{
 	bool checkD0mother( const Pythia8::Pythia &pythia, int D0particle_index );
 	int getSoftPion( const Pythia8::Pythia &pythia, int D0particle_index );
 	int removeIndexFromv( std::vector<fastjet::PseudoJet> v, std::vector<int> saved_indices, int index);
-
+	std::vector<fastjet::PseudoJet> removeByIndex( std::vector<fastjet::PseudoJet> v, int indextoremove);
+	std::vector<fastjet::PseudoJet> removeByIndex( std::vector<fastjet::PseudoJet> v, int *selection, int nsel);
+	std::vector<fastjet::PseudoJet> replaceKPwD0( const Pythia8::Pythia &pythia, std::vector<fastjet::PseudoJet> v, int D0index, int dau1index, int dau2index);
 
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);
