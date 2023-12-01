@@ -393,7 +393,7 @@ namespace pythiafjtools{
 	{
 		// std::cout << "checkpoint 1 " << v.size() << std::endl;
 		// std::cout << " D0 " << D0index << " dau1 " << dau1index << " dau2 " << dau2index << std::endl;
-		std::cout << "Replacing (!) Kpi " << dau1index << " and " << dau2index << " with D0 " << D0index << std::endl;
+		std::cout << "Replacing Kpi " << dau1index << " and " << dau2index << " with D0 " << D0index << std::endl;
 		fastjet::PseudoJet D0(pythia.event[D0index].px(), pythia.event[D0index].py(), pythia.event[D0index].pz(), pythia.event[D0index].e());
 
 		D0.set_user_index(D0index);
