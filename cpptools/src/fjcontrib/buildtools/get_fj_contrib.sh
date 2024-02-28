@@ -56,7 +56,7 @@ if [ -d ${srcdir} ]; then
 				patch fjcontrib-${fjcontrib_version}/Nsubjettiness/AxesDefinition.hh -i ${srcdir}/patches/AxesDefinition.patch
 			fi
 
-            rm fjcontrib-${fjcontrib_version}/.[!.]* fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
+			rm fjcontrib-${fjcontrib_version}/.[!.]* fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
 
 		fi
 	fi
