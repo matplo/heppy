@@ -6,7 +6,7 @@ if [ ! -z ${wdir} ]; then
 	[ ! -d ${wdir} ] && mkdir -p ${wdir}
 fi
 
-fjcontrib_version=1.051
+fjcontrib_version=1.053
 [ ! -z ${3} ] && fjcontrib_version=${3}
 
 if [ -d ${srcdir} ]; then
@@ -19,6 +19,7 @@ if [ -d ${srcdir} ]; then
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/RecursiveTools ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/RecursiveTools
+                rm fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
 				rm fjcontrib-${fjcontrib_version}/RecursiveTools/example_*.cc
 				patch fjcontrib-${fjcontrib_version}/RecursiveTools/RecursiveSymmetryCutBase.hh -i ${srcdir}/patches/RecursiveSymmetryCutBase.patch
 			fi
@@ -30,6 +31,7 @@ if [ -d ${srcdir} ]; then
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/LundPlane ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/LundPlane
+                rm fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
 				rm fjcontrib-${fjcontrib_version}/LundPlane/example_*.cc
 				patch fjcontrib-${fjcontrib_version}/LundPlane/SecondaryLund.hh -i ${srcdir}/patches/SecondaryLund.patch
 				patch fjcontrib-${fjcontrib_version}/LundPlane/LundGenerator.hh -i ${srcdir}/patches/LundGenerator.patch
@@ -44,6 +46,7 @@ if [ -d ${srcdir} ]; then
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/ConstituentSubtractor ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/ConstituentSubtractor
+                rm fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
 				rm fjcontrib-${fjcontrib_version}/ConstituentSubtractor/example_*.cc
 			fi
 
@@ -51,6 +54,7 @@ if [ -d ${srcdir} ]; then
 			if [ ! -d ${srcdir}/fjcontrib-${fjcontrib_version}/Nsubjettiness ]; then
 				cd ${srcdir}
 				tar zxvf ${wdir}/fjcontrib-${fjcontrib_version}.tar.gz fjcontrib-${fjcontrib_version}/Nsubjettiness
+                rm fjcontrib-${fjcontrib_version}/*/.[!.]*  # Remove unnecessary dotfiles
 				rm fjcontrib-${fjcontrib_version}/Nsubjettiness/example_*.cc
 				patch fjcontrib-${fjcontrib_version}/Nsubjettiness/MeasureDefinition.hh -i ${srcdir}/patches/MeasureDefinition.patch
 				patch fjcontrib-${fjcontrib_version}/Nsubjettiness/AxesDefinition.hh -i ${srcdir}/patches/AxesDefinition.patch
