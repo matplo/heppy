@@ -113,7 +113,7 @@ endif(ENABLE_CGAL)
 
 ExternalProject_Add(FASTJET
 	PREFIX            ${FASTJET_BUILD}
-	URL               http://fastjet.fr/repo/fastjet-${FASTJET_VERSION}.tar.gz
+	URL               https://fastjet.fr/repo/fastjet-${FASTJET_VERSION}.tar.gz
 	DOWNLOAD_DIR      ${CMAKE_CURRENT_LIST_DIR}/downloads
 	# DOWNLOAD_NAME     fastjet-${FASTJET_VERSION}.tar.gz
 	# SOURCE_DIR        ${CMAKE_CURRENT_LIST_DIR}/build/fastjet-${FASTJET_VERSION}
