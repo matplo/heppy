@@ -84,7 +84,8 @@ cmake --build . --target all
 
 cd ${cdir}
 
-if [ -e ${roounfold_heppy_prefix}/bin/RooUnfoldTest ]; 
+# if [ -e ${roounfold_heppy_prefix}/bin/RooUnfoldTest ]; 
+if [ -e "${roounfold_heppy_prefix}/lib/libRooUnfold.so" ];
 then
 	if [ -e ${THISD}/roounfold-current ]; then
 		rm -v ${THISD}/roounfold-current
@@ -95,7 +96,8 @@ then
 	ls -l ${roounfold_heppy_prefix}/lib
 	ls -l ${roounfold_heppy_prefix}/bin
 else
-	echo_error "[e] sorry... the build failed: no RooUnfoldTest in ${roounfold_heppy_prefix}/bin/"
+	# echo_error "[e] sorry... the build failed: no RooUnfoldTest in ${roounfold_heppy_prefix}/bin/"
+	echo_error "[e] sorry... the build failed: no libRooUnfold.so in ${roounfold_heppy_prefix}/lib/"
 	separator "roounfold build script done"
 	exit 1
 fi
