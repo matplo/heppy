@@ -20,7 +20,7 @@ cd ${THISD}
 
 separator "building roounfold ${PWD}"
 
-v3=$(get_opt "v3" $@)
+official=$(get_opt "v3" $@)
 if [ ! -z ${official} ]; then
 	export RUGITREPO=https://gitlab.cern.ch/RooUnfold/RooUnfold.git
 	roounfold_version=3.0.1
