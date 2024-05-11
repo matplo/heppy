@@ -92,6 +92,7 @@ then
 	fi
 	ln -sf ${roounfold_heppy_prefix} ${THISD}/roounfold-current
 	separator summary
+	echo "${roounfold_version}" > ${roounfold_heppy_prefix}/include/version.txt
 	ls -l ${roounfold_heppy_prefix}/include
 	ls -l ${roounfold_heppy_prefix}/lib
 	ls -l ${roounfold_heppy_prefix}/bin
