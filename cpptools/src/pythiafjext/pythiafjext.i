@@ -20,3 +20,4 @@
 %apply (int* IN_ARRAY1, int DIM1) {(int* selection, int nsel)};
 %include "pyfjtools.hh"
 %clear (int* selection, int nsel);
+%template(FJPSJVec) std::vector<fastjet::PseudoJet>;
