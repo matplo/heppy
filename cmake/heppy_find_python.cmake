@@ -10,6 +10,7 @@ execute_process(
 )
 
 message(STATUS "Python3 executable found at: ${Python3_EXECUTABLE}")
+set(Python_EXECUTABLE ${Python3_EXECUTABLE})
 
 execute_process(
     COMMAND ${Python3_EXECUTABLE} -c "import sys; print(sys.path)"
