@@ -1,6 +1,6 @@
 function(SWIGIFY)
 	if (BUILD_PYTHON)
-		if (Python_FOUND)
+		if (Python3_FOUND)
 			include_directories(${SWIG_TARGET_INCLUDE_DIRECTORIES})
 			if (SWIG_INTERFACE_FILE)
 					message(STATUS "Using swig file ${SWIG_INTERFACE_FILE}")
@@ -15,17 +15,17 @@ function(SWIGIFY)
 
 			# Add swig module
 			swig_add_library(${MODULE_NAME} TYPE SHARED LANGUAGE python SOURCES ${SWIG_INTERFACE_FILE})
-			swig_link_libraries(${MODULE_NAME} ${NAME_LIB} ${Python_LIBRARIES} ${SWIG_MODULE_LINK_LIBRARIES})
+			swig_link_libraries(${MODULE_NAME} ${NAME_LIB} ${Python3_LIBRARIES} ${SWIG_MODULE_LINK_LIBRARIES})
 
-			# Files to install with Python
+			# Files to install with Python3
 			list(APPEND PYTHON_INSTALL_FILES
 			        ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}.py
 			        ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/_${MODULE_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX})
 			message(STATUS "${Green} ... built: ${PYTHON_INSTALL_FILES} ${ColourReset}")
 			set(PYTHON_INSTALL_FILES ${PYTHON_INSTALL_FILES} PARENT_SCOPE)
-		else(Python_FOUND)
-			message(WARNING "${Yellow} Missing Python *** NO PYTHON INTERFACE WILL BE BUILD *** ${ColourReset}")
-		endif(Python_FOUND)
+		else(Python3_FOUND)
+			message(WARNING "${Yellow} Missing Python3 *** NO PYTHON INTERFACE WILL BE BUILD *** ${ColourReset}")
+		endif(Python3_FOUND)
 	endif(BUILD_PYTHON)
 	message(STATUS "${Yellow} ... swigify done with ${MODULE_NAME} ${ColourReset}")
 endfunction(SWIGIFY)
