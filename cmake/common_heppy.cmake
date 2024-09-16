@@ -16,6 +16,4 @@ message( STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # for MacOSx
 # set (CMAKE_FIND_FRAMEWORK NEVER)
-message(STATUS "${Yellow}Note: this build requires to run within virtual environment of Python...${ColourReset}")
-set(Python_FIND_VIRTUALENV ONLY)
-set(Python3_FIND_VIRTUALENV ONLY)
+

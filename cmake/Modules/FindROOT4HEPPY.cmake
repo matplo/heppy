@@ -69,14 +69,14 @@ if (ROOT_FOUND)
         string(REPLACE "${ROOT_LIBRARY_DIR}/" "" FJPYSUBDIR_TMP "${ROOT_PYTHON}")
         string(REPLACE "/ROOTTPython.pcm" "" ROOT_PYTHON_SUBDIR ${ROOT_PYTHON})
         message(STATUS "${Green}ROOT LIBRARY DIR: ${ROOT_LIBRARY_DIR}${ColourReset}")
-        message(STATUS "${Green}Python Executable: ${Python_EXECUTABLE}")
         message(STATUS "${Green}ROOT python module subdir: ${ROOT_PYTHON_SUBDIR}${ColourReset}")
-        find_package(Python 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+        find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development NumPy)
+        message(STATUS "${Green}Python3 Executable: ${Python3_EXECUTABLE}")
         #set($ENV{LD_LIBRARY_PATH} "$ENV{LD_LIBRARY_PATH}:${ROOT_HEPPY_PREFIX}/lib")
         #execute_process(  COMMAND ${Python3_EXECUTABLE} -c "import sys; sys.path.append('${ROOT_PYTHON_SUBDIR}'); import ROOT; ROOT.gROOT.SetBatch(True); print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion());" 
         set(TESTCMND "import ROOT\; ROOT.gROOT.SetBatch(True)\; print('[i] ROOT version from within python:',ROOT.gROOT.GetVersion())\;")
-        message(STATUS "Test command: ${Python_EXECUTABLE} -c ${TESTCMND}")
-        execute_process(  COMMAND ${Python_EXECUTABLE} -c ${TESTCMND}
+        message(STATUS "Test command: ${Python3_EXECUTABLE} -c ${TESTCMND}")
+        execute_process(  COMMAND ${Python3_EXECUTABLE} -c ${TESTCMND}
                           WORKING_DIRECTORY /tmp 
                           RESULT_VARIABLE LOAD_ROOT_PYTHON_RESULT 
                           OUTPUT_VARIABLE LOAD_ROOT_PYTHON 
