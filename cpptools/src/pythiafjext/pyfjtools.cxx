@@ -31,11 +31,12 @@ namespace pythiafjtools{
 		return v;
 	}
 
-	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &pythia, 
-													 int *selection, 
+	std::vector<fastjet::PseudoJet> vectorize_select(const Pythia8::Pythia &pythia,
+													 int *selection,
 													 int nsel,
-													 int user_index_offset,
-													 bool add_particle_info)
+													 int user_index_offset/* = 0*/,
+													 bool add_particle_info/* = false*/,
+                                                     float particle_mass/* = -1*/)
 	{
 		std::vector<fastjet::PseudoJet> v;
 		std::bitset<kMaxSetting> mask(0); // no particle accepted
@@ -99,15 +100,21 @@ namespace pythiafjtools{
 			// 	std::cout << "[+] ";
 			// else
 			// 	std::cout << "[-] ";
-			// std::cout 
+			// std::cout
 			// 		<< ip << " "
 			// 		<< mask << " !-" << negmask << " " << pmask << " " << " " << "(mask & pmask) " << (mask & pmask) << " "
 			// 		<< "isFinal = " << pythia.event[ip].isFinal() << " "
-			// 		<< pythia.event[ip].name() 
+			// 		<< pythia.event[ip].name()
 			// 		<< std::endl;
 			if (accept)
 			{
-				fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), pythia.event[ip].e());
+                double particle_e = 0;
+                if (particle_mass < 0) {  // default case, use true particle mass
+                    particle_e = pythia.event[ip].e();
+                } else {                  // use E^2 = p^2 + m^2
+                    particle_e = std::pow(std::pow(pythia.event[ip].px(), 2) + std::pow(pythia.event[ip].py(), 2) + std::pow(pythia.event[ip].pz(), 2) + std::pow(particle_mass, 2), 0.5);
+                }
+				fastjet::PseudoJet psj(pythia.event[ip].px(), pythia.event[ip].py(), pythia.event[ip].pz(), particle_e);
 				psj.set_user_index(ip + user_index_offset);
 				if (add_particle_info)
 				{
@@ -116,7 +123,7 @@ namespace pythiafjtools{
 				}
 				v.push_back(psj);
 			}
-		}		
+		}
 		return v;
 	}
 

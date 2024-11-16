@@ -29,10 +29,11 @@ namespace pythiafjtools{
 		kMaxSetting
 	};
 
-	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p, 
-														int *selection, int nsel, 
+	std::vector<fastjet::PseudoJet> vectorize_select(	const Pythia8::Pythia &p,
+														int *selection, int nsel,
 														int user_index_offset = 0,
-														bool add_particle_info = false);
+														bool add_particle_info = false,
+                                                        float particle_mass = -1);
 
 	// implemented in fjtools
 	// double angularity(const fastjet::PseudoJet &j, double alpha, double scaleR0 = 1.);
